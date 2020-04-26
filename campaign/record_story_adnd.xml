@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="encounter" merge="join">
+    <script>
+      function onDrop(x, y, draginfo)
+        UtilityManagerADND.onDropStory(x, y, draginfo, getDatabaseNode());
+      end
+    </script>
+  </windowclass>
+  
+  <!-- dark version with transparency -->
+<!--   <windowclass name="encounter" merge="join">
+		<frame>storybox_dark</frame>
+  
+    <script>
+      function onDrop(x, y, draginfo)
+        UtilityManagerADND.onDropStory(x, y, draginfo, getDatabaseNode());
+      end
+    </script>
+    <sheetdata>
+			<sub_note_header name="header" mergerule="replace" >
+				<class>encounter_header_dark</class>
+			</sub_note_header>
+      
+ 			<ft_record name="text" mergerule="replace" >
+        <font normal="reference-r-light" bold="reference-b-light" italic="reference-i-light" bolditalic="reference-bi-light" title="reference-b-large-light" />  
+        <linkicon link="button_link_light" emptylink="button_link_empty"  />
+        <selectioncolor>#707B7C</selectioncolor>
+        
+        <anchored to="contentframe" position="over" />
+				<footer>footer_wide</footer>
+				<empty textres="ft_empty" hidereadonly="true" />
+			</ft_record> 
+    </sheetdata>
+  </windowclass> -->
+
+	<windowclass name="encounter_header_dark">
+		<margins control="0,0,0,7" />
+		<script>
+			function onInit()
+				update();
+			end
+			function update()
+				local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+				name.setReadOnly(bReadOnly);
+			end
+		</script>
+		<sheetdata>
+			<link_record_header>
+				<class>encounter</class>
+			</link_record_header>
+
+			<anchor_record_header_right name="rightanchor" />
+			<icon_record_locked />
+			<button_record_locked />
+
+			<stringfield name="name">
+				<anchored to="rightanchor" height="24">
+					<top offset="-4" />
+					<left parent="" offset="45" />
+					<right anchor="left" relation="relative" offset="-5" />
+				</anchored>
+				<font>reference-b-large-light</font>
+				<empty textres="library_recordtype_empty_story" />
+				<nodrag />
+				<delaykeyupdate />
+			</stringfield>
+		</sheetdata>
+	</windowclass>
+  
+</root>

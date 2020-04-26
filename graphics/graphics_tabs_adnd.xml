@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <!-- cta tabs -->
+  <icon name="tab_effects" file="graphics/tabs/tab_effects.png" />
+  <icon name="htabtop" file="graphics/tabs/htabtop.png" />
+  <icon name="hactive" file="graphics/tabs/htab_active.png" />
+<!--   <icon name="htab_actions_icon" file="graphics/tabs/htab_label_actions.png" />
+  <icon name="htab_stats_icon" file="graphics/tabs/htab_label_stats.png" />
+  <icon name="htab_effects_icon" file="graphics/tabs/htab_label_effects.png" />
+  <icon name="htab_skills_icon" file="graphics/tabs/htab_label_skills.png" />
+ -->  
+  <icon name="tabtop_h" file="graphics/tabs/tabtop_h.png" />
+  
+	<framedef name="htabs">
+		<bitmap file="graphics/tabs/htab.png" />
+		<topleft rect="0,0,29,27" />
+		<top rect="29,0,402,27" />
+		<topright rect="431,0,69,27" />
+	</framedef>
+
+  <!-- tabs -->
+  <icon name="tab_weapons" file="graphics/tabs/tab_weapons.png" />
+  <icon name="tab_proficiency" file="graphics/tabs/tab_proficiency.png" />
+  <icon name="tab_details" file="graphics/tabs/tab_details.png" />
+  <icon name="tab_advance" file="graphics/tabs/tab_advancement.png" />
+</root>

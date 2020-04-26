@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="quicknote">
+    <frame>storybox</frame>
+    <placement>
+      <size width="400" height="400" />
+    </placement>
+    <sizelimits>
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_encounter</minimize>
+    <playercontrol />
+    <sharable />
+    <nodelete />
+    <tooltip field="name" />
+    <script>
+      function onDrop(x, y, draginfo)
+        UtilityManagerADND.onDropStory(x, y, draginfo, getDatabaseNode());
+      end
+    </script>
+    <script file="campaign/scripts/story.lua" />
+
+    <sheetdata>
+      <sub_quicknote_header name="header">
+        <class>quicknote_header</class>
+      </sub_quicknote_header>
+
+      <frame_story_content name="contentframe" />
+
+      <ft_record name="text">
+        <anchored to="contentframe" position="over" />
+        <footer>footer_wide</footer>
+        <empty textres="ft_empty" hidereadonly="true" />
+      </ft_record>
+      <scrollbar>
+        <anchored to="text" />
+        <target>text</target>
+      </scrollbar>
+
+      <list_viewers />
+      <story_page_top />
+      <story_page_prev />
+      <story_page_next />
+       <resize_storybox />
+      <close_storybox />
+    </sheetdata>
+  </windowclass>
+  
+  <windowclass name="quicknote_header">
+    <margins control="0,0,0,7" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>quicknote</class>
+      </link_record_header>
+
+      <anchor_record_header_right name="rightanchor" />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <stringfield name="name">
+        <anchored to="rightanchor" height="24">
+          <top offset="-4" />
+          <left parent="" offset="45" />
+          <right anchor="left" relation="relative" offset="-5" />
+        </anchored>
+        <font>reference-h</font>
+        <empty textres="library_recordtype_empty_story" />
+        <nodrag />
+        <delaykeyupdate />
+      </stringfield>
+    </sheetdata>
+  </windowclass>
+  
+</root>

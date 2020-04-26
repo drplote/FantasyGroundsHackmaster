@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <font name="sheetlabelmini_percent">
+    <fgffile name="graphics/fonts/regular-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="14" />
+    <color value="#000000" />
+  </font>
+
+  <!-- Nuke this when FGC dies 2029 :) -->
+	<font name="sidebar" version="&lt;4">
+    <ttf file="graphics/fonts/AlbertText-Bold_FGC.ttf" name="Albert Text Bold" size="24" />
+		<color value="#000000" />
+	</font>
+  <!-- -->
+	<font name="sidebar" version="&gt;=4">
+    <ttf file="graphics/fonts/AlbertTextBold.ttf" name="Albert Text Bold" size="24" />
+		<color value="#000000" />
+	</font>
+
+  <font name="successfont">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+    <color value="#418c12" />
+  </font>
+  <font name="failfont">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+    <color value="#6106d1" />
+  </font>
+  <font name="hitfont">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+    <color value="#cc1d1d" />
+  </font>
+  <font name="missfont">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+    <color value="#1d97cc" />
+  </font>
+
+	<!-- font used in grouplist headers in shortcut buttons on npc/item/etc -->
+  
+  <font name="grouplist-white">
+		<fgffile name="graphics/fonts/regular-10.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+		<color value="#FFFFFF" />
+	</font>
+	<!-- font used in grouplists in shortcut buttons on item for damage -->
+  <font name="grouplist-damage-black">
+		<fgffile name="graphics/fonts/regular-10.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+		<color value="#000000" />
+	</font>
+  
+  <!-- regular -->
+  <!--
+  <font name="regular8">
+    <fgffile name="graphics/fonts/regular-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="8" />
+  </font>
+  <font name="regular9">
+    <fgffile name="graphics/fonts/regular-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="9" />
+  </font>
+  -->
+  <font name="regular10">
+    <fgffile name="graphics/fonts/regular-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="14" />
+  </font>
+  <font name="regular11">
+    <fgffile name="graphics/fonts/regular-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="15" />
+  </font>
+  <!--
+  <font name="regular12">
+    <fgffile name="graphics/fonts/regular-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="12" />
+  </font>
+  <font name="regular13">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="13" />
+  </font>
+  <font name="regular14">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="14" />
+  </font>
+  -->
+  <font name="regular14-white">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="18" />
+    <color value="#FFFFFF" />
+  </font>
+  <!--
+  <font name="regular15">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="15" />
+  </font>
+  <font name="regular16">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+  </font>
+  <font name="regular18">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="18" />
+  </font>
+  <font name="regular20">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="20" />
+  </font>  
+  -->
+  
+  <!-- regular italic -->
+  <!--
+  <font name="regular14italic">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="14" />
+  </font>
+  <font name="regular14italic-white">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="14" />
+    <color value="#FFFFFF" />
+  </font>
+  <font name="regular15italic">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="15" />
+  </font>
+  <font name="regular16italic">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="16" />
+  </font>
+  <font name="regular18italic">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="18" />
+  </font>
+  <font name="regular20italic">
+    <fgffile name="graphics/fonts/regular-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="20" />
+  </font>  
+  -->
+  
+  <!-- bold  -->
+  <!--
+  <font name="bold10">
+    <fgffile name="graphics/fonts/bold-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="10" />
+  </font>
+  -->
+  <font name="bold11">
+    <fgffile name="graphics/fonts/bold-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+  </font>
+  <font name="bold12">
+    <fgffile name="graphics/fonts/bold-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+  </font>
+  <!--
+  <font name="bold13">
+    <fgffile name="graphics/fonts/bold-8.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="13" />
+  </font>
+  <font name="bold14">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+  </font>
+  -->
+  <font name="bold14-white">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="15" />
+    <color value="#FFFFFF" />
+  </font>
+  
+	<!-- Formatted text fields for dark/transparent frames-->
+ 
+	<font name="reference-b-large-light">
+		<fgffile name="graphics/fonts/bold-11.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+		<color value="#FEAB07" />
+	</font>
+  
+	<font name="reference-r-light">
+		<fgffile name="graphics/fonts/regular-10.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="12" />
+		<color value="#ECF0F1" />
+	</font>
+  
+	<font name="reference-i-light">
+		<fgffile name="graphics/fonts/italic-10.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-Italic.ttf" name="Noto Sans Italic" size="12" />
+		<color value="#ECF0F1" />
+	</font>
+  
+	<font name="reference-b-light">
+		<fgffile name="graphics/fonts/bold-10.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="12" />
+		<color value="#F7F9F9" />
+	</font>
+	<font name="reference-bi-light">
+		<fgffile name="graphics/fonts/bolditalic-10.fgf" />
+		<ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="12" />
+		<color value="#F7F9F9" />
+	</font>
+
+  <!--
+  <font name="bold15">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="15" />
+  </font>
+  -->
+  <font name="bold16">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="16" />
+  </font>
+  <!--
+  <font name="bold18">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="18" />
+  </font>
+  -->
+  <font name="bold20">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="18" />
+  </font>
+
+  <!-- semi-bold -->
+  <font name="semibold12">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="15" />
+  </font>
+  <!--
+  <font name="semibold13">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="13" />
+  </font>
+  <font name="semibold14">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+  </font>
+  <font name="semibold14-white">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+    <color value="#FFFFFF" />
+  </font>
+  <font name="semibold15">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="15" />
+  </font>
+  <font name="semibold16">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="16" />
+  </font>
+  <font name="semibold18">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="18" />
+  </font>
+  <font name="semibold20">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="20" />
+  </font>
+  -->
+
+  <!-- extra-bold -->
+  <!--
+  <font name="extrabold14">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+  </font>
+  <font name="extrabold14-white">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="14" />
+    <color value="#FFFFFF" />
+  </font>
+  <font name="extrabold15">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="15" />
+  </font>
+  <font name="extrabold16">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="16" />
+  </font>
+  <font name="extrabold18">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="18" />
+  </font>
+  <font name="extrabold20">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="20" />
+  </font>
+  -->
+
+  <!-- bold italic -->
+  <!--
+  <font name="bold14italic">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="14" />
+  </font>
+  <font name="bold14italic-white">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="14" />
+    <color value="#FFFFFF" />
+  </font>
+  <font name="bold15italic">
+    <fgffile name="graphics/fonts/bold-9.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="15" />
+  </font>
+  <font name="bold16italic">
+    <fgffile name="graphics/fonts/bold-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="16" />
+  </font>
+  <font name="bold18italic">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="18" />
+  </font>
+  <font name="bold20italic">
+    <fgffile name="graphics/fonts/bold-11.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-BoldItalic.ttf" name="Noto Sans Bold Italic" size="20" />
+  </font>
+  -->
+</root>

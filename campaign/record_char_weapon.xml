@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="char_weapon">
+    <margins control="0,2,0,2" />
+    <script file="campaign/scripts/char_weapon.lua"/>
+    <sheetdata>
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top />
+          <right />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+      
+      <link_weapon_shortcut name="shortcut" />
+      <link_npc_quicknotes name="quicknote" />
+      
+      <button_idelete name="idelete">
+        <anchored to="rightanchor">
+          <top offset="8" />
+          <right anchor="left" offset="-2" />
+        </anchored>
+      </button_idelete>
+      
+      <detail_button_action name="activatedetail" />
+      <genericcontrol name="leftanchor">
+        <anchored width="0" height="0">
+          <top />
+          <left />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+      <button_char_inv_carried name="carried">
+      <anchored to="leftanchor" width="20" height="20">
+        <top offset="5" />
+        <left anchor="right" relation="relative" offset="0" />
+      </anchored>
+      <script file="common/scripts/button_crosslink.lua" />
+      </button_char_inv_carried>
+      
+      <number_actions_init name="speedfactor" />
+
+      <stringu_action_attack name="name" /> 
+      <stringu_action_attack_nonid name="nonid_name" /> 
+
+      <state_charweapontype name="type">
+        <anchored height="18" >
+          <top offset="5" />
+          <left parent="leftanchor" anchor="right" relation="relative" offset="0" />
+        </anchored>
+        <script>
+          function onValueChanged()
+            window.onTypeChanged();
+          end
+        </script>
+      </state_charweapontype>
+
+      <actions_attack name="attackview_weapon" />      
+
+      <!-- damage section -->
+      <windowlist name="damage_split_list">
+        <anchored>
+          <top offset="5" /> 
+          <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+          <right parent="activatedetail" anchor="left" relation="relative" offset="0" />
+        </anchored>
+        <child></child>
+        <child><backcolor>4040301E</backcolor></child>
+        <noscroll />
+        <datasource>.damagelist</datasource>
+        <class>split_damage_entries</class>
+      </windowlist>
+            
+      <label name="label_ammo">
+        <anchored width="50">
+          <top parent="name" anchor="bottom" relation="relative" offset="5" />
+          <left offset="15" />
+        </anchored>
+        <static textres="char_label_weaponammo" />
+      </label>
+      <basicnumber name="maxammo">
+        <anchored to="label_ammo" position="righthigh" width="30" height="20" />
+        <min>0</min>
+        <max>100</max>
+      </basicnumber>
+      <state_charammocounter name="ammocounter">
+        <anchored to="maxammo" position="righthigh" offset="8,0" />
+      </state_charammocounter>
+    </sheetdata>
+  </windowclass>
+<!-- END char_weapon class -->
+
+  <!-- controlCreated version -->
+  <windowclass name="split_damage_entries">
+    <script file="campaign/scripts/char_damagelist_item.lua" />
+    <sheetdata>
+    </sheetdata>
+  </windowclass>
+  
+  <windowclass name="char_weapon_editor">
+    <frame>charsheethelper</frame>
+    <placement>
+      <size width="350" height="400" />
+    </placement>
+    <sizelimits>
+      <minimum width="350" height="400" />
+      <dynamic />
+    </sizelimits>
+    <nodelete />
+    <playercontrol />
+    <minimize>minimized_char</minimize>
+    <tooltip control="name" />
+    <sheetdata>
+      <windowtitlebar_char name="title">
+        <prefix>weapon_title</prefix>
+      </windowtitlebar_char>
+      <anchor_title_charsheethelper name="contentanchor" />
+      
+      <genericcontrol name="contentframe">
+        <anchored to="contentanchor">
+          <top anchor="bottom" offset="0" />
+          <left />
+          <right />
+          <bottom parent="" offset="-30" />
+        </anchored>
+      </genericcontrol>
+
+      <subwindow_record name="main">
+        <class>char_weapon_editor_main</class>
+        <activate />
+      </subwindow_record>
+
+      <scrollbar_record>
+        <target>main</target>
+      </scrollbar_record>
+
+      <resize_charsheethelper />
+      <close_charsheethelper />
+    </sheetdata>
+  </windowclass>
+    
+  <windowclass name="char_weapon_editor_main">
+    <script file="campaign/scripts/char_weapon_editor.lua"/>
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top />
+          <right />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+      
+      <label_column name="name_label">
+        <static textres="weapon_label_name" />
+      </label_column>
+      <string_column name="name" />
+      
+      <label_column name="properties_label">
+        <static textres="weapon_label_properties" />
+      </label_column>
+      <string_column name="properties" />
+      
+      <label_column name="speedfactor_label">
+        <static textres="weapon_labelr_speedfactor" />
+      </label_column>
+      <number_column name="speedfactor" />
+
+      <!-- prof entries -->
+      <header_column name="header_prof">
+        <static textres="weapon_header_prof" />
+        <center />
+      </header_column>
+      <!-- global edit button -->
+      <button_iadd name="prof_list_iadd">
+        <anchored to="rightanchor">
+          <top parent="header_prof" />
+          <right anchor="left" relation="relative" offset="-5"/>
+        </anchored>
+        <target>prof_list</target>
+      </button_iadd>
+
+      <button_iedit name="weapon_iedit">
+        <anchored to="rightanchor">
+          <top parent="header_prof" />
+          <right anchor="left" relation="relative" offset="-5" />
+        </anchored>
+        <tooltip textres="char_abilities_tooltip_edit" />
+        <script>
+          function onValueChanged()
+            local bEditMode = (getValue() == 1);
+            
+            window.prof_list_iadd.setVisible(bEditMode);
+            window.prof_list.update();
+
+            window.list_iadd.setVisible(bEditMode);
+            window.list.update();
+          end
+        </script>
+      </button_iedit>
+      
+      <list_editor_grouped name="prof_list">
+        <datasource>.proflist</datasource>
+        <class>char_weapon_prof_entry</class>
+        <script>
+          function addEntry(bFocus)
+            local n = getWindowCount();
+            
+            local w = createWindow();
+            if w then
+              if bFocus then
+                w.prof.setFocus();
+              end
+            end
+            
+            return w;
+          end
+        </script>
+      </list_editor_grouped>
+      
+      <label_fieldtop>
+        <anchored to="prof_list" position="aboveleft" offset="9,1" width="30" />
+        <tooltip textres="weapon_label_hitadj_tooltip" />
+        <static textres="weapon_label_hitadj" />
+      </label_fieldtop>
+      <label_fieldtop>
+        <anchored to="prof_list" position="aboveleft" offset="45,1" width="35" />
+        <tooltip textres="weapon_label_dmgadj_tooltip" />
+        <static textres="weapon_label_dmgadj" />
+      </label_fieldtop>
+      <label_fieldtop>
+        <anchored to="prof_list" position="aboveright" offset="5,1">
+          <left offset="100" />
+        </anchored>
+        <static textres="weapon_label_profname" />
+      </label_fieldtop>
+            
+           
+      <header_column name="header_attack">
+        <static textres="weapon_header_attack" />
+        <center />
+      </header_column>
+      
+      <cycler_abilitybase name="attackstat">
+        <anchored width="40" height="20">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="20" />
+          <left offset="5" />
+        </anchored>
+      </cycler_abilitybase>
+      <label_fieldtop>
+        <anchored to="attackstat" />
+        <static textres="weapon_label_atkstat" />
+      </label_fieldtop>
+      <label name="label_atkplus">
+        <anchored to="attackstat" position="righthigh" offset="5,0" width="10" />
+        <static>+</static>
+        <center />
+      </label>
+      <basicnumber name="attackbonus">
+        <anchored to="label_atkplus" position="righthigh" offset="5,0" width="35" height="20" />
+        <hideonvalue>0</hideonvalue>
+      </basicnumber>
+      <label_fieldtop>
+        <anchored to="attackbonus" />
+        <static textres="weapon_label_atkbonus" />
+      </label_fieldtop>
+
+      <!-- damage entries -->
+      <header_column name="header_damage">
+        <static textres="weapon_header_damage" />
+        <center />
+      </header_column>
+      <button_iadd name="list_iadd">
+        <anchored to="header_damage" position="insidetopright" offset="-5,0" />
+        <target>list</target>
+      </button_iadd>
+
+      <list_editor_grouped name="list">
+        <datasource>.damagelist</datasource>
+        <class>char_weapon_damage_entry</class>
+        <script>
+          function addEntry(bFocus)
+            local n = getWindowCount();
+            
+            local w = createWindow();
+            if w then
+              if n == 0 then
+                w.stat.setStringValue("base");
+              end
+            
+              if bFocus then
+                w.type.setFocus();
+              end
+            end
+            
+            return w;
+          end
+        </script>
+      </list_editor_grouped>
+      
+      <label_fieldtop>
+        <anchored to="list" position="aboveleft" offset="5,1" width="60" />
+        <static textres="weapon_label_dmgdice" />
+      </label_fieldtop>
+      <label_fieldtop>
+        <anchored to="list" position="aboveleft" offset="82,1" width="30" />
+        <static textres="weapon_label_dmgstat" />
+      </label_fieldtop>
+      <label_fieldtop>
+        <anchored to="list" position="aboveleft" offset="129,1" width="35" />
+        <static textres="weapon_label_dmgbonus" />
+                <tooltip textres="weapon_label_dmgbonus_tooltip" />
+      </label_fieldtop>
+      <label_fieldtop>
+        <anchored to="list" position="aboveright" offset="5,1">
+          <left offset="174" />
+        </anchored>
+        <static textres="weapon_label_dmgtype" />
+      </label_fieldtop>
+    </sheetdata>
+  </windowclass>
+
+    <!-- weapon prof selection -->
+  <windowclass name="char_weapon_prof_entry">
+    <margins control="0,0,0,5" />
+    <sheetdata>
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top offset="2" />
+          <right />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+
+      <button_idelete name="idelete">
+        <anchored to="rightanchor">
+          <top />
+          <right anchor="left" relation="relative" offset="-5" />
+        </anchored>
+      </button_idelete>
+
+      <number_adjustment name="hitadj">
+        <readonly />
+        <anchored position="insidetopleft" offset="5,2" width="35" height="20" />
+      </number_adjustment>
+      <number_adjustment name="dmgadj">
+        <readonly />
+        <anchored to="hitadj" position="righthigh" offset="5,0" width="35" height="20" />
+        <default>0</default>
+      </number_adjustment>
+
+      <combobox_adnd name="prof">
+        <listdirection>down</listdirection>
+        <anchored to="dmgadj" position="righthigh" offset="10,0" height="20">
+          <right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+        </anchored>
+        <script file="campaign/scripts/prof_select.lua"/>
+      </combobox_adnd>
+      
+
+        </sheetdata>
+  </windowclass>
+
+  <windowclass name="char_weapon_damage_entry">
+    <margins control="0,0,0,5" />
+    <sheetdata>
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top offset="2" />
+          <right />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+      <button_idelete name="idelete">
+        <anchored to="rightanchor">
+          <top />
+          <right anchor="left" relation="relative" offset="-5" />
+        </anchored>
+      </button_idelete>
+
+      <basicdice name="dice">
+        <anchored position="insidetopleft" offset="5,2" width="60" height="20" />
+      </basicdice>
+      <label name="label_plus">
+        <anchored to="dice" position="righthigh" offset="5,0" width="10" />
+        <static>+</static>
+      </label>
+      <cycler_power name="stat">
+        <anchored to="label_plus" position="righthigh" offset="2,0" width="30" height="20" />
+      </cycler_power>
+      <label name="label_plus2">
+        <anchored to="stat" position="righthigh" offset="5,0" width="10" />
+        <static>+</static>
+      </label>
+      <basicnumber name="bonus">
+        <anchored to="label_plus2" position="righthigh" offset="2,0" width="35" height="20" />
+        <hideonvalue>0</hideonvalue>
+      </basicnumber>
+      <stringu name="type">
+        <anchored to="bonus" position="righthigh" offset="10,0" height="20">
+          <right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+        </anchored>
+      </stringu>
+    </sheetdata>
+  </windowclass>
+
+    
+</root>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <icon name="desktopdecal_adnd1" file="graphics/decals/decal-adnd-1.png" />
+  <icon name="rulesetlogo_DungeonClassic" file="graphics/icons/DnD_ClassicLogo.png" />
+  
+  <!-- Common -->
+  <icon name="details" file="graphics/icons/wheels-icon.png" />
+  <icon name="details_white" file="graphics/icons/wheels-icon-white.png" />
+  <icon name="details_down" file="graphics/icons/wheels-icon-down.png" />
+  <icon name="button_details" file="graphics/icons/wheels-icon.png" />
+  <icon name="button_details_down" file="graphics/icons/wheels-icon-down.png" />
+
+	<icon name="footer_wide" file="graphics/icons/footer_wide.png" />
+	<icon name="footer_narrow" file="graphics/icons/footer_narrow.png" />
+	<icon name="celestian" file="graphics/icons/celestian.png" />
+	<!-- <icon name="2e-logo" file="graphics/icons/2e-logo.png" /> -->
+
+  <icon name="roll_psionic_miss" file="graphics/icons/roll_psionic_miss.png" />
+  <icon name="roll_psionic_hit" file="graphics/icons/roll_psionic_hit.png" />
+
+  <icon name="roll_dmg_psp" file="graphics/icons/roll_damage.png" />
+  <icon name="roll_heal_psp" file="graphics/icons/roll_heal.png" />
+
+  <!-- dice -->
+  <icon name="d4ricon" file="graphics/icons/d4_ricon.png" />
+  <icon name="d6ricon" file="graphics/icons/d6_ricon.png" />
+  <icon name="d8ricon" file="graphics/icons/d8_ricon.png" />
+  <icon name="d10ricon" file="graphics/icons/d10_ricon.png" />
+  <icon name="d12ricon" file="graphics/icons/d12_ricon.png" />
+  <icon name="d20ricon" file="graphics/icons/d20_ricon.png" />
+
+  <icon name="d4gicon" file="graphics/icons/d4_gicon.png" />
+  <icon name="d6gicon" file="graphics/icons/d6_gicon.png" />
+  <icon name="d8gicon" file="graphics/icons/d8_gicon.png" />
+  <icon name="d10gicon" file="graphics/icons/d10_gicon.png" />
+  <icon name="d12gicon" file="graphics/icons/d12_gicon.png" />
+  <icon name="d20gicon" file="graphics/icons/d20_gicon.png" />
+
+  <icon name="d4bicon" file="graphics/icons/d4_bicon.png" />
+  <icon name="d6bicon" file="graphics/icons/d6_bicon.png" />
+  <icon name="d8bicon" file="graphics/icons/d8_bicon.png" />
+  <icon name="d10bicon" file="graphics/icons/d10_bicon.png" />
+  <icon name="d12bicon" file="graphics/icons/d12_bicon.png" />
+  <icon name="d20bicon" file="graphics/icons/d20_bicon.png" />
+
+  <icon name="d4picon" file="graphics/icons/d4_picon.png" />
+  <icon name="d6picon" file="graphics/icons/d6_picon.png" />
+  <icon name="d8picon" file="graphics/icons/d8_picon.png" />
+  <icon name="d10picon" file="graphics/icons/d10_picon.png" />
+  <icon name="d12picon" file="graphics/icons/d12_picon.png" />
+  <icon name="d20picon" file="graphics/icons/d20_picon.png" />
+  
+  <!-- Powers -->
+  <icon name="caster_prep" file="graphics/icons/caster_prep.png" />
+  <icon name="spell_dmg_psp" file="graphics/icons/spell_damage.png" />
+  <icon name="spell_heal_psp" file="graphics/icons/spell_heal.png" />
+  <icon name="reorder_black" file="graphics/icons/drag_black.png" />
+  <icon name="reorder_white" file="graphics/icons/drag_white.png" />
+  <icon name="reorder_arrow" file="graphics/icons/reorder_arrow.png" />
+
+  <!-- CTA -->
+  <icon name="hourglass_icon" file="graphics/icons/hourglass.png" />
+
+  <icon name="window_resize_filled_white" file="graphics/icons/window_resize_filled_white.png" />
+  <icon name="window_resize_white" file="graphics/icons/window_resize_white.png" />
+
+  <icon name="ct_select_right" file="graphics/icons/ct_select_right.png" />
+  <icon name="ct_select_left" file="graphics/icons/ct_select_left.png" />
+  <icon name="cta_visibilityon" file="graphics/icons/cta_visibilityon.png" />
+  <icon name="cta_visibilityoff" file="graphics/icons/cta_visibilityoff.png" />
+
+  <!-- charlist_ -->
+  <icon name="init_rolled" file="graphics/icons/d10_ricon.png" />
+  <!-- Character sheet -->
+  <icon name="char_axes" file="graphics/icons/char_axes.png" />
+  <icon name="char_mask" file="graphics/icons/char_mask.png" />
+  <icon name="char_spells" file="graphics/icons/char_spells.png" />
+  <icon name="char_psion" file="graphics/icons/char_psion.png" />
+  <icon name="char_weight" file="graphics/icons/char_weight.png" />
+  <icon name="char_tools" file="graphics/icons/char_tools.png" />
+
+  <!-- local mode -->
+  <icon name="button_action_damage_psp" file="graphics/buttons/button_action_damage_psp.png" />
+  <icon name="button_action_damage_down_psp" file="graphics/buttons/button_action_damage_down_psp.png" />
+  <icon name="button_action_heal_psp" file="graphics/buttons/button_action_heal_psp.png" />
+  <icon name="button_action_heal_down_psp" file="graphics/buttons/button_action_heal_down_psp.png" />
+
+  <!-- chat -->
+  <icon name="chat_hit" file="graphics/icons/roll_attack_hit.png" />
+  <icon name="chat_miss" file="graphics/icons/roll_attack_miss.png" />
+  <icon name="chat_success" file="graphics/icons/check_success.png" />
+  <icon name="chat_fail" file="graphics/icons/check_fail.png" />
+ 
+  <icon name="wheels_icon_double" file="graphics/icons/wheels-icon-double.png" />
+  <icon name="menu_icon_black" file="graphics/icons/menu_icon_black.png" />
+  <icon name="menu_icon_white" file="graphics/icons/menu_icon_white.png" />
+  <icon name="menu_icon_white_filled" file="graphics/icons/menu_icon_white_filled.png" />
+  
+
+</root>

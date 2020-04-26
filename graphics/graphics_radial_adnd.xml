@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <!-- CT new options -->
+  <icon name="encounter_end" file="graphics/radial/icon_end_encounter.png" />
+  <!-- Added for psionics -->
+  <icon name="radial_dmg_psp" file="graphics/radial/icon_damage.png" />
+  <icon name="radial_heal_psp" file="graphics/radial/icon_plus.png" />
+</root>

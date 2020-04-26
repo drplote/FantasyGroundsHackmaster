@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <template name="button_npc_import_text">
+    <buttoncontrol insertbefore="filter_sharedonly">
+      <anchored to="rightanchor" width="20" height="20">
+        <top />
+        <right anchor="left" relation="relative" offset="-5" />
+      </anchored>
+      <icon normal="button_import" pressed="button_import_down" />
+      <tooltip textres="npc_import_tooltip" />
+      <script>
+        function onButtonPress()
+            if User.isHost() then
+              Interface.openWindow("npc_import_window", "");
+            end
+        end
+      </script>
+      <invisible />
+    </buttoncontrol>
+  </template>
+  <template name="button_npc_statblock_import_text">
+    <buttoncontrol insertbefore="filter_sharedonly">
+      <anchored to="rightanchor" width="20" height="20">
+        <top />
+        <right anchor="left" relation="relative" offset="-5" />
+      </anchored>
+      <icon normal="button_import_statblock" pressed="button_import_down" />
+      <tooltip textres="npc_statblock_import_tooltip" />
+      <script>
+        function onButtonPress()
+            if User.isHost() then
+              Interface.openWindow("npc_statblock_import_window", "");
+            end
+        end
+      </script>
+      <invisible />
+    </buttoncontrol>
+  </template>
+  
+  <template name="button_npc_import_file">
+    <buttoncontrol insertbefore="filter_sharedonly">
+      <anchored to="rightanchor" width="20" height="20">
+        <top />
+        <right anchor="left" relation="relative" offset="-5" />
+      </anchored>
+      <icon normal="button_import_file" pressed="button_import_file_down" />
+      <tooltip textres="npc_import_file_tooltip" />
+      <script>
+        function onButtonPress()
+            if User.isHost() then
+              local sFile = Interface.dialogFileOpen();
+              if sFile then
+                DB.import(sFile,"npc","npc");
+                ChatManager.SystemMessage(Interface.getString("message_slashimportnpcsuccess") .. ": " .. sFile);
+              end
+            end
+        end
+      </script>
+      <invisible />
+    </buttoncontrol>
+  </template>
+  <template name="button_npc_export_file">
+    <buttoncontrol insertbefore="filter_sharedonly">
+      <anchored to="rightanchor" width="20" height="20">
+        <top />
+        <right anchor="left" relation="relative" offset="-5" />
+      </anchored>
+      <icon normal="button_export_file" pressed="button_export_file_down" />
+      <tooltip textres="npc_export_file_tooltip" />
+      <script>
+        function onButtonPress()
+          if User.isHost() then
+            local sFile = Interface.dialogFileSave( );
+            if (sFile ~= nil and sFile ~= "" ) then 
+              DB.export(sFile, "npc", "npc", true);
+            end
+          end
+        end
+      </script>
+      <invisible />
+    </buttoncontrol>
+  </template>
+</root>
+

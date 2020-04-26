@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="modifiers">
+    <frame>utilitybox3</frame>
+    <placement>
+      <size width="500" height="400" />
+    </placement>
+    <sizelimits>
+      <dynamic />
+      <minimum width="500" height="400" />
+    </sizelimits>
+    <playercontrol />
+    <nodelete />
+    <tooltip textres="library_recordtype_label_modifier" />
+    <sheetdata>
+      <windowtitlebar name="title">
+        <resource>library_recordtype_label_modifier</resource>
+      </windowtitlebar>
+      <anchor_title_utilitybox3 name="contentanchor" />
+      
+      <!-- Modifier keys -->
+      <genericcontrol name="buttonanchor">
+        <anchored to="contentanchor" width="150" height="0">
+          <top anchor="bottom" offset="0" />
+          <left />
+        </anchored>
+      </genericcontrol>
+
+      <!-- Attack -->
+
+      <label name="label_attack">
+        <anchored to="buttonanchor" position="below" />
+        <static textres="modifier_label_attack" />
+        <color>FFFFFF</color>
+        <center />
+      </label>
+
+       <!-- left side -->
+      <button_modifierkey name="ATK_SHIELDLESS">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="30" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_shieldless</textres>
+      </button_modifierkey>
+      <button_modifierkey name="ATK_NODEXTERITY">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_nodeterity</textres>
+      </button_modifierkey>
+
+      <!-- right side -->
+      <button_modifierkey name="ATK_FROMREAR">
+        <anchored width="70" height="25">
+          <top parent="ATK_SHIELDLESS" />
+          <left parent="ATK_SHIELDLESS" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_fromrear</textres>
+      </button_modifierkey>
+      <!-- Might remove this, in AD&D there is no "ignore armor" for touch spells. -->
+      <button_modifierkey name="ATK_IGNORE_ARMOR">
+        <anchored width="70" height="25">
+          <top parent="ATK_NODEXTERITY" />
+          <left parent="ATK_NODEXTERITY" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_ignorearmor</textres>
+      </button_modifierkey>
+
+       <!-- left side -->
+      <button_modifierkey name="DEF_COVER_25">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_cover25</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_COVER_50">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_cover50</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_COVER_75">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_cover75</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_COVER_90">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_cover90</textres>
+      </button_modifierkey>
+
+      <!-- right side -->
+      <button_modifierkey name="DEF_CONCEAL_25">
+        <anchored width="70" height="25">
+          <top parent="DEF_COVER_25" />
+          <left parent="DEF_COVER_25" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_conceal25</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_CONCEAL_50">
+        <anchored width="70" height="25">
+          <top parent="DEF_COVER_50" />
+          <left parent="DEF_COVER_50" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_conceal50</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_CONCEAL_75">
+        <anchored width="70" height="25">
+          <top parent="DEF_COVER_75" />
+          <left parent="DEF_COVER_75" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_conceal75</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_CONCEAL_90">
+        <anchored width="70" height="25">
+          <top parent="DEF_COVER_90" />
+          <left parent="DEF_COVER_90" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_conceal90</textres>
+      </button_modifierkey>
+
+<!-- 
+      <button_modifierkey name="DEF_COVER">
+        <anchored to="buttonanchor" position="belowright" offset="0,30" width="70" height="25" />
+        <textres>modifier_label_atkcover</textres>
+        <script>
+          function onValueChanged()
+            super.onValueChanged();
+            
+            if getValue() == 1 then
+              window["DEF_SCOVER"].setValue(0);
+            end
+          end
+        </script>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_SCOVER">
+        <anchored to="buttonanchor" position="belowright" offset="0,65" width="70" height="25" />
+        <textres>modifier_label_atkscover</textres>
+        <script>
+          function onValueChanged()
+            super.onValueChanged();
+            
+            if getValue() == 1 then
+              window["DEF_COVER"].setValue(0);
+            end
+          end
+        </script>
+      </button_modifierkey>
+      <button_modifierkey name="DEF_HIDDEN">
+        <anchored to="buttonanchor" position="belowright" offset="0,100" width="70" height="25" />
+        <textres>modifier_label_atkhidden</textres>
+      </button_modifierkey>
+ -->
+
+      <!-- Damage -->
+      <!-- left damage  -->
+      <label name="label_damage">
+        <anchored width="70" height="25">
+          <top parent="DEF_COVER_90" anchor="bottom" offset="0" />
+          <left parent="buttonanchor" anchor="center" offset="-40" />
+        </anchored>
+        <static textres="modifier_label_damage" />
+        <color>FFFFFF</color>
+        <center />
+      </label>
+      <button_modifierkey name="DMG_MAX">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="30" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_dmgmax</textres>
+      </button_modifierkey>
+      <button_modifierkey name="DMG_HALF">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_dmghalf</textres>
+      </button_modifierkey>
+      <!-- right damage  -->
+      <button_modifierkey name="DMG_CRIT">
+        <anchored width="70" height="25">
+          <top parent="DMG_MAX" />
+          <left parent="DMG_MAX" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_dmgcrit</textres>
+      </button_modifierkey>
+      
+      <!-- Modifier List -->
+      <list_modifiers name="list" />
+      <scrollbar_list />
+
+      <anchor_campaign2 />
+      <button_iedit_campaign />
+      <button_iadd_utility />
+      <filter_utility />
+      
+      <resize_utilitybox3 />
+      <helper_modifiers />
+      <close_utilitybox3 />
+    </sheetdata>
+  </windowclass>
+</root>

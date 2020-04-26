@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="item" >
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="450" height="350" />
+    </placement>
+    <sizelimits>
+      <minimum width="450" height="300" />
+      <dynamic />
+    </sizelimits>
+    <nodelete />
+    <playercontrol />
+    <sharable />
+    <tooltip field="name" />
+    <minimize>minimized_item</minimize>
+    <script file="campaign/scripts/item.lua" />
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>item_header</class>
+      </sub_record_header>
+
+      <frame_record_content name="contentframe" />
+
+      <subwindow_record name="main">
+        <class>item_main</class>
+        <activate />
+      </subwindow_record>
+
+      <subwindow_record name="weaponactions">
+        <class>charsheet_actions_weapons</class>
+      </subwindow_record>
+
+      <subwindow_record name="spellactions">
+        <class>charsheet_actions_powers</class>
+      </subwindow_record>
+            
+      <scrollbar_record_item>
+        <target>main</target>
+      </scrollbar_record_item>
+      <scrollbar_record_item>
+        <target>weaponactions</target>
+      </scrollbar_record_item>
+      <scrollbar_record_item>
+        <target>spellactions</target>
+      </scrollbar_record_item>
+
+      <tabs_recordsheet name="item_tabs">
+        <tab>
+          <icon>tab_main</icon>
+          <subwindow>main</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_weapons</icon>
+          <subwindow>weaponactions</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_powers</icon>
+          <subwindow>spellactions</subwindow>
+        </tab>
+      </tabs_recordsheet>
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="item_header" merge="join">
+    <margins control="0,0,0,2" />
+  </windowclass>
+
+  <windowclass name="item_main">
+    <margins control="0,2,10,2" />
+    <script file="campaign/scripts/item_main.lua" />
+    <sheetdata>
+      <hs name="rateofattack" />
+      <hs name="range"/>
+      <hs name="reach" />
+      <hs name="knockdown" />
+                
+      <anchor_column name="columnanchor" />
+      
+      <label_column name="nonid_name_label">
+        <static textres="item_label_unidentified" />
+      </label_column>
+      <string_columnh name="nonid_name" />
+      
+      <label_column name="nonidentified_label">
+        <static textres="item_label_unidentifiednotes" />
+      </label_column>
+      <string_columnh name="nonidentified" />
+      
+      <line_column name="divider" />
+      
+      <label_column name="type_label">
+        <static textres="item_label_type" />
+      </label_column>
+      <item_typeselections_dropdown name="type">
+        <script>
+          function onInit()
+            super.onInit();
+            addItems(DataCommonADND.itemTypes);
+          end
+        </script>
+      </item_typeselections_dropdown>
+      
+      <label_column name="subtype_label">
+        <static textres="item_label_subtype" />
+      </label_column>
+      <item_typeselections_dropdown name="subtype">
+        <script>
+          function onInit()
+            super.onInit();
+            addItems(DataCommonADND.itemSubTypes);
+          end
+        </script>
+      </item_typeselections_dropdown>
+
+      <label_column name="rarity_label">
+        <static textres="item_label_rarity" />
+      </label_column>
+      <item_typeselections_dropdown name="rarity">
+        <script>
+          function onInit()
+            super.onInit();
+            addItems(DataCommonADND.itemRarity);
+          end
+        </script>
+      </item_typeselections_dropdown>
+
+      <line_column name="divider2" />
+
+      <label_column name="cost_label">
+        <static textres="item_label_cost" />
+      </label_column>
+      <string_columnh name="cost">
+        <gmeditonly />
+      </string_columnh>
+      <!-- xp value -->
+      <label_column name="exp_label">
+        <static textres="item_label_exp" />
+      </label_column>
+      <number_columnh name="exp">
+        <gmeditonly />
+      </number_columnh>
+
+            
+      <label_column name="weight_label">
+        <static textres="item_label_weight" />
+      </label_column>
+      <number_columnh name="weight">
+        <gmeditonly />
+      </number_columnh>
+
+      
+      <header_column name="header_armor_and_modifier">
+        <static textres="header_armor_and_modifier" />
+        <center />
+      </header_column>
+
+      <!-- armor base -->
+      
+      <label_column name="label_armor_base">
+        <static textres="item_label_ac_base" />
+        <tooltip textres="item_label_ac_base_tooltip" />
+      </label_column>
+      
+      <number_columnh name="acbase" source="ac">
+        <gmeditonly />
+        <default>10</default>
+        <gmeditonly />
+      </number_columnh>
+
+      <label_column name="label_bonus">
+        <static textres="item_label_bonus" />
+      </label_column>
+      
+      <!-- bonus -->
+      <number_columnh name="bonus">
+        <default>0</default>
+        <hideonvalue>0</hideonvalue>
+        <displaysign />
+        <gmeditonly />
+      </number_columnh>
+      
+      <!-- effects -->
+      <subwindow name="advanced_effects_contents">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="0" />
+          <left offset="5" />
+          <right offset="5" />
+        </anchored>
+        <class>advanced_effects_subwindow</class>
+        <activate />
+        <fastinit />
+        <invisible />
+      </subwindow>
+      <!-- end advanced effects entry -->
+            
+      <line_column name="divider3" />
+
+      <label_column name="properties_label">
+        <static textres="item_label_properties" />
+      </label_column>
+      <string_columnh name="properties">
+        <gmeditonly />
+      </string_columnh>
+
+      <line_column name="divider4" />
+            
+      <ft_columnh name="description">
+        <gmeditonly />
+      </ft_columnh>
+
+      <header_column name="dmonly_label">
+        <static textres="header_dmonly" />
+        <center />
+      </header_column>
+      <ft_columnh name="dmonly">
+        <gmeditonly />
+      </ft_columnh>
+
+      <!-- "packs" or contents of the item -->
+      <header_column name="subitems_header">
+        <script>
+          function onDrop(x, y, draginfo)
+            window.windowlist_subitems.onDrop(x, y, draginfo);
+          end
+        </script>
+        <static textres="item_subitems_label" />
+        <center />
+      </header_column>
+      <button_iedit name="subitems_iedit">
+        <anchored to="subitems_header" position="insidetopright" offset="-5,0" />
+         <script>
+          function onValueChanged()
+            window.windowlist_subitems.subwindow.subitemlist.update();
+          end
+        </script>
+      </button_iedit>
+      <subwindow name="windowlist_subitems">
+        <sizelimits>
+          <minimum height="40" />
+          <dynamic />
+        </sizelimits>
+        <script>
+        function onDrop(x, y, draginfo)
+          if draginfo.isType("shortcut") then
+            local node = window.getDatabaseNode();
+            local bLocked = (DB.getValue(node,"locked",0) == 1)
+            if not bLocked then 
+              local sClass, sRecord = draginfo.getShortcutData();
+              if (sClass == "item") then
+                local nodeItem = DB.findNode(sRecord);
+                if (nodeItem) then
+                  local nodeSubs = node.createChild("subitems");
+                  local nodeSub = nodeSubs.createChild();
+                  local sName = DB.getValue(nodeItem,"name","");
+                  DB.setValue(nodeSub,"name","string",sName);
+                  DB.setValue(nodeSub,"count","number",1);
+                  DB.setValue(nodeSub, "link", "windowreference", "item", nodeItem.getPath());
+                end
+              end
+              return true;
+            end
+          end
+        end
+        </script>
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="0" />
+          <left offset="5" />
+          <right offset="5" />
+        </anchored>
+        <class>item_subitems</class>
+        <activate />
+        <fastinit />
+        <invisible />
+      </subwindow>
+      <!-- end "packs" or contents of the item -->      
+      
+    </sheetdata>
+  </windowclass>
+    
+
+  <!-- "packs" or contents of an item -->
+  <windowclass name="item_subitems">
+    <margins control="0,0,2,2" />
+    <sizelimits>
+      <minimum height="10" />
+      <!-- <maximum width="510" /> -->
+      <dynamic />
+    </sizelimits>
+    <script>
+    </script>
+    <sheetdata>
+      <list_item_subitems name="subitemlist">
+        <anchored >
+          <sizelimits>
+            <minimum height="20" />
+          </sizelimits>        
+          <top anchor="bottom" relation="relative" offset="2" />
+          <right offset="-5" />
+          <left offset="5" />
+        </anchored>
+        <noscroll />
+      </list_item_subitems>
+      <footer_narrow>
+        <anchored to="subitemlist" />
+      </footer_narrow>      
+    </sheetdata>
+  </windowclass>
+  <!-- -->
+  
+  <!--
+  <robe>
+    <name type="string">Robe</name>
+    <count type="number">1</count>
+    <link type="windowreference">
+      <class>item</class>
+      <recordname>item.id-00027@AD&#38;D 2E Players Handbook</recordname>
+    </link>
+  </robe>
+  -->	
+  <windowclass name="item_subitem">
+		<margins control="0,0,0,2" />
+		<script>
+		</script>
+		<sheetdata>
+			<number_itemsubitems name="count">
+				<bounds>5,2,20,20</bounds>
+				<tabtarget next="name" />
+				<default>1</default>
+				<tabtarget next="name" prev="count" />
+			</number_itemsubitems>
+			<genericcontrol name="rightanchor">
+				<anchored width="0" height="0">
+					<top />
+					<right />
+				</anchored>
+				<invisible />
+			</genericcontrol>
+			<button_idelete name="idelete">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+				</anchored>
+			</button_idelete>
+			
+      <linkfield name="link">
+				<anchored width="20" height="20">
+					<top offset="2" />
+					<right parent="rightanchor" anchor="left" relation="relative" offset="-2" />
+				</anchored>
+				<readonly />
+			</linkfield>
+      
+			<string_itemsubitems name="name">
+				<anchored position="insidetopleft" offset="35,2" height="20">
+					<right parent="rightanchor" anchor="left" relation="current" offset="-5" />
+				</anchored>
+			</string_itemsubitems>
+		</sheetdata>
+	</windowclass>  
+  
+  <!-- import item, item per line, '"name"  "cost"  "weight"' -->
+  <windowclass name="item_import_window">
+    <margins control="2,2,2,2" />
+    <frame>charsheethelper</frame>
+    <placement>
+      <size width="500" height="600" />
+    </placement>
+    <sizelimits>
+      <minimum width="220" height="300" />
+      <dynamic />
+    </sizelimits>
+    <sheetdata>
+      <windowtitlebar name="title">
+        <prefix>item_import_window_title</prefix>
+        <resource>item_import_window_title</resource>
+      </windowtitlebar>
+      <anchor_title_charsheethelper name="contentanchor" />
+      <anchor_left />
+      <anchor_right />
+      <label_charframetop>
+        <anchored>
+          <top parent="contentanchor" anchor="bottom" relation="relative" offset="5" />
+          <left parent="leftanchor" anchor="right" relation="relative" offset="35" />
+          <right offset="-45"/>
+        </anchored>
+        <multilinespacing>20</multilinespacing>
+        <static textres="item_import_text_helptext" />
+      </label_charframetop>
+
+      <subwindow name="import_item_type_defaults_contents">
+        <anchored>
+          <top parent="contentanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="25" />
+          <right offset="-30" />
+        </anchored>
+        <class>import_item_typedefaults</class>
+        <activate />
+        <fastinit />
+      </subwindow>
+      <scrollbar>
+        <anchored to="import_item_type_defaults_contents" offset="-5,-10"/>
+        <target>import_item_type_defaults_contents</target>
+      </scrollbar>
+
+      <label_charframetop name="importtabletitle">
+        <anchored height="20">
+          <top parent="contentanchor" anchor="bottom" relation="relative" offset="5" />
+          <left offset="35"/>
+          <right offset="-45"/>
+        </anchored>
+        <static textres="item_import_text_title" />
+      </label_charframetop>
+            
+      <subwindow name="contents">
+        <anchored>
+          <top parent="contentanchor" anchor="bottom" relation="relative" offset="0" />
+          <bottom offset="-40" />
+          <left offset="0" />
+          <right offset="-15" />
+        </anchored>
+        <class>item_import_contents</class>
+        <activate />
+        <fastinit />
+      </subwindow>
+      <scrollbar_charcontents />
+      
+      <!-- -->
+      <button_text_sm name="submit_button">
+        <script>
+          function onButtonPress()
+            window.contents.subwindow.processImportText();
+            window.contents.subwindow.importtext.setValue("");
+            window.close();
+          end
+        </script>
+        <anchored to="contents" position="belowleft" offset="0,0"  height="20" width="70">
+          <left parent="title" anchor="right" offset="-100" />
+        </anchored>
+        <state textres="item_import_text_button" />
+      </button_text_sm>
+      
+      <close>
+        <anchored>
+          <top offset="24" />
+          <right offset="-5" />
+        </anchored>
+      </close>
+      <resize>
+      <anchored>
+        <right offset="-12" />
+        <bottom offset="-14" />
+      </anchored>
+      </resize>
+    </sheetdata>
+  </windowclass>
+  
+  <windowclass name="import_item_typedefaults">
+    <margins control="1,1,1,1" />
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      
+      <label_column name="type_label">
+        <static textres="item_label_type" />
+      </label_column>
+      <import_item_typeselections_dropdown name="type">
+        <script>
+          function onInit()
+            super.onInit();
+            addItems(DataCommonADND.itemTypes);
+          end
+        </script>
+      </import_item_typeselections_dropdown>
+      
+      <label_column name="subtype_label">
+        <static textres="item_label_subtype" />
+      </label_column>
+      <import_item_typeselections_dropdown name="subtype">
+        <script>
+          function onInit()
+            super.onInit();
+            addItems(DataCommonADND.itemSubTypes);
+          end
+        </script>
+      </import_item_typeselections_dropdown>
+
+      <label_column name="rarity_label">
+        <static textres="item_label_rarity" />
+      </label_column>
+      <import_item_typeselections_dropdown name="rarity">
+        <script>
+          function onInit()
+            super.onInit();
+            addItems(DataCommonADND.itemRarity);
+          end
+        </script>
+      </import_item_typeselections_dropdown>
+    </sheetdata>
+  </windowclass>
+  
+  <!-- content window for item import -->
+  <windowclass name="item_import_contents">
+    <margins control="15,15,15,15" />
+    <script file="campaign/scripts/item_import.lua" />
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <anchor_left />
+      <anchor_right />
+      <stringu name="importtext">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="5" />
+          <left offset="15" />
+          <right offset="-10" />
+        </anchored>
+        <multilinespacing>20</multilinespacing>
+      </stringu>
+    </sheetdata>
+  </windowclass>
+
+</root>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <!-- token widget indicators -->
+  <icon name="token_has_initiative1" file="graphics/token/has_initiative1.png" />
+  <icon name="token_has_initiative2" file="graphics/token/has_initiative2.png" />
+  <icon name="token_has_initiative3" file="graphics/token/has_initiative3.png" />
+  <icon name="token_has_initiative4" file="graphics/token/has_initiative4.png" />
+  <icon name="token_has_initiative5" file="graphics/token/has_initiative5.png" />
+  <icon name="token_has_initiative6" file="graphics/token/has_initiative6.png" />
+  <icon name="token_is_targeted" file="graphics/token/targeted_indicator.png" />
+  <icon name="token_is_targeted_black" file="graphics/token/targeted_indicator_black.png" />
+  <icon name="token_is_targeted_darkred" file="graphics/token/targeted_indicator_darkred.png" />
+	<icon name="token_dead" file="graphics/token/rip_tombstone.png" />
+	<icon name="token_dead_pc" file="graphics/token/rip_tombstone_pc.png" />
+</root>

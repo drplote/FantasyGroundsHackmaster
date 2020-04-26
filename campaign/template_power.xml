@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <template name="button_grouptype">
+    <button_iconcycler name="castertype">
+      <anchored width="20" height="20" />
+      <parameters>
+        <defaulticon>power_weapon</defaulticon>
+        <defaulttooltipres>power_tooltip_grouptypeability</defaulttooltipres>
+        <icons>power_casterprep</icons>
+        <tooltipsres>power_tooltip_grouptypeprep</tooltipsres>
+        <values>memorization</values>
+      </parameters>
+      <script>
+        function onValueChanged()
+          if window.onCasterTypeChanged then
+            window.onCasterTypeChanged();
+          end
+        end
+      </script>
+    </button_iconcycler>
+  </template>
+  
+  <template name="list_powers">
+    <windowlist>
+      <anchored>
+          <sizelimits>
+            <minimum height="20" />
+          </sizelimits>   
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="5" />
+        <left />
+        <right />
+      </anchored>
+      <datasource>.powers</datasource>
+      <class>power_item</class>
+      <noscroll />
+      <child></child>
+      <child><backcolor>4040301E</backcolor></child>
+      <empty font="list-empty" textres="empty_powers_label" />
+      <script file="campaign/scripts/power_list.lua" />
+    </windowlist>
+  </template>
+
+  <template name="number_spellslots">
+    <basicnumber>
+      <anchored to="anchor_spellslots" width="20" height="20">
+        <top />
+        <left anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <delaykeyupdate />
+    </basicnumber>
+  </template>
+  <template name="number_pactmagicslots">
+    <basicnumber>
+      <anchored to="anchor_pactmagicslots" width="20" height="20">
+        <top />
+        <left anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <delaykeyupdate />
+    </basicnumber>
+  </template>
+  <template name="icon_usepower">
+    <buttoncontrol>
+      <anchored width="20" height="20" />
+      <icon normal="usepower" />
+      <script>
+        function onButtonPress()
+          window.parentcontrol.window.usePower(false);
+        end
+      </script>
+    </buttoncontrol>
+  </template>
+  <template name="string_power">
+    <simplestring>
+      <frame name="fieldlight" offset="7,5,7,5" />
+      <multilinespacing>20</multilinespacing>
+      <nodrag />
+      <script>
+        function onEnter()
+          if window.windowlist and window.windowlist.onEnter then
+            return window.windowlist.onEnter();
+          end
+        end
+      </script>
+    </simplestring>
+  </template>
+  <template name="counter_power">
+    <genericcontrol>
+      <stateicons>
+        <on>button_checkon</on>
+        <off>button_checkoff</off>
+      </stateicons>
+      <script file="campaign/scripts/power_counter.lua" />
+    </genericcontrol>
+  </template>
+  
+  <template name="button_poweraction_mini">
+    <button_roll>
+      <bounds>1,1,20,20</bounds>
+      <script>
+        function action(draginfo)
+          PowerManager.performAction(draginfo, window.getDatabaseNode());
+        end
+        
+        function onButtonPress()
+          action();
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          action(draginfo);
+          return true;
+        end
+      </script>
+    </button_roll>
+  </template>
+
+  <template name="list_poweraction">
+    <windowlist>
+      <datasource>.actions</datasource>
+      <class>power_action</class>
+      <child></child>
+      <child><backcolor>4040301E</backcolor></child>
+      <noscroll />
+      <sortby><control>order</control></sortby>
+      <empty font="list-empty" textres="empty_powers_label" />
+      <script file="campaign/scripts/power_action_list.lua" />
+    </windowlist>
+  </template>
+  
+  <template name="button_poweraction">
+    <button_roll>
+      <script>
+        function action(draginfo)
+          local sSubRoll = nil;
+          if subroll then
+            sSubRoll = subroll[1];
+          end
+          PowerManager.performAction(draginfo, window.getDatabaseNode(), sSubRoll);
+        end
+
+        function onButtonPress(x, y)
+          action();
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          action(draginfo);
+          return true;
+        end
+      </script>
+    </button_roll>
+  </template>
+  <template name="string_poweractionview">
+    <stringcontrol>
+      <frame name="fieldlight" offset="7,5,7,5" />
+      <!-- <multilinespacing>20</multilinespacing> -->
+      <font>sheettext</font>
+      <center />
+      <nodrag />
+      <readonly />
+      <cursor hover="hand" />
+      <script>
+        function action(draginfo)
+          local sSubRoll = nil;
+          if subroll then
+            sSubRoll = subroll[1];
+          end
+          
+          PowerManager.performAction(draginfo, window.getDatabaseNode(), sSubRoll);
+        end
+
+        function onDoubleClick(x, y)
+          action();
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          action(draginfo);
+          return true;
+        end
+      </script>
+    </stringcontrol>
+  </template>
+  <template name="button_poweractioneditor">
+    <buttoncontrol>
+      <!-- <bounds>-22,2,20,20</bounds> -->
+      <anchored width="20" height="20">
+        <top parent="" offset="2" />
+        <right parent="rightanchor" anchor="left" relation="relative" />
+      </anchored>
+
+      <state icon="details" pressed="details_down" />
+      <script>
+        function onButtonPress()
+          local w = Interface.openWindow(editor[1], window.getDatabaseNode());
+          w.main.subwindow.name.setValue(DB.getValue(window.getDatabaseNode(), "...name", ""));
+        end
+      </script>
+    </buttoncontrol>
+  </template>
+  <template name="cycler_power">
+    <button_stringcycler>
+      <anchored width="50" height="20" />
+      <parameters>
+        <defaultlabelres>dash</defaultlabelres>
+        <labelsres>base|str|dex|con|int|wis|cha|none</labelsres>
+        <values>base|strength|dexterity|constitution|intelligence|wisdom|charisma|none</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+  <template name="cycler_group_dc">
+    <button_stringcycler>
+      <parameters>
+        <defaultlabelres mergerule="replace">base</defaultlabelres>
+        <labelsres>str|dex|con|int|wis|cha</labelsres>
+        <values>strength|dexterity|constitution|intelligence|wisdom|charisma</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+  <template name="cycler_power_savetype">
+    <button_stringcycler>
+      <anchored width="65" height="20" />
+      <parameters>
+        <defaultlabelres>dash</defaultlabelres>
+        <labelsres>spell|paralyzation|poison|death|rod|staff|wand|petrification|polymorph|breath</labelsres>
+        <values>spell|paralyzation|poison|death|rod|staff|wand|petrification|polymorph|breath</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+  <template name="cycler_power_onmissdamage">
+    <button_stringcycler>
+      <anchored width="100" height="20" />
+      <parameters>
+        <defaultlabelres>dash</defaultlabelres>
+        <labelsres>power_label_onmissdamage_half</labelsres>
+        <values>half</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+  <template name="cycler_power_useperiod">
+    <button_stringcycler>
+      <anchored width="40" height="20" />
+      <parameters>
+        <defaultlabelres>power_label_useperiod_daily</defaultlabelres>
+        <labelsres>power_label_useperiod_enc|power_label_useperiod_once</labelsres>
+        <values>enc|once</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+    
+  <template name="button_powermemorize">
+    <button_roll>
+      <script>
+        function action(draginfo)
+          PowerManager.memorizeSpell(window.getDatabaseNode());
+        end
+
+        function onButtonPress(x, y)
+          action();
+        end
+      </script>
+    </button_roll>
+  </template>
+  
+  <template name="buttongroup_counter_powers">
+    <genericcontrol>
+      <stateicons>
+        <on>button_checkon</on>
+        <off>button_checkoff</off>
+      </stateicons>
+      <script file="common/scripts/buttongroup_counter.lua" />
+    </genericcontrol>
+  </template>
+  <template name="button_power_import">
+    <buttoncontrol insertbefore="filter_sharedonly">
+      <anchored to="rightanchor" width="20" height="20">
+        <top />
+        <right anchor="left" relation="relative" offset="-5" />
+      </anchored>
+      <icon normal="button_import" pressed="button_import_down" />
+      <tooltip textres="power_import_tooltip" />
+      <script>
+        function onButtonPress()
+          if User.isHost() then
+            Interface.openWindow("power_import_window", "");
+          end
+        end
+      </script>
+      <invisible />
+    </buttoncontrol>
+  </template>
+  
+	<template name="sub_quicknote_header">
+		<subwindow>
+			<anchored>
+				<top offset="23" />
+				<left offset="15" />
+				<right offset="-15" />
+			</anchored>
+			<activate />
+			<fastinit />
+		</subwindow>
+	</template>
+
+ <template name="button_reorder_powers">
+  <buttoncontrol>
+    <script>
+      function action(draginfo)
+        local node = window.getDatabaseNode();
+        draginfo.setDescription(DB.getValue(node,"name",""));
+        draginfo.setShortcutData("reorder_power",node.getPath())
+        draginfo.setIcon("reorder_arrow");
+        draginfo.setType("reorder");
+        return true;
+      end
+      function onDragStart(button, x, y, draginfo)
+        return action(draginfo);
+      end          
+    </script>
+    <anchored width="10" height="10">
+      <top parent="" offset="6" />
+      <right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+    </anchored>
+    <state icon="reorder_black" pressed="reorder_white" />
+  </buttoncontrol>
+ </template>
+ 
+</root>

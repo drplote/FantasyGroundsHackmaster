@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<windowclass name="reference_groupedlist_groupitem" merge="join">
+		<script file="ref/scripts/ref_groupedlist_groupitem_adnd.lua" mergerule="replace"/>
+	</windowclass>
+
+  <!-- item damage text ... black  -->
+	<template name="itemdamage_refgroupedlistgroupitem_wrap">
+		<stringfield>
+      <script file="ref/scripts/ref_itemdamage_adnd.lua" mergerule="replace"/>
+			<anchored to="leftanchor" width="50">
+				<top />
+				<left anchor="right" relation="relative" offset="5" />
+			</anchored>
+			<multilinespacing>20</multilinespacing>
+			<font>grouplist-damage-black</font>
+			<empty>-</empty>
+			<readonly />
+		</stringfield>
+	</template>  
+  
+  <!-- make sure the grouplist header for shortcut buttons in npc/item/spells uses a white font header text -->
+  <template name="string_groupedlist_group">
+		<stringcontrol>
+			<anchored height="20">
+				<top parent="topanchor" anchor="bottom" relation="relative" offset="5" />
+				<left offset="15" />
+			</anchored>
+			<font>grouplist-white</font>
+			<static />
+			<script>
+				function onClickDown(button, x, y)
+					return true;
+				end
+				function onClickRelease(button, x, y)
+					window.list.setVisible(not window.list.isVisible());
+					return true;
+				end
+			</script>
+		</stringcontrol>
+	</template>
+  
+</root>

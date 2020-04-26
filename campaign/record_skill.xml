@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="reference_skill">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="350" height="200" />
+    </placement>
+    <sizelimits>
+      <minimum width="300" height="300" />
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_reference</minimize>
+    <tooltip field="name" />
+    <nodelete />
+    <playercontrol />
+    <sharable />
+    <script>
+      function onLockChanged()
+        if header.subwindow then
+          header.subwindow.update();
+        end
+        
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        text.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>ref_skill_header</class>
+      </sub_record_header>
+
+      <frame_record_content />
+      
+      <ft_record name="text">
+        <anchored to="contentframe" position="over" />
+        <footer>footer_wide</footer>
+      </ft_record>
+      <scrollbar>
+        <anchored to="text" />
+        <target>text</target>
+      </scrollbar>
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+  
+  <windowclass name="ref_skill_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+        updateVisibility();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+      function updateVisibility()
+        local bVisible = false;
+        if stat.getValue() == "%" then
+          bVisible = true;
+        end
+        base_label.setVisible(bVisible);
+        base_check_label.setVisible(bVisible);
+      end
+
+      function onDrop(x, y, draginfo)
+        UtilityManagerADND.onDropStory(x, y, draginfo,getDatabaseNode());
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_skill</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <anchor_column name="columnanchor"/>
+
+      <label_skill name="reftype">
+        <static textres="ref_type_skill" />
+        <anchored to="columnanchor" position="belowleft" offset="30, 10"/>
+      </label_skill>
+
+      <string_columnh name="name">
+        <empty textres="library_recordtype_empty_skill" />
+                <anchored>
+                    <right offset="-30" />
+                </anchored>
+      </string_columnh>
+
+      <label_column name="source_label">
+                <tooltip textres="ref_label_source_tooltip" />
+                <static textres="ref_label_source" />
+      </label_column>
+            <cycler_skill_type name="stat">
+                <script>
+                    function onValueChanged()
+                        window.updateVisibility();
+                    end
+                </script>
+                <anchored  width="40">
+                    <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+                    <left offset="97" />
+                </anchored>
+            </cycler_skill_type>
+         
+      <label_column_right name="base_label">
+                <tooltip textres="ref_label_base_tooltip" />
+        <anchored to="stat" />
+        <static textres="ref_label_base" />
+      </label_column_right>
+      <number_column_right name="base_check_label" source="base_check">
+                <hideonvalue>0</hideonvalue>
+                <tooltip textres="ref_label_base_tooltip" />
+        <anchored to="stat" />
+      </number_column_right>
+
+      <label_column name="adj_label">
+                <tooltip textres="ref_label_mod_tooltip" />
+                <static textres="ref_label_mod" />
+      </label_column>
+      <number_columnh name="adj_mod">
+                <hideonvalue>0</hideonvalue>
+                <displaysign />
+            </number_columnh>
+
+
+      <line_column name="divider3" />
+            
+    </sheetdata>
+  </windowclass>
+</root>

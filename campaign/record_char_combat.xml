@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="charsheet_combat">
+    <sheetdata>
+      <anchor_title_charsheet name="contentanchor" />
+
+      <!-- mini combat window -->
+      <label_charframetop name="minicombattitle">
+        <anchored height="20">
+          <top offset="35" />
+          <left offset="30" />
+          <right offset="-50" />
+        </anchored>
+        <icons>char_abilities</icons>
+        <static textres="char_label_combat" />
+        <script>
+          function onInit()
+            registerMenuItem(Interface.getString("list_menu_createitem"), "insert", 5);
+          end
+          function onMenuSelection(selection,subselection)
+            if selection == 5 then
+              local w = window.mini_combat_window.subwindow.abilitynotes.addEntry(true);
+              DB.setValue(w.getDatabaseNode(),"locked","number",0);
+              Interface.openWindow("quicknote", w.getDatabaseNode());
+              w.name.setFocus();
+            end
+          end
+          function onDrop(x, y, draginfo)
+            window.mini_combat_window.subwindow.onDrop(x,y,draginfo);
+          end
+        </script>
+      </label_charframetop>
+      <button_iadd_abilitynotes name="abilitynotes_iadd">
+        <anchored to="minicombattitle" position="insidetopright" offset="-5,0" />
+        <target>abilitynotes</target>
+      </button_iadd_abilitynotes>
+      
+      <button_charcombatcalc name="button_combatcalc">
+        <anchored to="minicombattitle" position="insidetopright" offset="12,0" width="20" height="20" />
+      </button_charcombatcalc>
+      
+      <subwindow name="mini_combat_window">
+        <anchored to="minicombattitle">
+          <top anchor="bottom" />
+          <left />
+          <right />
+        </anchored>
+        <class>combat_mini_section</class>
+        <activate />
+        <fastinit />
+      </subwindow>
+    <!-- END mini combat window -->
+    
+      <sub_sheet_actions name="weapons">
+        <anchored to="contentanchor">
+          <top parent="mini_combat_window" anchor="bottom" offset="2" />
+          <left />
+          <right parent="" offset="-12,0" />
+          <bottom parent="" offset="-10" />
+        </anchored>
+        <class>charsheet_actions_weapons</class>
+        <fastinit />
+      </sub_sheet_actions>
+      
+      <sub_sheet_actions name="powers">
+        <anchored to="contentanchor">
+          <top parent="mini_combat_window" anchor="bottom" offset="2" />
+          <left />
+          <right parent="" offset="-12,0" />
+          <bottom parent="" offset="-1" />
+        </anchored>
+        <class>charsheet_actions_powers</class>
+        <fastinit />
+      </sub_sheet_actions>
+      
+      <buttongroup_tabs name="tabs">
+        <anchored width="20" height="92">
+          <top offset="120" />
+          <right offset="-9" />
+        </anchored>
+        <tab>
+          <icon>tab_weapons</icon>
+          <subwindow>weapons</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_powers</icon>
+          <subwindow>powers</subwindow>
+        </tab>
+        <activate>1</activate>                
+      </buttongroup_tabs>
+      
+      </sheetdata>
+  </windowclass>
+
+  <windowclass name="combat_mini_section">
+    <margins control="0,2,0,2" />
+    <script file="campaign/scripts/quicknotes.lua" />
+    <sheetdata>
+      <!-- SURPRISE -->            
+      <button_surprise name="surprise_total_roll" source="surprise.total">
+        <anchored height="25" width="20" >
+          <!-- <top offset="15" /> -->
+          <top anchor="bottom" relation="relative" offset="15" />
+          <left anchor="center" offset="-45"/>
+        </anchored>
+      </button_surprise>
+      <stringcontrol  name="label_surprisetotal">
+        <anchored to="surprise_total_roll"  position="aboveleft" offset="-10,1" />
+        <font>regular10</font>
+        <center />
+        <static textres="char_label_surpriseroll" />
+        <tooltip textres="char_label_surpriseroll_tooltip" />
+      </stringcontrol>
+      <!-- END SURPRISE -->
+
+      <!-- INIT -->
+      <button_charinit name="initiative" source="initiative.total">
+        <anchored height="25" width="20" >
+          <top parent="surprise_total_roll" offset="0" />
+          <left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
+        </anchored>
+      </button_charinit>
+      <label_fieldtop name="label_rollinittop">
+        <anchored to="initiative" />
+        <font>regular10</font>
+        <center />
+        <static textres="init" />
+        <tooltip textres="char_label_initiativeroll_tooltip" />
+      </label_fieldtop>
+      <!-- END INIT -->
+            
+      <!-- TURN UNDEAD -->            
+      <button_turnundead name="turnlevel" source="turn.total">
+        <anchored height="25" width="20" >
+          <top parent="surprise_total_roll" offset="0" />
+          <left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
+        </anchored>
+      </button_turnundead>
+      <label_fieldtop name="label_turnlevel">
+        <anchored to="turnlevel" />
+        <font>regular10</font>
+        <static textres="char_label_turn" />
+        <tooltip textres="char_label_turn_tooltip" />
+      </label_fieldtop>
+      <!-- END TURN -->
+      
+      <!-- THACO MATRIX -->
+      <subwindow name="combat_thaco_matrix">
+        <anchored>
+          <top anchor="bottom" relation="relative" offset="45" />
+          <left anchor="center" offset="-180" />
+          <right offset="-5" />
+        </anchored>
+        <!-- <frame name="fieldlight" offset="9,4,-9,4" /> -->
+        <activate />
+        <fastinit />
+        <invisible />
+        <center />
+        <class>combat_mini_thaco_matrix</class>
+      </subwindow>  
+      <!-- END THACO MATRIX -->
+      
+      <list_abilitynotes name="abilitynotes">
+        <anchored>
+          <top parent="combat_thaco_matrix" anchor="bottom" relation="relative" offset="10" />
+          <left />
+          <right />
+        </anchored>
+      </list_abilitynotes>
+    </sheetdata>        
+  </windowclass>
+  
+  <!-- alternate version view for the combat tracker, only shows for NPCS -->
+  <!-- surprise/init/turn removed -->
+  <windowclass name="combat_mini_section_ct">
+    <script file="campaign/scripts/quicknotes.lua" />
+    <sheetdata>
+    
+      <list_abilitynotes name="abilitynotes">
+        <anchored>
+          <top anchor="bottom" relation="relative" offset="1" />
+          <left />
+          <right />
+        </anchored>
+      </list_abilitynotes>
+    </sheetdata>        
+  </windowclass>
+
+  
+  <windowclass name="abilitynotes_item">
+    <!-- for some reason the .text doesn't update until they press tab and go to the "name" of the record
+         even if they close the window the record doesn't trigger a onupdate or childupdate.
+         it does trigger if they they "lock/unlock" the record.
+    -->
+    
+    <script>
+      function onInit()
+        registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
+        registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
+        local node = getDatabaseNode();
+        DB.addHandler(node.getPath() .. ".text", "onUpdate", onQuicknoteChanged);
+        DB.addHandler(DB.getPath(node, "locked"), "onUpdate", onLockChanged);
+        DB.addHandler(node.getPath(), "onChildUpdate", onQuicknoteChanged);
+        onLockChanged();
+        onQuicknoteChanged(node);
+      end
+      
+      function onLockChanged()
+        local node = getDatabaseNode()
+        local bLocked = (DB.getValue(node,"locked",0) == 1)
+        name.setReadOnly(bLocked);
+      end
+      
+      function onClose()
+        local node = getDatabaseNode();
+        DB.removeHandler(node.getPath() .. ".text", "onUpdate", onQuicknoteChanged);
+        DB.removeHandler(node.getPath(), "onChildUpdate", onQuicknoteChanged);
+        DB.removeHandler(DB.getPath(node, "locked"), "onUpdate", onLockChanged);
+      end
+      
+      function onQuicknoteChanged(node)
+        if node.getPath():match("text$") then
+          node = node.getParent();
+        end
+        local sText = DB.getValue(node,"text","");
+        local sTextOnly = UtilityManagerADND.stripFormattedText(sText);
+        shortcut.setTooltipText(sTextOnly);
+      end
+      
+      function onMenuSelection(selection,subselection)
+        if selection == 5 then
+          local w = self.addEntry(true);
+        end
+        if selection == 6 and subselection == 7 then
+          local node = getDatabaseNode();
+          if node then
+            node.delete();
+          else
+            close();
+          end
+        end
+      end
+    </script>
+    <sheetdata>
+      <genericcontrol name="rightanchor">
+        <anchored position="insidetopright" offset="0,2" height="0" width="0" />
+      </genericcontrol>
+
+      <!-- link button -->
+      <linkcontrol name="shortcut">
+        <anchored to="rightanchor" width="20" height="20">
+          <top offset="2"/>
+          <right anchor="left" relation="relative" offset="-5" />
+        </anchored>
+        <class>quicknote</class>
+        <readonly />
+        <script>
+          function onDrop(x, y, draginfo)
+            if draginfo.isType("shortcut") then
+              local node = window.getDatabaseNode();
+              local sClass, sRecord = draginfo.getShortcutData();
+              if (sClass == "quicknote") then
+                local nodeEncounter = DB.findNode(sRecord);
+                if (nodeEncounter) then
+                  local sName = DB.getValue(nodeEncounter,"name","");
+                  local sText = DB.getValue(nodeEncounter,"text","");
+                  local nLocked = DB.getValue(nodeEncounter,"locked",0);
+                  DB.setValue(node,"name","string",sName);
+                  DB.setValue(node,"text","formattedtext",sText);
+                  DB.setValue(node,"locked","number",nLocked);
+                end
+              end
+              return true;
+            end
+          end
+        </script>
+        
+      </linkcontrol>
+
+      <!-- button delete -->
+      <button_idelete name="idelete">
+        <anchored to="rightanchor">
+          <top offset="2"/>
+          <right anchor="left" offset="-5" />
+        </anchored>
+      </button_idelete>
+
+      <string_textlistitem name="name">
+        <anchored to="rightanchor">
+          <top />
+          <left parent="" offset="15"/>
+          <right anchor="left" relation="relative" offset="-15" />
+        </anchored>
+        <multilinespacing>20</multilinespacing>
+      </string_textlistitem>
+    </sheetdata>
+  </windowclass>
+  
+    <!-- for thaco matrix attacks 10..-10 ac with d20 value matching -->
+  <windowclass name="combat_mini_thaco_matrix">
+    <script file="campaign/scripts/char_matrix_thaco.lua" />
+    <sheetdata>
+      <anchor_left name="leftanchor" />
+      <label name="thaco_attack_matrix_title_label">
+      <font>bold11</font>
+        <anchored >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="1" />
+          <left offset="150" />
+          <right />
+        </anchored>
+        <static textres="thaco_attack_matrix_title" />
+      </label>
+      <line_column name="divider1">       
+        <anchored >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="-3" />
+          <left />
+          <right />
+        </anchored>
+        <center />
+      </line_column>
+      <label name="matrix_ac_label">
+      <font>bold11</font>
+        <anchored width="20" height="15" >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="1"/>
+          <left offset="5" />
+        </anchored>
+        <static textres="thaco_attack_matrix_ac" />
+      </label>
+      <label name="matrix_roll_label">
+      <font>bold11</font>
+        <anchored width="20" height="15" >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="1" />
+          <left offset="5" />
+        </anchored>
+        <static textres="class_advancement_details_matrix_roll" />
+      </label>
+      <line_column name="divider2">       
+        <anchored >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="1" />
+          <left />
+          <right />
+        </anchored>
+        <center />
+      </line_column>
+    </sheetdata>
+  </windowclass>  
+</root>

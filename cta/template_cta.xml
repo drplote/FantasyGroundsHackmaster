@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+
+  <template name="contentanchor_ctabox">
+		<genericcontrol name="contentanchor">
+			<anchored height="0">
+				<top parent="" anchor="top" offset="0" />
+				<left parent="" anchor="left" offset="0" />
+				<right parent="" anchor="right" offset="0" />
+			</anchored>
+			<disabled />
+		</genericcontrol>
+  </template>
+  
+	<template name="contentframe_ctabox">
+		<genericcontrol name="contentframe">
+			<anchored>
+				<top parent="header" anchor="bottom" offset="5" />
+				<left parent="" offset="5" />
+				<right parent="" offset="-45" />
+				<bottom parent="" offset="-5" />
+			</anchored>
+			<frame name="field-cyan" offset="0,0,0,0" />
+			<disabled />
+		</genericcontrol>
+	</template>
+
+  <template name="subwindow_cta_combatants">
+    <subwindow name="combatants">
+      <anchored to="contentanchor">
+        <top anchor="bottom" offset="22" />
+        <left anchor="left" offset="0" />
+        <!-- <right anchor="center" offset="-90" /> -->
+        <bottom parent="" anchor="bottom" offset="-25" />
+      </anchored>
+      <activate />
+      <fastinit />
+      <class>cta_combatant_list_host</class>
+      <script>
+        function onDrop(x, y, draginfo)
+          return subwindow.list.onDrop(x, y, draginfo);
+        end
+      </script>
+      <frame name="ct_subgroupbox" offset="-5,2,2,0" />
+    </subwindow>
+	</template>
+      
+  <template name="subwindow_cta_selected">
+    <subwindow name="selected">
+      <anchored to="contentanchor">
+        <top anchor="bottom" offset="22" />
+        <left parent="combatants" anchor="right" offset="1" />
+        <right anchor="right" offset="-12" />
+        <bottom parent="" anchor="bottom" offset="-25" />
+      </anchored>
+      <!-- <class>window_selected_entry</class> -->
+      <class>cta_main_selected_host</class>
+      <script>
+        function onDrop(x, y, draginfo)
+          return window.selected.onDrop(x, y, draginfo);
+        end
+      </script>
+      <!-- <frame name="fielddark" offset="2,2,2,2" /> -->
+    </subwindow>
+	</template>
+
+  <!-- list of combatants -->
+  <template name="list_cta_combatants_host">
+    <windowlist name="list">
+      <script file="cta/scripts/cta_combatants_host.lua" />
+      <child></child>
+      <child><backcolor>4040301E</backcolor></child>
+      <anchored>
+        <top anchor="top" relation="relative" offset="3" />
+        <left anchor="left" offset="1" />
+        <right anchor="right" offset="-10" />
+        <bottom anchor="bottom" offset="-3" />
+      </anchored>
+      <datasource>.list</datasource>
+      <class>combatants_entry_host</class>
+      <empty font="bold16" textres="ct_emptylist" />
+    </windowlist>
+  </template>
+
+  <template name="subwindow_selected_main">
+    <subwindow>
+      <anchored to="contentanchor">
+        <top anchor="bottom" offset="22" />
+        <left anchor="left" offset="5" />
+        <right anchor="center" offset="-90" />
+        <bottom parent="" anchor="bottom" offset="-23" />
+      </anchored>
+      <activate />
+      <fastinit />
+    </subwindow>
+	</template>
+
+  <template name="content_anchor_cta_selected">
+    <genericcontrol>
+      <anchored height="0">
+        <top offset="35" />
+        <left parent="" anchor="left" offset="15" />
+        <right parent="" anchor="right" offset="-30" />
+      </anchored>
+      <disabled />
+    </genericcontrol>
+  </template>
+
+	<template name="link_ctaentry">
+		<linkfield>
+			<class>npc</class>
+			<selfonempty />
+			<readonly />
+			<script>
+				function onValueChanged()
+					window.onLinkChanged();
+				end
+			</script>
+		</linkfield>
+	</template>
+
+  <template name="button_cta_menu">
+    <buttoncontrol>
+			<anchored height="21" width="21">
+				<top offset="-1" />
+				<right offset="-80" />
+			</anchored>
+      <icon normal="menu_icon_white_filled" pressed="menu_icon_black" />
+      <tooltip textres="ct_tooltip_menu" />
+      <script file="cta/scripts/cta_menu.lua" />
+      <nodrag />
+      <readonly />
+    </buttoncontrol>
+  </template>
+
+	<template name="button_cta_setactive">
+		<genericcontrol>
+			<!-- <anchored width="10" height="10"> -->
+      <anchored width="30" height="30">
+				<top offset="-5" />
+				<left parent="combatants" anchor="right" offset="-20" />
+			</anchored>
+			<activeicon>ct_active</activeicon>
+			<cursor hover="hand" />
+			<script>
+				function onInit()
+					widget = addBitmapWidget(activeicon[1]);
+				end
+				
+				function onDragStart(button, x, y, draginfo)
+					draginfo.setType("combattrackeractivation");
+					draginfo.setIcon(activeicon[1]);
+					widget.setVisible(false);
+					
+					return true;
+				end
+				
+				function onDragEnd(draginfo)
+					widget.setVisible(true);
+				end
+			</script>
+		</genericcontrol>
+	</template>
+  
+	<template name="button_cta_nextactor">
+		<buttoncontrol>
+			<anchored width="30" height="30">
+				<bottom offset="4" />
+				<left offset="10" />
+			</anchored>
+			<icon normal="button_ctnextactor" pressed="button_ctnextactor_down" />
+			<tooltip textres="ct_tooltip_nextactor" />
+			<script>
+				function onButtonPress()
+					CombatManager.nextActor();
+				end
+				
+				function onDragStart(button, x, y, draginfo)
+					draginfo.setType("combattrackernextactor");
+					draginfo.setIcon("button_ctnextactor");
+					
+					return true;
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+  
+	<template name="button_cta_faction_friend">
+		<button_ct_friendfoe name="cta_friends">
+			<anchored>
+				<bottom offset="2" />
+				<left anchor="center" offset="50" />
+			</anchored>
+			<icon>ct_faction_friend</icon>
+			<value>friend</value>
+			<tooltip textres="ct_tooltip_factionfriend" />
+		</button_ct_friendfoe>
+	</template>
+	<template name="button_cta_faction_neutral">
+		<button_ct_friendfoe>
+			<anchored>
+				<top parent="cta_friends"/>
+				<left parent="cta_friends" relation="relative" anchor="right" offset="-10" />
+			</anchored>
+			<icon>ct_faction_neutral</icon>
+			<value>neutral</value>
+			<tooltip textres="ct_tooltip_factionneutral" />
+		</button_ct_friendfoe>
+	</template>
+	<template name="button_cta_faction_foe">
+		<button_ct_friendfoe>
+			<anchored>
+				<top parent="cta_friends"/>
+				<left parent="cta_friends" relation="relative" anchor="right" offset="-10" />
+			</anchored>
+			<icon>ct_faction_foe</icon>
+			<value>foe</value>
+			<tooltip textres="ct_tooltip_factionfoe" />
+		</button_ct_friendfoe>
+	</template>
+  
+	<template name="label_cta_host_rounds">
+		<genericcontrol name="label_host_round_count">
+			<anchored to="combatants" position="insidebottomright" height="25" width="20" offset="0,-25"/>
+			<!-- <static textres="ct_label_round" /> -->
+      <icon>hourglass_icon</icon>
+      <tooltip textres="ct_label_round" />
+		</genericcontrol>
+	</template>
+  
+	<template name="number_cta_host_rounds">
+		<simplenumber name="round">
+			<anchored width="30" height="20" >
+				<top parent="label_host_round_count" offset="3" />
+				<left parent="label_host_round_count" relation="relative" anchor="right" offset="1"/>
+			</anchored>
+			<frame name="sheetgroup" offset="1,1,1,1" />
+		</simplenumber>
+	</template>
+  
+	<template name="button_cta_nextround">
+		<buttoncontrol>
+			<anchored width="30" height="25" >
+				<top parent="label_host_round_count" offset="1" />
+				<left parent="label_host_round_count" relation="relative" anchor="right" offset="1"/>
+			</anchored>
+			<icon normal="button_ctnextround" pressed="button_ctnextround_down" />
+			<tooltip textres="ct_tooltip_nextround" />
+			<script>
+				function onInit()
+					registerMenuItem(Interface.getString("ct_menu_end_encounter"), "encounter_end", 2);
+					registerMenuItem(Interface.getString("ct_menu_round5"), "num5", 4);
+					registerMenuItem(Interface.getString("ct_menu_round10"), "num10", 5);
+					registerMenuItem(Interface.getString("ct_menu_round15"), "num15", 6);
+					registerMenuItem(Interface.getString("ct_menu_round20"), "num20", 7);
+				end
+				
+				function onMenuSelection(selection)
+					if selection == 2 then
+            ChatManager.Message(Interface.getString("ct_message_end_encounter"), true);
+            CombatManager2.rest(false);
+        elseif selection == 4 then
+						CombatManager.nextRound(5);
+					elseif selection == 5 then
+						CombatManager.nextRound(10);
+					elseif selection == 6 then
+						CombatManager.nextRound(15);
+					elseif selection == 7 then
+						CombatManager.nextRound(20);
+					end
+				end
+				
+				function onButtonPress()
+					CombatManager.nextRound(1);
+				end
+				
+				function onDragStart(button, x, y, draginfo)
+					draginfo.setType("combattrackernextround");
+					draginfo.setIcon("button_ctnextround");
+					
+					return true;
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+  
+	<template name="button_cta_npc_visibility">
+    <buttoncontrol name="button_global_visibility">
+      <anchored height="20" width="20">
+				<top offset="1" />
+				<left offset="10" />
+			</anchored>
+      <state icon="cta_visibilityoff" tooltipres="ct_tooltip_shownpcallon" />
+      <state icon="cta_visibilityon" tooltipres="ct_tooltip_shownpcalloff" />
+      <script>
+        function onValueChanged()
+          window.toggleVisibility();
+        end
+      </script>
+    </buttoncontrol>
+	</template>
+  
+  <template name="resize_ctabox">
+		<genericcontrol>
+      <anchored height="25" width="25">
+        <right offset="0" />
+        <bottom offset="0" />
+      </anchored>
+			<icon>window_resize_white</icon>
+			<disabled />
+		</genericcontrol>
+  </template>
+
+  <template name="close_ctabox">
+    <close>
+      <anchored height="20" width="20">
+        <top offset="2" />
+        <right offset="-16" />
+      </anchored>
+    </close>
+  </template>
+
+	<template name="help_cta">
+		<help>
+			<anchored height="20" width="20">
+				<top offset="2" />
+				<right offset="-40" />
+			</anchored>
+			<urlres>help_tool_ct</urlres>
+		</help>
+	</template>
+
+	<template name="button_ctaentry_active_base">
+		<buttonfield>
+      <anchored width="30" height="30">
+				<top anchor="bottom" offset="15" />
+				<left offset="-4" />
+			</anchored>
+			<state icon="ct_passive" />
+			<state icon="ct_active" />
+		</buttonfield>
+	</template>
+	<template name="button_ctaentry_active">
+		<button_ctaentry_active_base>
+			<script file="cta/scripts/cta_active.lua" />
+		</button_ctaentry_active_base>
+	</template>
+	<template name="button_clientct_active">
+		<button_ctaentry_active_base>
+			<readonly />
+			<script>
+				function onValueChanged()
+					local bActive = (getValue() == 1);
+					
+					window.onActiveChanged(bActive);
+	
+					if bActive and OptionsManager.isOption("CMAT", "on") then
+						CombatManager.centerOnToken(window.getDatabaseNode(), false);
+					end
+				end
+			</script>
+		</button_ctaentry_active_base>
+	</template>
+
+	<template name="token_ctentry_base">
+		<tokenfield>
+      <anchored to="active" position="righthigh" offset="-5,0" width="35" height="35" />
+			<empty>token_empty</empty>
+		</tokenfield>
+	</template>
+  
+	<template name="token_ctaentry">
+		<token_ctentry_base>
+			<script file="cta/scripts/cta_token.lua" />
+		</token_ctentry_base>
+	</template>
+
+  <template name="button_ctaentry_tokenvis">
+		<buttonfield>
+			<anchored to="token" position="belowright" offset="-11,-14" width="16" height="16" />
+			<state icon="visibilityoff" tooltipres="ct_tooltip_shownpcon" />
+			<state icon="visibilityon" tooltipres="ct_tooltip_shownpcoff" />
+			<!-- <invisible/> -->
+			<script>
+				function onValueChanged()
+					window.onVisibilityChanged(getValue());
+				end
+			</script>
+		</buttonfield>
+	</template>
+  
+	<template name="button_ctaentry_isidentified">
+		<buttonfield>
+			<anchored to="token" position="righthigh" offset="-3,2" width="12" height="12" />
+			<state icon="record_unidentified" tooltipres="tooltip_nonid" />
+			<state icon="record_identified" tooltipres="tooltip_id" />
+			<!-- <invisible /> -->
+			<gmeditonly />
+			<script>
+				function onValueChanged()
+					if window.onIDChanged then
+						window.onIDChanged(getValue());
+					end
+				end
+			</script>
+		</buttonfield>
+	</template>
+  
+	<template name="button_ctaentry_friendfoe">
+		<button_faction>
+      <anchored merge="replace" width="20" height="18">
+        <top parent="token" offset="5" />
+        <left parent="token" anchor="right" relation="relative" offset="10" />
+      </anchored>
+			<script>
+        function onClickDown(button,x,y)
+          window.windowlist.selectEntryCTA(window.getDatabaseNode());
+          return true;
+        end
+        function onClickRelease(button,x,y)
+          window.windowlist.selectEntryCTA(window.getDatabaseNode());
+          return true;
+        end
+				function onValueChanged()
+					window.onFactionChanged();
+				end
+			</script>
+		</button_faction>
+	</template>
+
+  <template name="button_ctaentry_initresult">
+    <number_ct_crosslink name="initresult">
+      <script>
+        function action(draginfo)
+          local node = window.getDatabaseNode();
+          draginfo.setDescription(DB.getValue(node,"name",""));
+          draginfo.setShortcutData("reorder_cta_initiative",node.getPath())
+          draginfo.setIcon("reorder_arrow");
+          draginfo.setType("reorder");
+          return true;
+        end
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end          
+      </script>
+      <readonly />
+      <color>FFFFFF</color>
+      <frame name="d10red" offset="-1,3,0,0" />
+      <!-- <icon>d10ricon</icon> -->
+      <anchored to="token" height="20" width="25">
+        <top anchor="top" offset="5" />
+        <left anchor="right" relation="relative" offset="0" />
+      </anchored>
+      <tooltip textres="cta_initiative_tooltip" />
+    </number_ct_crosslink>
+
+	</template>
+  
+  <template name="idelete_cta_entry">
+    <button_ctentry_idelete name="idelete">
+      <anchored>
+        <top parent="active" offset="1" />
+        <right parent="rightanchor" anchor="left" relation="relative" offset="-4" />
+      </anchored>
+    </button_ctentry_idelete>       
+	</template>
+  
+  <template name="number_ct_crosslink_hidden">
+    <number_ct_crosslink>
+      <anchored>
+        <top />
+        <left />
+      </anchored>
+      <invisible />
+    </number_ct_crosslink>
+  </template>
+  
+  <template name="string_ct_hidden">
+    <string_ct>
+      <anchored>
+        <top />
+        <left />
+      </anchored>
+      <invisible />
+    </string_ct>
+  </template>
+  
+  <template name="bar_ctaentry_hp">
+    <progressbar>
+       <anchored height="7" >
+        <top parent="token" anchor="bottom" offset="5" />
+        <left parent="active" anchor="left" offset="10" />
+        <right parent="" anchor="right" offset="0" />
+      </anchored>
+      <source><max>hptotal</max><used>wounds</used></source>
+      <textprefix><textres>hp</textres></textprefix>
+      <script>
+        function onValueChanged()
+          setFillColor(ColorManager.getHealthColor(1 - getPercent(), true));
+        end
+      </script>
+    </progressbar>
+	</template>
+
+  <template name="icon_cta_targets" >
+    <genericcontrol>
+      <script file="cta/scripts/cta_target_summary.lua" />
+      <anchored height="15" width="15">
+        <top anchor="bottom" offset="18" />
+        <left anchor="right" offset="-20" />
+      </anchored>
+      <icon>token_is_targeted_black</icon>
+      <invisible />
+    </genericcontrol>
+  </template>
+  <template name="icon_cta_targets_selected" >
+    <genericcontrol>
+      <anchored height="15" width="15">
+        <bottom parent="hpbar" anchor="top" offset="-5" />
+        <left anchor="right" offset="-20" />
+      </anchored>
+      <invisible />
+      <icon>token_is_targeted_darkred</icon>
+    </genericcontrol>
+  </template>
+
+  <template name="cta_select_right_button">
+    <buttoncontrol>
+      <anchored to="initresult" height="30" width="30" >
+        <top offset="-5" />
+        <left />
+      </anchored>
+      <state icon="ct_select_right" />
+      <invisible />
+    </buttoncontrol>
+  </template>
+
+  <template name="label_ctafieldtop">
+    <label>
+      <anchored position="above" offset="0,-3" />
+      <!-- <font>subwindowsmalltitle</font> -->
+      <center />
+    </label>
+  </template>
+
+  <template name="tabs_cta">
+    <buttongroup_tabs_h name="tabs_h">
+      <anchored height="30">
+        <top anchor="top" offset="3" />
+        <left anchor="center" offset="-130" />
+      </anchored>
+      <!-- <frame name="field-red" /> -->
+      <frame name="htabs" />
+    </buttongroup_tabs_h>
+  </template>
+
+  <template name="cta_selected_header">
+   <subwindow name="header">
+      <anchored>
+        <top offset="35" />
+        <left offset="13" />
+        <right offset="-10" />
+      </anchored>
+      <activate />
+      <fastinit />
+      <class>selected_entry_header</class>
+      <frame name="ct_subgroupbox" offset="5,5,5,5" />
+    </subwindow>
+	</template>
+  
+  <template name="cta_selected_contentframe">
+    <genericcontrol name="contentframe">
+      <anchored>
+        <top parent="header" anchor="bottom" offset="0" />
+        <left offset="0" />
+        <bottom parent="" anchor="bottom" offset="0" />
+      </anchored>
+      <disabled />
+      <!-- <frame name="groupbox" offset="0,0,0,0" /> -->
+    </genericcontrol>      
+	</template>
+  
+  <template name="cta_selected_contentanchor">
+    <genericcontrol name="contentanchor">
+      <anchored height="0">
+        <top parent="header" anchor="bottom" offset="0" relation="relative"/>
+        <left parent="" anchor="left" offset="0" />
+        <right parent="" anchor="right" offset="0" />
+      </anchored>
+      <disabled />
+      <!-- <frame name="field-yellow" /> -->
+    </genericcontrol>
+	</template>
+  
+  <template name="cta_selected_actions">
+    <subwindow name="actions">
+<!--       <frame name="field-green" /> -->
+      <!-- <frame name="ct_subgroupbox" /> -->
+      <anchored to="contentanchor" >
+        <top anchor="top" offset="5" />
+        <left parent="" anchor="left" offset="5"/>
+        <right parent="" anchor="right" offset="-20"/>
+        <bottom parent="contentframe" anchor="bottom" offset="-5"/>
+      </anchored>
+      <activate />
+      <fastinit />
+      <class>cta_actions_host</class>
+    </subwindow>
+	</template>
+  
+  <template name="cta_selected_effects">
+    <subwindow name="effects">
+      <!-- <frame name="field-green" /> -->
+      <anchored to="contentanchor" >
+        <top anchor="top" offset="5" />
+        <left parent="" anchor="left" offset="5"/>
+        <right parent="" anchor="right" offset="-20"/>
+        <bottom parent="contentframe" anchor="bottom" offset="-5"/>
+      </anchored>
+      <activate />
+      <fastinit />
+      <class>cta_subwindow_effects_host</class>
+    </subwindow>
+	</template>
+  
+  <template name="cta_selected_stats">
+   <subwindow name="stats">
+      <!-- <frame name="field-blue" /> -->
+      <anchored to="contentanchor" >
+        <top anchor="top" offset="5" />
+        <left parent="" anchor="left" offset="5"/>
+        <right parent="" anchor="right" offset="-20"/>
+        <bottom parent="contentframe" anchor="bottom" offset="-5"/>
+      </anchored>
+      <class>cta_stats_host</class>
+      <activate />
+      <fastinit />
+    </subwindow> 
+	</template>
+
+  <template name="cta_selected_skills">
+    <subwindow name="skills">
+      <!-- <frame name="field-green" /> -->
+      <anchored to="contentanchor" >
+        <top anchor="top" offset="5" />
+        <left parent="" anchor="left" offset="5"/>
+        <right parent="" anchor="right" offset="-20"/>
+        <bottom parent="contentframe" anchor="bottom" offset="-5"/>
+      </anchored>
+      <activate />
+      <fastinit />
+      <class>cta_skills_host</class>
+    </subwindow>
+	</template>
+ 
+  <template name="cta_selected_scrollbar">
+    <scrollbar>
+      <anchored>
+        <top offset="17" />
+        <bottom offset="-15" />
+        <left parent="" anchor="right" offset="-20" />
+      </anchored>
+    </scrollbar>
+  </template>
+
+  <template name="proficiency_languages">
+    <stringcontrol>
+      <script file="cta/scripts/cta_languages.lua" />
+      <multilinespacing>20</multilinespacing>
+      <readonly />
+    </stringcontrol>
+  </template>
+  
+  <template name="cta_subwindow_toplabel">
+		<stringcontrol>
+      <frame name="mini_name" offset="4,0,6,0"/>
+      <anchored>
+        <top offset="-9" />
+        <left anchor="center" />
+      </anchored>
+			<font>sheetlabelmini</font>
+			<center />
+		</stringcontrol>
+  </template>
+
+  <template name="cta_above_label">
+    <stringcontrol>
+      <frame name="filter" offset="1,3,1,3"/>
+      <anchored position="above" />
+      <font>sheetlabelmini</font>
+      <center />
+    </stringcontrol>
+  </template>
+  
+  <template name="cta_below_label">
+    <stringcontrol>
+      <frame name="filter" offset="1,3,1,3"/>
+      <anchored position="below" />
+      <font>sheetlabelmini</font>
+      <center />
+    </stringcontrol>
+  </template>
+  
+	<template name="anchor_below_header">
+    <genericcontrol name="header-space">
+			<anchored height="8">
+				<top parent="name" anchor="bottom" relation="relative" offset="3" />
+          <left />
+          <right />
+        </anchored>
+        <disabled />
+      </genericcontrol>
+  </template>
+  
+	<template name="string_cta_summary">
+		<stringcontrol>
+			<anchored>
+				<top parent="header-space" anchor="bottom" relation="relative" offset="1" />
+				<left offset="5" />
+				<right offset="-10" />
+			</anchored>
+			<multilinespacing>16</multilinespacing>
+			<font>sheetlabelmini</font>
+			<static />
+			<nodrag />
+			<invisible />
+		</stringcontrol>
+	</template>
+  
+	<template name="string_ctaentry_combatstats">
+		<string_cta_summary>
+			<script file="cta/scripts/cta_combat_stats_summary.lua" />
+		</string_cta_summary>
+	</template>
+
+	<template name="string_ctaentry_targets">
+		<string_cta_summary>
+			<anchored to="target_button_clear" >
+				<top parent="target_button_clear" anchor="top" />
+				<left parent="target_button_clear" anchor="right" offset="3" />
+				<right parent="" offset="-10" />
+			</anchored>    
+			<script file="cta/scripts/cta_target_summary.lua" />
+		</string_cta_summary>
+	</template>
+  
+  <template name="button_ctaentry_targets_clear">
+    <buttoncontrol>
+			<anchored width="15" height="15" >
+				<top parent="header-space" anchor="bottom" relation="relative" offset="1" />
+				<left offset="5" />
+			</anchored>
+      <script>
+        function onButtonPress()
+          TargetingManager.clearCTTargets(window.getDatabaseNode());
+        end
+      </script>
+      <icon normal="button_clear" pressed="button_clear_down" />
+      <tooltip textres="ct_tooltip_cleartarget" />
+      <invisible />
+    </buttoncontrol>
+  </template>
+  
+	<template name="string_ctaentry_effects">
+		<string_cta_summary>
+			<script file="ct/scripts/ct_effect_summary.lua" />
+		</string_cta_summary>
+	</template>
+  
+	<template name="cta_attack_name">
+      <stringu> 
+        <script>
+          function onDoubleClick(x,y)
+            return window.onAttackAction();
+          end      
+        </script>
+        <anchored height="18">
+          <top offset="5" />
+          <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+          <right parent="rightanchor" anchor="left" relation="relative" offset="-130" />
+        </anchored>
+      </stringu>
+  </template>
+  
+  <template name="cta_speedfactor">
+    <number name="speedfactor">
+      <anchored height="20" width="25" >
+        <top offset="3" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+      </anchored>
+      <center />
+      <frame name="field-initiative" offset="5,6,5,6" />
+      <rollable />
+      <displaysign />
+      <default>0</default>
+      <readonly />
+      <cursor hover="hand" /> 
+      <center />
+      <tooltip textres="power_label_initiative_tooltip" />
+      <script>
+        function action(draginfo)
+          local nodeWeapon = window.getDatabaseNode();
+          local nodeChar = nodeWeapon.getChild("...");
+
+          local sName = DB.getValue(nodeWeapon,"name","");
+          local nSpeedFactor = DB.getValue(nodeWeapon,"speedfactor",0);
+          local rItem = {};
+          rItem.sName = sName;
+          rItem.nInit = nSpeedFactor;
+
+          local rActor = ActorManager.getActor("pc", nodeChar);
+          local _, sRecord = DB.getValue(nodeWeapon.getChild(".."), "shortcut", "", "");
+          rActor.itemPath = sRecord;
+          ActionInit.performRoll(draginfo, rActor, nil, rItem);
+
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+          
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+    </number>
+  </template>
+  <template name="cta_type_icon">
+    <buttonfield name="type">
+      <script>
+        function onInit()
+          onValueChanged();
+        end
+        function onValueChanged()
+          window.onTypeChanged();
+        end
+      </script>
+      <anchored width="25" height="20">
+        <top offset="3" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+      </anchored>
+      <state icon="char_weapon_melee" tooltipres="char_tooltip_weapontypemelee" />
+      <state icon="char_weapon_ranged" tooltipres="char_tooltip_weapontyperanged" />
+      <state icon="char_weapon_thrown" tooltipres="char_tooltip_weapontypethrown" />
+      <readonly />
+      <frame name="field-red" offset="5,6,5,6" />
+    </buttonfield>
+  </template>
+  
+  <template name="cta_attack_button" >
+    <number name="attackview_weapon" >
+      <anchored to="type" position="over" />
+      <font>bold14-white</font>
+      <rollable />
+      <displaysign />
+      <default>0</default>
+      <hideonvalue>0</hideonvalue>
+      <readonly />
+      <cursor hover="hand" /> 
+      <center />
+      <tooltip textres="char_label_attack_tooltip" />
+      <script>
+        function onDoubleClick(x,y)
+          return window.onAttackAction();
+        end      
+
+        function onDragStart(button, x, y, draginfo)
+          return window.onAttackAction(draginfo);
+        end
+      </script>
+    </number>
+  </template>
+  
+  <!-- progressbar bug-fix  This can go away when 3.3.8 comes out! woot -->
+  <template name="progressbar">
+    <genericcontrol>
+      <frame name="border" />
+      <fillcolor>006600</fillcolor>
+      <script file="common/scripts/progressbar.lua" />
+    </genericcontrol>
+  </template>
+  <template name="progressbarfill">
+    <genericcontrol>
+      <anchored>
+        <top />
+        <bottom />
+        <left />
+        <right />
+      </anchored>
+    </genericcontrol>
+  </template>
+  
+	<template name="number_ctaentry_tokensize">
+		<number_ct name="space">
+      <anchored width="30">
+        <top anchor="bottom" offset="15" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+			<description textres="ct_tooltip_size" />
+			<hideonvalue value="0" />
+			<default>5</default>
+		</number_ct>
+	</template>
+
+	<template name="number_ctaentry_tokenreach">
+		<number_ct name="reach">
+      <anchored width="30">
+        <top anchor="bottom" offset="15" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+			<hideonvalue value="0" />
+			<default>5</default>
+		</number_ct>
+	</template>
+  
+</root>

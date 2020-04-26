@@ -1,0 +1,1564 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="reference_class">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="350" height="400" />
+    </placement>
+    <sizelimits>
+      <minimum width="300" height="300" />
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_reference</minimize>
+    <tooltip field="name" />
+    <script>
+      function onLockChanged()
+        if header.subwindow then
+          header.subwindow.update();
+        end
+        if stats.subwindow then
+          stats.subwindow.update();
+        end
+        
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        text.setReadOnly(bReadOnly);
+      end
+
+      function onDrop(x, y, draginfo)
+        UtilityManagerADND.onDropStory(x, y, draginfo,getDatabaseNode());
+      end
+    </script>
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>ref_class_header</class>
+      </sub_record_header>
+
+      <frame_record_content_tabbed name="contentframe" />
+
+      <ft_record name="text">
+        <anchored to="contentframe" position="over" />
+        <invisible />
+      </ft_record>
+      <subwindow_record name="stats">
+        <class>ref_class_stats</class>
+      </subwindow_record>
+
+      <scrollbar_record>
+        <target>text</target>
+      </scrollbar_record>
+      <scrollbar_record>
+        <target>stats</target>
+      </scrollbar_record>
+      
+      <tabs_recordsheet>
+        <tab>
+          <icon>tab_main</icon>
+          <subwindow>text</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_advance</icon>
+          <subwindow>stats</subwindow>
+        </tab>
+      </tabs_recordsheet>
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+  
+  <windowclass name="ref_class_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_class</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <string_record_name name="name">
+        <empty textres="library_recordtype_empty_class" />
+      </string_record_name>
+      <label_reftype name="reftype">
+        <static textres="ref_type_class" />
+      </label_reftype>  
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_classproficiency_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_classproficiency</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <string_record_name name="name">
+        <empty textres="library_recordtype_empty_classproficiency" />
+      </string_record_name>
+      <label_reftype name="reftype">
+        <static textres="ref_type_classproficiency" />
+      </label_reftype>  
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_nonweaponprof_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_nonweaponprof</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <string_record_name name="name">
+        <empty textres="library_recordtype_empty_nonweaponproficiency" />
+      </string_record_name>
+      <label_reftype name="reftype">
+        <static textres="ref_type_nonweaponproficiency" />
+      </label_reftype>  
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_classfeature_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_classfeature</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <string_record_name name="name">
+        <empty textres="library_recordtype_empty_classfeature" />
+      </string_record_name>
+      <label_reftype name="reftype">
+        <static textres="ref_type_feature" />
+      </label_reftype>  
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_classability_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        name.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_classability</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <string_record_name name="name">
+        <empty textres="library_recordtype_empty_classspecialization" />
+      </string_record_name>
+      <label_reftype name="reftype">
+        <static textres="ref_type_classability" />
+      </label_reftype>  
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_classadvacement_header">
+    <margins control="0,0,0,2" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        name.setReadOnly(true);
+      end
+    </script>
+    <sheetdata>
+      <link_record_header>
+        <class>reference_class_advacement</class>
+      </link_record_header>
+
+      <anchor_record_header_right />
+      <icon_record_locked />
+      <button_record_locked />
+
+      <string_record_name name="name">
+        <empty textres="library_recordtype_empty_classadvacement" />
+                <readonly />
+      </string_record_name>
+      <label_reftype name="reftype">
+        <static textres="ref_type_classadvacement" />
+      </label_reftype>  
+    </sheetdata>
+  </windowclass>
+  
+  
+  <windowclass name="ref_class_stats">
+    <margins control="0,0,0,7" />
+    <script>
+      function onInit()
+        checkAdvancement();
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        proficiencies.update(bReadOnly);
+        nonweaponprof.update(bReadOnly);
+        features.update(bReadOnly);
+        
+      end
+      function checkAdvancement()
+        local node = getDatabaseNode();
+        if node then
+          local nodeAdvancement = node.getChild("advancement");
+          local nChildCount = DB.getChildCount(node,"advancement");
+          if nChildCount &lt; 1 then
+            for i = 1, 20 do
+              local nodeEntry = nodeAdvancement.createChild();
+              DB.setValue(nodeEntry,"level","number", i);
+            end
+          end
+        end
+      end
+    </script>
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+
+            <!-- advancement -->
+      <header_column name="advancement_header">
+        <static textres="class_header_advancement"/>
+        <center />
+      </header_column>
+      <button_iedit name="advancement_iedit">
+        <anchored to="advancement_header" position="righthigh" offset="-20,0" />
+        <target>advancement</target>
+      </button_iedit>
+      <button_iadd name="advancement_iadd">
+        <anchored to="advancement_iedit" position="lefthigh" offset="5,0" />
+        <target>advancement</target>
+      </button_iadd>
+      <list_column name="advancement">
+        <datasource>.advancement</datasource>
+        <sortby><control>level</control></sortby>
+        <class>ref_class_advancement</class>
+      </list_column>
+      
+      <!--Weapon Prof-->
+      <!-- 
+            We do not use the proficiencies_header name because we want this header to ALWAYS show. 
+            If we had when readonly mode was set if no weaponsprofs existed it would hide header ...
+            but we always have prof initial and rate, celestian
+      -->
+      <header_column name="proficiencies_header_adnd">  
+        <static textres="class_header_weaponproficiencies"/>
+        <center />
+      </header_column>
+      <button_iedit name="proficiencies_iedit">
+        <anchored to="proficiencies_header_adnd" position="righthigh" offset="-20,0" />
+        <target>proficiencies</target>
+      </button_iedit>
+      <button_iadd name="proficiencies_iadd">
+        <anchored to="proficiencies_iedit" position="lefthigh" offset="5,0" />
+        <target>proficiencies</target>
+      </button_iadd>
+
+      <label name="label_proficiency_weapon_initial">
+        <anchored width="35">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="10" />
+          <left relation="relative" offset="10" />
+        </anchored>
+        <static textres="char_label_prof_initial" />
+        <tooltip textres="char_label_prof_initial_tooltip" />
+      </label>
+      <number_basic name="initial_weapon"  source="profs.initial.weapon">
+        <anchored to="label_proficiency_weapon_initial" position="righthigh" offset="10,0" height="18" width="30" /> 
+        <tooltip textres="char_label_prof_initial_tooltip" />
+        <min>0</min>
+      </number_basic>
+
+      <label name="label_proficiency_weapon_earnrate">
+        <anchored to="initial_weapon" position="righthigh" offset="10,0" height="18" width="27" /> 
+        <static textres="char_label_prof_earned_rate" />
+        <tooltip textres="char_label_prof_earned_rate_tooltip" />
+      </label>
+      <number_basic name="earn_rate_weapon"  source="profs.rate.weapon">
+        <anchored to="label_proficiency_weapon_earnrate" position="righthigh" offset="10,0" height="18" width="30" /> 
+        <tooltip textres="char_label_prof_earned_rate_tooltip" />
+        <min>0</min>
+      </number_basic>
+      
+      <label name="label_proficiency_weapon_penalty">
+        <anchored to="earn_rate_weapon" position="righthigh" offset="10,0" height="18" width="45" /> 
+        <static textres="char_label_weapon_penalty" />
+        <tooltip textres="char_label_weapon_penalty_tooltip" />
+      </label>
+      <number_basic name="weapon_penalty">
+        <anchored to="label_proficiency_weapon_penalty" position="righthigh" offset="10,0" height="18" width="30" /> 
+        <tooltip textres="char_label_weapon_penalty_tooltip" />
+      </number_basic>
+      
+
+      <list_column name="proficiencies">
+        <anchored >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="5" />
+          <left offset="0" />
+          <right offset="-5" />
+        </anchored>
+        <datasource>.proficiencies</datasource>
+        <class>proficiency_item</class>
+      </list_column>
+
+      <!-- non-Weapon Prof-->
+      <!-- 
+            We do not use the nonweaponprof_header name because we want this header to ALWAYS show. 
+            If we had when readonly mode was set if no profs existed it would hide header ...
+            but we always have prof initial and rate, celestian
+      -->
+      <header_column name="nonweaponprof_header_adnd">
+        <static textres="class_header_nonweaponproficiencies"/>
+        <center />
+      </header_column>
+      <button_iedit name="nonweaponprof_iedit">
+        <anchored to="nonweaponprof_header_adnd" position="righthigh" offset="-20,0" />
+        <target>nonweaponprof</target>
+      </button_iedit>
+      <button_iadd name="nonweaponprof_iadd">
+        <anchored to="nonweaponprof_iedit" position="lefthigh" offset="5,0" />
+        <target>nonweaponprof</target>
+      </button_iadd>
+
+      <label name="label_proficiency_nonweapon_initial">
+        <anchored width="35">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="10" />
+          <left relation="relative" offset="10" />
+        </anchored>
+        <static textres="char_label_prof_initial" />
+        <tooltip textres="char_label_prof_initial_tooltip" />
+      </label>
+      <number_basic name="initial_nonweapon"  source="profs.initial.nonweapon">
+        <anchored to="label_proficiency_nonweapon_initial" position="righthigh" offset="10,0" height="18" width="30" /> 
+        <tooltip textres="char_label_prof_initial_tooltip" />
+        <min>0</min>
+      </number_basic>
+
+      <label name="label_proficiency_nonweapon_earnrate">
+        <anchored to="initial_nonweapon" position="righthigh" offset="10,0" height="18" width="27" /> 
+        <static textres="char_label_prof_earned_rate" />
+        <tooltip textres="char_label_prof_earned_rate_tooltip" />
+      </label>
+      <number_basic name="earn_rate_nonweapon" source="profs.rate.nonweapon">
+        <anchored to="label_proficiency_nonweapon_earnrate" position="righthigh" offset="10,0" height="18" width="30" /> 
+        <tooltip textres="char_label_prof_earned_rate_tooltip" />
+        <min>0</min>
+      </number_basic>
+      
+      <list_column name="nonweaponprof">
+        <datasource>.nonweaponprof</datasource>
+        <class>ref_nonweapon_proficiency</class>
+      </list_column>
+      
+      <header_column name="features_header">
+        <static textres="class_header_features"/>
+        <center />
+      </header_column>
+      <button_iedit name="features_iedit">
+        <anchored to="features_header" position="righthigh" offset="-20,0" />
+        <target>features</target>
+      </button_iedit>
+      <button_iadd name="features_iadd">
+        <anchored to="features_iedit" position="lefthigh" offset="5,0" />
+        <target>features</target>
+      </button_iadd>
+      <list_column name="features">
+        <datasource>.features</datasource>
+        <sortby><control>level</control><control>name</control></sortby>
+        <class>ref_class_feature</class>
+      </list_column>
+      
+<!--       
+      <header_column name="specializations_header">
+        <static textres="class_header_specializations"/>
+        <center />
+      </header_column>
+      <button_iedit name="specializations_iedit">
+        <anchored to="specializations_header" position="righthigh" offset="-20,0" />
+        <target>specializations</target>
+      </button_iedit>
+      <button_iadd name="specializations_iadd">
+        <anchored to="specializations_iedit" position="lefthigh" offset="5,0" />
+        <target>specializations</target>
+      </button_iadd>
+      <list_column name="specializations">
+        <datasource>.abilities</datasource>
+        <class>ref_class_specialization</class>
+      </list_column>
+ -->      
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="ref_class_proficiency">
+    <margins control="0,0,0,2" />
+    <sheetdata>
+      <anchor_listitem_column_right name="rightanchor" />
+      <link_listitem_column name="shortcut">
+        <class>reference_classproficiency</class>
+      </link_listitem_column>
+      <button_listitem_column_delete name="idelete" />
+
+      <string_listitem_column_name name="name">
+        <empty textres="library_recordtype_empty_classproficiency" />
+      </string_listitem_column_name>
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_nonweapon_proficiency">
+    <margins control="0,0,0,2" />
+    <sheetdata>
+      <anchor_listitem_column_right name="rightanchor" />
+      <link_listitem_column name="shortcut">
+        <class>reference_skill</class>
+      </link_listitem_column>
+      <button_listitem_column_delete name="idelete" />
+
+      <string_listitem_column_name name="name">
+        <empty textres="library_recordtype_empty_nonweaponproficiency" />
+      </string_listitem_column_name>
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_class_feature">
+    <margins control="0,0,0,2" />
+    <script>
+      function update(bReadOnly)
+        level.setReadOnly(bReadOnly);
+        name.setReadOnly(bReadOnly);
+      end
+
+    </script>
+    <sheetdata>
+      <anchor_listitem_column_right name="rightanchor" />
+      <link_listitem_column name="shortcut">
+        <class>reference_classfeature</class>
+      </link_listitem_column>
+      <button_listitem_column_delete name="idelete" />
+
+      <basicnumber name="level">
+        <anchored position="insidetopleft" offset="5,2" height="20" width="20" />
+      </basicnumber>
+      <string_listitem_column_name name="name">
+        <anchored offset="35,2" />
+        <empty textres="library_recordtype_empty_classfeature" />
+      </string_listitem_column_name>
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_class_specialization">
+    <margins control="0,0,0,2" />
+    <sheetdata>
+      <anchor_listitem_column_right name="rightanchor" />
+      <link_listitem_column name="shortcut">
+        <class>reference_classability</class>
+      </link_listitem_column>
+      <button_listitem_column_delete name="idelete" />
+
+      <string_listitem_column_name name="name">
+        <empty textres="library_recordtype_empty_classspecialization" />
+      </string_listitem_column_name>
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="reference_classproficiency">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="350" height="200" />
+    </placement>
+    <sizelimits>
+      <minimum width="300" height="300" />
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_reference</minimize>
+    <tooltip field="name" />
+    <script>
+      function onLockChanged()
+        if header.subwindow then
+          header.subwindow.update();
+        end
+        
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        text.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>ref_classproficiency_header</class>
+      </sub_record_header>
+
+      <frame_record_content name="contentframe" />
+      <stringfield name="text">
+        <anchored to="contentframe" position="over" />
+        <multilinespacing>20</multilinespacing>
+      </stringfield>
+      <scrollbar>
+        <anchored to="text" />
+        <target>text</target>
+      </scrollbar>
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+  <windowclass name="reference_nonweaponproficiency">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="350" height="200" />
+    </placement>
+    <sizelimits>
+      <minimum width="300" height="300" />
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_reference</minimize>
+    <tooltip field="name" />
+    <script>
+      function onLockChanged()
+        if header.subwindow then
+          header.subwindow.update();
+        end
+        
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        text.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>nonweaponprof_header</class>
+      </sub_record_header>
+
+      <frame_record_content name="contentframe" />
+      <stringfield name="text">
+        <anchored to="contentframe" position="over" />
+        <multilinespacing>20</multilinespacing>
+      </stringfield>
+      <scrollbar>
+        <anchored to="text" />
+        <target>text</target>
+      </scrollbar>
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="reference_classfeature">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="350" height="200" />
+    </placement>
+    <sizelimits>
+      <minimum width="300" height="300" />
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_reference</minimize>
+    <tooltip field="name" />
+    <script>
+      function onLockChanged()
+        if header.subwindow then
+          header.subwindow.update();
+        end
+        if content.subwindow then
+          content.subwindow.update();
+        end
+      end
+      function onDrop(x, y, draginfo)
+        UtilityManagerADND.onDropStory(x, y, draginfo,getDatabaseNode());
+      end
+      
+    </script>
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>ref_classfeature_header</class>
+      </sub_record_header>
+
+      <frame_record_content />
+      <sub_ref_content name="content">
+        <class>ref_classfeature_stats</class>
+      </sub_ref_content>
+      <scrollbar_ref_content />
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+  <windowclass name="ref_classfeature_stats">
+    <margins control="0,0,0,7" />
+    <script>
+      function onInit()
+        update();
+      end
+      function update()
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        level.update(bReadOnly);
+        text.update(bReadOnly);
+      end
+    </script>
+<!--         
+        removed these, not used by ruleset ... yet?
+        specializationchoice.update(bReadOnly);
+        specialization.update(bReadOnly);
+ -->
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      
+      <label_column name="level_label">
+        <static textres="classfeature_label_level" />
+      </label_column>
+      <number_columnh name="level" />
+      
+      <ft_columnh name="text" />
+      
+<!--       
+      <line_column />
+      
+      <label_column name="specializationchoice_label">
+        <static textres="classfeature_label_specializationchoice" />
+      </label_column>
+      <button_checkbox_columnh name="specializationchoice" />
+      
+      <label_column name="specialization_label">
+        <static textres="classfeature_label_specialization" />
+      </label_column>
+      <string_columnh name="specialization" />
+      
+ -->      
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="reference_classability">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="350" height="200" />
+    </placement>
+    <sizelimits>
+      <minimum width="300" height="300" />
+      <dynamic />
+    </sizelimits>
+    <minimize>minimized_reference</minimize>
+    <tooltip field="name" />
+    <script>
+      function onLockChanged()
+        if header.subwindow then
+          header.subwindow.update();
+        end
+        
+        local bReadOnly = WindowManager.getReadOnlyState(getDatabaseNode());
+        text.setReadOnly(bReadOnly);
+      end
+    </script>
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>ref_classability_header</class>
+      </sub_record_header>
+
+      <frame_record_content />
+      <ft_record name="text">
+        <anchored to="contentframe" position="over" />
+        <footer>footer_wide</footer>
+      </ft_record>
+      <scrollbar>
+        <anchored to="text" />
+        <target>text</target>
+      </scrollbar>
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="ref_class_advancement">
+    <margins control="0,0,2,5" /> 
+        <script>
+            function advancementEditor()
+              if User.isHost() then
+                Interface.openWindow("reference_class_advancement", getDatabaseNode());
+              end
+            end
+            function onInit()
+              local node = getDatabaseNode();
+              DB.addHandler(node.getPath() .. ".level", "onUpdate", updateEntryLabel);
+              DB.addHandler(node.getPath() .. ".expneeded", "onUpdate", updateEntryLabel);
+              DB.addHandler(node.getPath() .. ".hp.dice", "onUpdate", updateEntryLabel);
+              DB.addHandler(node.getPath() .. ".hp.adjustment", "onUpdate", updateEntryLabel);
+              updateEntryLabel();
+            end
+            function onClose()
+              local node = getDatabaseNode();
+              DB.removeHandler(node.getPath() .. ".level", "onUpdate", updateEntryLabel);
+              DB.removeHandler(node.getPath() .. ".expneeded", "onUpdate", updateEntryLabel);
+              DB.removeHandler(node.getPath() .. ".hp.dice", "onUpdate", updateEntryLabel);
+              DB.removeHandler(node.getPath() .. ".hp.adjustment", "onUpdate", updateEntryLabel);
+            end
+            function updateEntryLabel()
+              local node = getDatabaseNode();
+              local nLevel = DB.getValue(node,"level",0);
+              local nEXPNeeded = DB.getValue(node,"expneeded",0);
+              local aDice = DB.getValue(node,"hp.dice");
+              local nAdjustment = DB.getValue(node,"hp.adjustment");
+              local sHPString = StringManager.convertDiceToString(aDice,nAdjustment);
+              local sLabel ="Level: " .. nLevel .. ", HD: " .. sHPString .. ", Next: " .. nEXPNeeded;
+              advancement_entry_label.setValue(sLabel);
+              name.setValue(sLabel);
+            end
+        </script>
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <anchor_listitem_column_right name="rightanchor" />
+      <button_listitem_column_delete name="idelete" />
+      <hn name="level" />
+      <hs name="name" />
+       <class_advancement_label name="advancement_entry_label">
+        <anchored height="13">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="9" />
+          <left offset="5" />
+        </anchored>
+      </class_advancement_label> 
+    </sheetdata>
+  </windowclass>
+  
+    <!-- start advancement edit windows-->
+  <windowclass name="reference_class_advancement">
+    <frame>recordsheet</frame>
+    <placement>
+      <size width="520" height="700" />
+    </placement>
+    <sizelimits>
+      <minimum width="400" height="400" />
+      <dynamic />
+    </sizelimits>
+    <nodelete />
+    <playercontrol />
+    <minimize>minimized_reference</minimize>
+    <tooltip control="level" />
+    <sheetdata>
+      <sub_record_header name="header">
+        <class>ref_classadvacement_header</class>
+      </sub_record_header>
+      <frame_record_content />
+      
+      <subwindow_record name="main">
+        <class>class_advancement_editor_main</class>
+        <activate />
+      </subwindow_record>
+
+      <subwindow_record name="skills">
+        <class>recordslist_skills_contents</class>
+      </subwindow_record>
+
+      <subwindow_record name="weaponactions">
+        <class>charsheet_actions_weapons</class>
+      </subwindow_record>
+
+      <subwindow_record name="spellactions">
+        <class>recordslist_actions_powers</class>
+      </subwindow_record>
+            
+      <scrollbar_record_classadvancement>
+        <target>main</target>
+      </scrollbar_record_classadvancement>
+      <scrollbar_record_item>
+        <class>skills</class>
+      </scrollbar_record_item>
+      <scrollbar_record_item>
+        <target>weaponactions</target>
+      </scrollbar_record_item>
+      <scrollbar_record_power>
+        <target>spellactions</target>
+      </scrollbar_record_power>
+
+      <tabs_recordsheet>
+        <tab>
+          <icon>tab_main</icon>
+          <subwindow>main</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_skills</icon>
+          <subwindow>skills</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_weapons</icon>
+          <subwindow>weaponactions</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_powers</icon>
+          <subwindow>spellactions</subwindow>
+        </tab>
+      </tabs_recordsheet>
+      <!-- -->
+      
+      <resize_recordsheet />
+      <close_recordsheet />
+    </sheetdata>
+  </windowclass>
+  
+  
+  
+  <windowclass name="class_advancement_editor_main">
+  <margins control="0,2,10,2" />
+    <script>
+      function onInit()
+        class_advancement_leveling.subwindow.level.setFocus();
+        class_advancement_matrix_1e.setVisible((DataCommonADND.coreVersion == "1e"));
+        class_advancement_matrix_becmi.setVisible((DataCommonADND.coreVersion == "becmi"));
+      end
+    </script>
+    <sheetdata>
+    <anchor_column name="columnanchor" />
+
+    <class_advancement_subwindow name="class_advancement_leveling">
+      <class>class_advancement_editor_leveling</class>
+    </class_advancement_subwindow>
+    
+    <class_advancement_subwindow name="class_advancement_combat">
+      <class>class_advancement_editor_combat</class>
+    </class_advancement_subwindow>
+
+    <class_advancement_subwindow name="class_advancement_matrix_1e">
+      <class>class_advancement_editor_matrix_1e</class>
+    </class_advancement_subwindow>
+
+    <class_advancement_subwindow name="class_advancement_matrix_becmi">
+      <class>class_advancement_editor_matrix_becmi</class>
+    </class_advancement_subwindow>
+
+    <class_advancement_subwindow name="class_advancement_misc">
+      <class>class_advancement_editor_misc</class>
+    </class_advancement_subwindow>
+
+    <class_advancement_subwindow name="class_advancement_proficiencies">
+      <class>class_advancement_editor_proficiencies</class>
+    </class_advancement_subwindow>
+
+    <class_advancement_subwindow name="class_advancement_spells">
+      <class>class_advancement_editor_spells</class>
+    </class_advancement_subwindow>
+              
+    <class_advancement_subwindow name="class_advancement_saves">
+      <class>class_advancement_editor_saves</class>
+    </class_advancement_subwindow>
+
+    <class_advancement_subwindow name="class_advancement_effects">
+      <class>class_advancement_editor_effects</class>
+    </class_advancement_subwindow>
+
+    </sheetdata>
+  </windowclass>
+    <!-- end advancement edit windows-->
+
+  <windowclass name="class_advancement_editor_leveling">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <header_column name="header_adv_level">
+        <static textres="class_advancement_header_level"/>
+        <center />
+      </header_column>      
+      <label_column name="level_label" >
+        <static textres="classfeature_label_level" />
+      </label_column>
+      <number_class_column name="level" >
+        <anchored width="20" />
+      </number_class_column>
+
+      <label name="expneeded_label">
+        <anchored to="level" position="righthigh" offset="10,0" />
+        <static textres="class_expneeded_label" />
+        <tooltip textres="class_expneeded_tooltip" />
+      </label>
+      <number_class name="expneeded">
+        <anchored to="expneeded_label" position="righthigh" offset="10,0" width="100" />
+        <tooltip textres="class_expneeded_tooltip" />
+      </number_class>    
+    </sheetdata>
+  </windowclass>
+  
+  <windowclass name="class_advancement_editor_combat">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <header_column name="header_adv_combat">
+        <static textres="class_advancement_header_combat"/>
+        <center />
+      </header_column>      
+
+      <label_column name="thaco_label">
+        <static textres="thaco" />
+        <tooltip textres="class_thaco_tooltip" />
+      </label_column>
+      <number_class_column name="thaco">
+        <tooltip textres="class_thaco_tooltip" />
+      </number_class_column>
+
+      <label name="hd_label">
+        <anchored to="thaco" position="righthigh" offset="10,0" />
+        <static textres="class_hpgained_label" />
+        <tooltip textres="class_hpgained_tooltip" />
+      </label>
+      <basicdice name="hitdice" source="hp.dice">
+        <anchored to="hd_label" position="righthigh" offset="10,0" width="45" height="20" />
+        <tooltip textres="class_hp_dice_tooltip" />
+      </basicdice>
+      <label name="hitdicemod_label">
+        <anchored to="hitdice" position="righthigh" offset="10,0" />
+        <static text=" + " />
+      </label>
+      <number_class name="adjustment" source="hp.adjustment">
+        <anchored to="hitdicemod_label" position="righthigh" offset="10,0" width="20" />
+        <displaysign />
+        <tooltip textres="class_hp_adjustment_tooltip" />
+      </number_class>
+      
+      <label_column name="ac_label">
+        <static textres="class_ac_label" />
+        <tooltip textres="class_ac_tooltip" />
+      </label_column>
+      <number_class_column name="ac">
+        <hideonvalue>99</hideonvalue>
+        <default>99</default>
+        <anchored to="ac_label" position="righthigh" offset="10,0" width="30" />
+        <tooltip textres="class_ac_tooltip" />
+      </number_class_column>
+
+      <label name="move_label">
+        <anchored to="ac" position="righthigh" offset="10,0" />
+        <static textres="class_move_label" />
+        <tooltip textres="class_move_tooltip" />
+      </label>
+      <number_class name="speed">
+        <hideonvalue>0</hideonvalue>
+        <anchored height="20" width="30">
+          <top parent="move_label" />
+          <left parent="hitdice" />
+        </anchored>
+        
+        <tooltip textres="class_move_tooltip" />
+      </number_class>
+
+    </sheetdata>
+  </windowclass>
+
+  <!-- for matrix attacks 10..-10 ac with d20 value matching -->
+  <windowclass name="class_advancement_editor_matrix_1e">
+    <script file="campaign/scripts/char_matrix.lua" />
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <anchor_left name="leftanchor" />
+      
+      <header_column name="header_adv_matrix">
+        <static textres="class_advancement_header_matrix"/>
+        <center />
+      </header_column>
+      <label name="matrix_ac_label">
+        <anchored >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="5" />
+          <left />
+          <right />
+        </anchored>
+        <static textres="class_advancement_details_matrix_ac" />
+        <center />
+      </label>
+      <label name="matrix_roll_label">
+        <anchored width="35" height="20" >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="12" />
+          <left offset="5" />
+        </anchored>
+        <static textres="class_advancement_details_matrix_roll" />
+      </label>
+      
+    </sheetdata>
+  </windowclass>  
+  
+  <!-- for matrix attacks 20..-20 ac with d20 value matching -->
+  <windowclass name="class_advancement_editor_matrix_becmi">
+    <script file="campaign/scripts/char_matrix.lua" />
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <anchor_left name="leftanchor" />
+      
+      <header_column name="header_adv_matrix">
+        <static textres="class_advancement_header_matrix"/>
+        <center />
+      </header_column>
+      <label name="matrix_ac_label">
+        <anchored >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="5" />
+          <left />
+          <right />
+        </anchored>
+        <static textres="class_advancement_details_matrix_ac" />
+        <center />
+      </label>
+      <label name="matrix_roll_label">
+        <anchored width="35" height="20" >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="12" />
+          <left offset="5" />
+        </anchored>
+        <static textres="class_advancement_details_matrix_roll" />
+      </label>
+      
+    </sheetdata>
+  </windowclass>  
+
+  <!-- for matrix attacks 10..-10 ac with d20 value matching -->
+  <windowclass name="char_matrix_edit_1e">
+    <script file="campaign/scripts/char_matrix.lua" />
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <anchor_left name="leftanchor" />
+      
+      <label name="matrix_title_label">
+        <font>bold11</font>
+        <anchored >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="1" />
+          <left />
+          <right />
+        </anchored>
+        <static textres="class_advancement_header_matrix" />
+        <center />
+      </label>
+
+      <label name="matrix_ac_label">
+        <font>bold11</font>
+        <anchored width="20" height="15" >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="8"/>
+          <left offset="5" />
+        </anchored>
+        <static textres="thaco_attack_matrix_ac" />
+      </label>
+      <label name="matrix_roll_label">
+        <font>bold11</font>
+        <anchored width="25" height="20" >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="1" />
+          <left offset="5" />
+        </anchored>
+        <static textres="class_advancement_details_matrix_roll" />
+      </label>
+      
+    </sheetdata>
+  </windowclass>  
+
+  <!-- for matrix attacks 20..-20 ac with d20 value matching -->
+  <windowclass name="char_matrix_edit_becmi">
+    <script file="campaign/scripts/char_matrix.lua" />
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <anchor_left name="leftanchor" />
+      
+      <label name="matrix_title_label">
+        <font>bold11</font>
+        <anchored >
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="1" />
+          <left />
+          <right />
+        </anchored>
+        <static textres="class_advancement_header_matrix" />
+        <center />
+      </label>
+
+      <label name="matrix_ac_label">
+        <font>bold11</font>
+        <anchored width="20" height="15" >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="8"/>
+          <left offset="5" />
+        </anchored>
+        <static textres="thaco_attack_matrix_ac" />
+      </label>
+      <label name="matrix_roll_label">
+        <font>bold11</font>
+        <anchored width="25" height="20" >
+          <top parent="leftanchor" anchor="bottom" relation="relative" offset="1" />
+          <left offset="5" />
+        </anchored>
+        <static textres="class_advancement_details_matrix_roll" />
+      </label>
+      
+    </sheetdata>
+  </windowclass>  
+
+  <windowclass name="class_advancement_editor_proficiencies">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <header_column name="header_adv_profs">
+        <static textres="class_advancement_header_profs"/>
+        <center />
+      </header_column>      
+      <label name="weaponprofs_label">
+        <anchored width="55" height="20">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+          <left />
+        </anchored>
+        <static textres="class_profs_weapon" />
+        <tooltip textres="class_profs_weapon_tooltip" />
+      </label>
+      <number_class name="weaponprofs">
+        <anchored to="weaponprofs_label" position="righthigh" offset="10,0" width="20" />
+        <displaysign />
+        <tooltip textres="class_profs_weapon_tooltip" />
+      </number_class>
+
+      <label name="nonweaponprofs_label">
+        <anchored to="weaponprofs" position="righthigh" offset="10,0" width="75" />
+        <static textres="class_profs_nonweapon" />
+        <tooltip textres="class_profs_nonweapon_tooltip" />
+      </label>
+      <number_class name="nonweaponprofs">
+        <anchored to="nonweaponprofs_label" position="righthigh" offset="10,0" width="20" />
+        <displaysign />
+        <tooltip textres="class_profs_nonweapon_tooltip" />
+      </number_class>
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="class_advancement_editor_spells">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <header_column name="header_adv_spells">
+        <static textres="class_advancement_header_spells"/>
+        <center />
+      </header_column>      
+      <label_column name="spell_levels_label">
+        <static textres="class_spelllevels" />
+        <tooltip textres="class_spelllevels_tooltip" />
+      </label_column>
+      <!-- ARCANE SPELL LEVEL -->
+      <number_class_slot_column name="arcane_spelllevel" source="arcane.totallevel">
+        <anchored width="35" />
+        <min>0</min>
+      </number_class_slot_column>
+      <label_fieldbottom>
+        <anchored to="arcane_spelllevel" />
+        <static textres="arcane" />
+        <tooltip textres="class_spelllevels_tooltip" />
+      </label_fieldbottom>
+      <!-- DIVINE SPELL LEVEL -->
+      <number_class_slot name="divine_spelllevel" source="divine.totallevel">
+        <anchored to="arcane_spelllevel" position="righthigh" offset="8" width="35"/>
+        <min>0</min>
+      </number_class_slot>
+      <label_fieldbottom>
+        <anchored to="divine_spelllevel" />
+        <static textres="divine" />
+        <tooltip textres="class_spelllevels_tooltip" />
+      </label_fieldbottom>
+            
+            
+      <label_column name="spell_slots_label">
+        <static textres="class_spellslots" />
+        <tooltip textres="class_spellslots_tooltip" />
+      </label_column>
+      <genericcontrol name="spell_slots_spacer">
+        <anchored height="20">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+          <left offset="97" />
+        </anchored>
+      </genericcontrol>
+            
+      <!-- arcane -->
+      <label_column name="arcane_label">
+        <static textres="arcane" />
+        <tooltip textres="class_spellslots_arcane_tooltip" />
+      </label_column>
+      <!-- level 1-->
+      <number_class_slot_column name="arcane1" source="spells.arcane.level1">
+        <anchored width="15" />
+        <displaysign />
+      </number_class_slot_column>
+      <label_fieldtop>
+        <anchored to="arcane1" />
+        <static textres="1" />
+      </label_fieldtop>
+            <!-- level 2-->
+      <number_class_slot name="arcane2" source="spells.arcane.level2">
+        <anchored to="arcane1" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+        <anchored to="arcane2" />
+        <static textres="2" />
+      </label_fieldtop>
+            <!-- level 3-->
+      <number_class_slot name="arcane3" source="spells.arcane.level3">
+        <anchored to="arcane2" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane3" />
+          <static textres="3" />
+      </label_fieldtop>
+      <!-- level 4-->
+      <number_class_slot name="arcane4" source="spells.arcane.level4">
+        <anchored to="arcane3" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane4" />
+          <static textres="4" />
+      </label_fieldtop>
+      <!-- level 5-->
+      <number_class_slot name="arcane5" source="spells.arcane.level5">
+        <anchored to="arcane4" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane5" />
+          <static textres="5" />
+      </label_fieldtop>
+      <!-- level 6-->
+      <number_class_slot name="arcane6" source="spells.arcane.level6">
+        <anchored to="arcane5" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane6" />
+          <static textres="6" />
+      </label_fieldtop>
+      <!-- level 7-->
+      <number_class_slot name="arcane7" source="spells.arcane.level7">
+        <anchored to="arcane6" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane7" />
+          <static textres="7" />
+      </label_fieldtop>
+      <!-- level 8-->
+      <number_class_slot name="arcane8" source="spells.arcane.level8">
+        <anchored to="arcane7" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane8" />
+          <static textres="8" />
+      </label_fieldtop>
+      <!-- level 9-->
+      <number_class_slot name="arcane9" source="spells.arcane.level9">
+        <anchored to="arcane8" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <label_fieldtop>
+          <anchored to="arcane9" />
+          <static textres="9" />
+      </label_fieldtop>
+            
+            
+      <!-- divine -->
+      <label_column name="divine_label">
+        <static textres="divine" />
+        <tooltip textres="class_spellslots_divine_tooltip" />
+      </label_column>
+      <!-- level 1-->
+      <number_class_slot_column name="divine1" source="spells.divine.level1">
+        <anchored width="15" />
+        <displaysign />
+      </number_class_slot_column>
+      <!-- level 2-->
+      <number_class_slot name="divine2" source="spells.divine.level2">
+        <anchored to="divine1" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <!-- level 3-->
+      <number_class_slot name="divine3" source="spells.divine.level3">
+        <anchored to="divine2" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+        <!-- level 4-->
+      <number_class_slot name="divine4" source="spells.divine.level4">
+        <anchored to="divine3" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <!-- level 5-->
+      <number_class_slot name="divine5" source="spells.divine.level5">
+        <anchored to="divine4" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <!-- level 6-->
+      <number_class_slot name="divine6" source="spells.divine.level6">
+        <anchored to="divine5" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      <!-- level 7-->
+      <number_class_slot name="divine7" source="spells.divine.level7">
+        <anchored to="divine6" position="righthigh" offset="8"/>
+        <displaysign />
+      </number_class_slot>
+      
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="class_advancement_editor_saves">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <header_column name="header_adv_saves">
+        <static textres="class_advancement_header_saves"/>
+        <center />
+        <tooltip textres="class_saves_tooltip" />
+      </header_column>      
+      <genericcontrol name="saves_spacer">
+        <anchored height="1">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+          <left />
+        </anchored>
+      </genericcontrol>
+      <!-- SAVES -->
+      <!-- save para-->
+      <basicnumber name="save_paralyzation" source="saves.paralyzation.base">
+        <anchored height="20" width="15">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+          <left offset="5" />
+        </anchored>
+        <tooltip textres="paralyzation" />
+        <hideonvalue>0</hideonvalue>
+        <default>0</default>
+        <center />
+      </basicnumber>
+      <label_fieldtop>
+        <anchored to="save_paralyzation" />
+        <static textres="class_label_save_paralyzation_short" />
+        <tooltip textres="paralyzation" />
+      </label_fieldtop>
+      <!-- save poison-->
+      <number_class_save name="save_poison" source="saves.poison.base">
+        <anchored to="save_paralyzation" position="righthigh" offset="8"/>
+        <tooltip textres="poison" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_poison" />
+          <static textres="class_label_save_poison_short" />
+          <tooltip textres="poison" />
+      </label_fieldtop>
+      <!-- save death-->
+      <number_class_save name="save_death" source="saves.death.base">
+        <anchored to="save_poison" position="righthigh" offset="8"/>
+        <tooltip textres="death" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_death" />
+          <static textres="class_label_save_death_short" />
+          <tooltip textres="death" />
+      </label_fieldtop>
+      <!-- save rod-->
+      <number_class_save name="save_rod" source="saves.rod.base">
+        <anchored to="save_death" position="righthigh" offset="8"/>
+        <tooltip textres="rod" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_rod" />
+          <static textres="class_label_save_rod_short" />
+          <tooltip textres="rod" />
+      </label_fieldtop>
+      <!-- save staff-->
+      <number_class_save name="save_staff" source="saves.staff.base">
+        <anchored to="save_rod" position="righthigh" offset="8"/>
+        <tooltip textres="staff" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_staff" />
+          <static textres="class_label_save_staff_short" />
+          <tooltip textres="staff" />
+      </label_fieldtop>
+      <!-- save wand-->
+      <number_class_save name="save_wand" source="saves.wand.base">
+        <anchored to="save_staff" position="righthigh" offset="8"/>
+        <tooltip textres="wand" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_wand" />
+          <static textres="class_label_save_wand_short" />
+          <tooltip textres="wand" />
+      </label_fieldtop>
+      <!-- save petri-->
+      <number_class_save name="save_petrification" source="saves.petrification.base">
+        <anchored to="save_wand" position="righthigh" offset="8"/>
+        <tooltip textres="petrification" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_petrification" />
+          <static textres="class_label_save_petrification_short" />
+          <tooltip textres="petrification" />
+      </label_fieldtop>
+      <!-- save poly-->
+      <number_class_save name="save_poly" source="saves.polymorph.base">
+        <anchored to="save_petrification" position="righthigh" offset="8"/>
+        <tooltip textres="polymorph" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_poly" />
+          <static textres="class_label_save_polymorph_short" />
+          <tooltip textres="polymorph" />
+      </label_fieldtop>
+      <!-- save breath-->
+      <number_class_save name="save_breath" source="saves.breath.base">
+        <anchored to="save_poly" position="righthigh" offset="8"/>
+        <tooltip textres="breath" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_breath" />
+          <static textres="class_label_save_breath_short" />
+          <tooltip textres="breath" />
+      </label_fieldtop>
+      <!-- save spell-->
+      <number_class_save name="save_spell" source="saves.spell.base">
+        <anchored to="save_breath" position="righthigh" offset="8"/>
+        <tooltip textres="spell" />
+      </number_class_save>
+      <label_fieldtop>
+          <anchored to="save_spell" />
+          <static textres="class_label_save_spell_short" />
+          <tooltip textres="spell" />
+      </label_fieldtop>
+
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="class_advancement_editor_misc">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <header_column name="header_adv_misc">
+        <static textres="class_advancement_header_misc"/>
+        <center />
+      </header_column>      
+      <label_column name="turn_label">
+        <static textres="char_label_turn" />
+        <tooltip textres="class_turn_tooltip" />
+      </label_column>
+      <number_class_column name="turnlevel">
+        <tooltip textres="class_turn_tooltip" />
+      </number_class_column>
+
+      <label_column name="psp_label">
+        <static textres="class_pspgained_label" />
+        <tooltip textres="class_pspgained_tooltip" />
+      </label_column>
+      <basicdice name="pspdice" source="psp.dice">
+        <anchored width="45" height="20">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+          <left offset="97" />
+        </anchored>
+        <tooltip textres="class_psp_dice_tooltip" />
+      </basicdice>
+      <label name="pspdicemod_label">
+        <anchored to="pspdice" position="righthigh" offset="10,0" />
+        <static text=" + " />
+      </label>
+      <number_class name="pspadjustment" source="psp.adjustment">
+        <anchored to="pspdicemod_label" position="righthigh" offset="10,0" width="20" />
+        <displaysign />
+        <tooltip textres="class_psp_adjustment_tooltip" />
+      </number_class>
+      <label name="mthaco_label">
+        <anchored to="pspadjustment" position="righthigh" offset="10,0" />
+        <static textres="mthaco" />
+        <tooltip textres="class_mthaco_tooltip" />
+      </label>
+      <number_class name="mthaco">
+        <anchored to="mthaco_label" position="righthigh" offset="10,0" width="20" />
+        <tooltip textres="class_mthaco_tooltip" />
+      </number_class>
+      <genericcontrol name="bottom_spacer">
+          <anchored height="1">
+            <top parent="columnanchor" anchor="bottom" relation="relative" offset="7" />
+            <left />
+          </anchored>
+      </genericcontrol>
+      
+    </sheetdata>
+  </windowclass>
+    
+  <windowclass name="class_advancement_editor_effects">
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <!-- advanced effects -->
+      <!-- effects saves_label -->
+      <header_column name="advancedeffectstitle">
+        <static textres="char_abilities_label_advancedeffects"/>
+        <center />
+      </header_column>
+
+      <button_iedit name="effects_iedit">
+        <anchored to="advancedeffectstitle" position="insidetopright" offset="-5,0" />
+        <script>
+          function onValueChanged()
+            local bEditMode = (getValue() == 1);
+            window.effects_list_iadd.setVisible(bEditMode);
+            window.effects_list.update();
+          end
+        </script>
+      </button_iedit>
+      <button_iadd name="effects_list_iadd">
+        <anchored to="effects_iedit" position="lefthigh" offset="5,0" />
+        <target>effects_list</target>
+      </button_iadd>
+            
+      <list_editor_advanced_effects name="effects_list">
+        <anchored>
+          <top parent="advancedeffectstitle" anchor="bottom" relation="relative" offset="0" />
+          <left />
+          <right />
+        </anchored>
+        <datasource>.effectlist</datasource>
+        <class>advanced_effects_entry</class>
+        <script>
+          function addEntry(bFocus)
+            local n = getWindowCount();
+            local w = createWindow();
+            return w;
+          end
+        </script>
+      </list_editor_advanced_effects>
+      <!-- end advanced effects entry -->
+    </sheetdata>
+  </windowclass>
+    
+    
+</root>

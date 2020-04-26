@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="charsheet">
+    <frame>charsheet</frame>
+    <placement>
+      <size width="530" height="580" />
+    </placement>
+    <sizelimits>
+      <minimum width="530" height="580" />
+      <!-- <maximum width="510" /> -->
+      <dynamic />
+    </sizelimits>
+    <softclose />
+    <nodelete />
+    <playercontrol />
+    <minimize>minimized_char</minimize>
+    <tooltip field="name" />
+    <script file="campaign/scripts/char.lua" />
+    <sheetdata>
+      <anchor_title_charsheet name="contentanchor"/>
+
+      <stringu name="name">
+        <anchored to="contentanchor" height="20">
+          <top anchor="bottom" relation="relative" offset="7" />
+          <left anchor="token" postion="right" offset="50" />
+          <right offset="-160" />
+        </anchored>
+        <nodrag/>
+      </stringu>
+      <label name="name_label" >
+        <anchored to="name" >
+          <top anchor="bottomleft" relation="relative" offset="-3" />
+          <left anchor="left" />
+          <right anchor="right" />
+        </anchored>
+        <static textres="char_label_name" />
+        <font>regular10</font>
+      </label>
+
+      <token_char name="token">
+        <anchored to="contentanchor" position="belowright" offset="25,6" width="45" height="45" />
+      </token_char>
+      <genericcontrol>
+        <anchored to="contentanchor" position="belowleft" offset="5,5" width="45" height="45" />
+        <icon>charlist_base</icon>
+        <disabled />
+      </genericcontrol>
+			<button_charactivate>
+				<anchored to="contentanchor" position="belowright" offset="0,5" width="23" height="22" />
+			</button_charactivate>
+      <portrait_charlocal name="localportrait">
+        <anchored to="contentanchor" position="belowleft" offset="5,5" width="45" height="45" />
+        <invisible />
+      </portrait_charlocal>
+      <portrait_char name="portrait">
+        <anchored to="contentanchor" position="belowleft" offset="5,5" width="45" height="45" />
+      </portrait_char>
+
+      <sub_charsheet name="main">
+        <class>charsheet_main</class>
+      </sub_charsheet>
+      <sub_charsheet name="skills">
+        <class>charsheet_skills</class>
+      </sub_charsheet>
+      <sub_charsheet name="abilities">
+        <class>charsheet_abilities</class>
+      </sub_charsheet>
+      <sub_charsheet name="inventory">
+        <class>charsheet_inventory</class>
+      </sub_charsheet>
+      <sub_charsheet name="notes">
+        <class>charsheet_notes</class>
+      </sub_charsheet>
+
+      <sub_charsheet name="combat">
+        <class>charsheet_combat</class>
+      </sub_charsheet>
+
+      <tabs_charsheet>
+        <tab>
+          <icon>tab_main</icon>
+          <subwindow>main</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_skills</icon>
+          <subwindow>skills</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_inventory</icon>
+          <subwindow>inventory</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_abilities</icon>
+          <subwindow>abilities</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_notes</icon>
+          <subwindow>notes</subwindow>
+        </tab>
+        <tab>
+          <icon>tab_actions</icon>
+          <subwindow>combat</subwindow>
+        </tab>
+        <activate>1</activate>
+      </tabs_charsheet>
+
+      <help name="help_character_sheet">
+        <anchored height="20" width="20">
+          <top offset="2" />
+          <right offset="-40" />
+        </anchored>
+        <urlres>help_library_charactersheet</urlres>
+      </help>
+      <close_charsheet>
+      <anchored height="20" width="20">
+        <top offset="2" />
+        <right offset="-20" />
+      </anchored>
+      </close_charsheet>
+      <resize_charsheet />
+    </sheetdata>
+  </windowclass>
+</root>

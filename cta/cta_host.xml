@@ -1,0 +1,1024 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+
+  <!-- main cta window for host  -->
+  <windowclass name="combattracker_host">
+    <script file="cta/scripts/cta.lua" />
+    <frame>cta_box</frame>
+    <placement>
+      <size width="650" height="400" />
+    </placement>
+    <sizelimits>
+      <minimum width="475" height="330" />
+      <dynamic />
+    </sizelimits>
+    <softclose />
+    <nodelete />
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+
+      <subwindow_cta_combatants name="combatants" />
+      
+      <subwindow_cta_selected name="selected" />
+      
+      <button_cta_menu />
+      
+     <!--  <frame_ctabox_host_header_visibility /> -->
+      <button_cta_npc_visibility />
+      
+      <button_cta_setactive />
+      <button_cta_nextactor />
+      
+      <button_cta_faction_friend name="cta_friends" />
+      <button_cta_faction_neutral name="cta_neutrals" />
+      <button_cta_faction_foe name="cta_foes" />
+      
+      <label_cta_host_rounds />
+      <number_cta_host_rounds />
+      <button_cta_nextround />
+      
+      <resize_ctabox />
+      <help_cta />
+      <close_ctabox />
+    </sheetdata>
+  </windowclass>
+
+  <!-- window list on the left of all combatants -->
+  <windowclass name="cta_combatant_list_host">
+    <sheetdata>
+      <list_cta_combatants_host name="list" />
+      <scrollbar>
+        <anchored to="list" offset="-5,-10" />
+        <target>list</target>
+      </scrollbar>
+    </sheetdata>
+  </windowclass>
+ 
+  <!-- header for selected entry -->
+  <windowclass name="selected_entry_header">
+    <script>
+      function onHealthChanged()
+        local sColor, nPercentWounded, sStatus = ActorManager2.getWoundColor("ct", getDatabaseNode());
+        wounds.setColor(sColor);
+        status.setValue(sStatus);
+
+        local sClass,_ = link.getValue();
+        if sClass ~= "charsheet" then
+          idelete.setVisibility((nPercentWounded >= 1));
+        end
+      end
+    </script>
+    <sheetdata>
+      
+      <hs name="status" />
+      
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top />
+          <right />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+    
+      <string_ct name="name">
+        <anchored height="20" >
+          <top parent="" anchor="bottom" relation="relative" offset="5" />
+          <left parent="" anchor="left" offset="5" />
+        </anchored>
+      </string_ct>
+      
+      <button_ctentry_idelete name="idelete">
+        <anchored to="rightanchor" width="35" height="35">
+          <top parent="name" offset="-2" />
+          <right anchor="left" relation="relative" offset="0" />
+        </anchored>
+      </button_ctentry_idelete>
+      <link_ctaentry name="link">
+        <anchored to="rightanchor" width="35" height="35">
+          <top parent="name" />
+          <right anchor="left" relation="relative" offset="0" />
+        </anchored>
+      </link_ctaentry>
+      
+      <number_ct_crosslink name="wounds">
+        <anchored to="rightanchor" width="30" height="20">
+          <top parent="name" />
+          <right anchor="left" relation="relative" offset="-10" />
+        </anchored>
+        <min value="0" />
+        <hideonvalue value="0" />
+        <tooltip textres="ct_wounds_tooltip" />
+        <tabtarget prev="hptemp"/>
+        <script>
+          function handleDrop(draginfo)
+            if draginfo.getType() == "number" then
+              local node = getDatabaseNode();
+              local rActor = ActorManager.getActorFromCT(node);
+              ActionDamage.applyDamage(nil, rActor, CombatManager.isCTHidden(node), draginfo.getDescription(), draginfo.getNumberData());
+            end
+          end
+          function update()
+            window.onHealthChanged();
+          end
+          function onDoubleClick(x,y)
+            Interface.openWindow("ct_healthadjust", window.getDatabaseNode());
+          end      
+        </script>
+      </number_ct_crosslink>
+      <cta_below_label name="wounds_lable">
+        <static textres="cta_selected_wounds_label" />
+        <anchored to="wounds" />
+      </cta_below_label>
+    
+      <number_ct_crosslink name="hptemp">
+        <anchored to="rightanchor" width="30" height="20">
+          <top parent="name" />
+          <right anchor="left" relation="relative" offset="-10" />
+        </anchored>
+        <color>0000AA</color>
+        <hideonvalue value="0" />
+        <tabtarget prev="hptotal" next="wounds" />
+        <script>
+          function handleDrop(draginfo)
+            if draginfo.getNumberData() &gt; 0 then
+              setValue(draginfo.getNumberData());
+            else
+              setValue(getValue() + draginfo.getNumberData());
+            end
+          end
+
+          function update()
+            window.onHealthChanged();
+          end
+        </script>
+      </number_ct_crosslink>
+      <cta_below_label name="hptemp_lable">
+        <static textres="cta_selected_hptemp_label" />
+        <anchored to="hptemp" />
+      </cta_below_label>
+      
+      <number_ct_crosslink name="hptotal">
+        <anchored to="rightanchor" width="30" height="20">
+          <top parent="name" />
+          <right anchor="left" relation="relative" offset="-10" />
+        </anchored>
+        <tabtarget prev="initresult" next="hptemp" />
+        <script>
+          function update()
+            window.onHealthChanged();
+          end
+          function onDoubleClick(x,y)
+            local node = window.getDatabaseNode();
+            local rActor = ActorManager.getActorFromCT(node);
+            local bNPC = (not (rActor.sType == "pc")); 
+            if bNPC then
+              Interface.openWindow("ct_npc_hpadjust", window.getDatabaseNode());
+            end
+          end      
+        </script>
+        <readonly />
+        <tooltip textres="cta_hptotal_tooltip" />
+      </number_ct_crosslink>
+      <cta_below_label name="hptotal_lable">
+        <static textres="cta_selected_hptotal_label" />
+        <anchored to="hptotal" />
+      </cta_below_label>
+      
+      <number_ct_crosslink name="initresult">
+        <anchored to="rightanchor" width="30" height="20">
+          <top parent="name" />
+          <right anchor="left" relation="relative" offset="-10" />
+        </anchored>
+        <hideonvalue>0</hideonvalue>
+        <tabtarget prev="name" next="hptotal" />
+      </number_ct_crosslink>
+      <cta_below_label name="initresult_lable">
+        <static textres="cta_selected_initresult_label" />
+        <anchored to="initresult" />
+      </cta_below_label>
+      
+      <button_faction  name="friendfoe">
+        <anchored merge="replace" to="rightanchor" width="35" height="32">
+          <top parent="name" offset="-5" />
+          <right anchor="left" relation="relative" offset="2" />
+        </anchored>
+      </button_faction>
+    
+      <stringu name="name_hidden">
+        <anchored to="name" height="20" >
+          <top offset="0" />
+          <left anchor="right" offset="5" />
+          <right parent="rightanchor" anchor="left" relation="relative" offset="0" />
+        </anchored>
+      </stringu>
+
+      <anchor_below_header name="header-space"/>
+      <string_ctaentry_combatstats name="combatstats_summary" />
+      <button_ctaentry_targets_clear name="target_button_clear" />
+      <string_ctaentry_targets name="target_summary" />
+      <string_ctaentry_effects name="effect_summary" />
+      
+      </sheetdata>
+  </windowclass>
+
+  <!-- main selected window, actions/saves/etc, right side with all the fun stuff -->
+  <windowclass name="cta_main_selected_host">
+    <!-- <frame name="field-red" /> -->
+    
+    <script file="cta/scripts/cta_selected.lua" />
+    <sheetdata>
+      <cta_selected_header name="header" />
+      <cta_selected_contentframe name="contentframe" />
+      <cta_selected_contentanchor name="contentanchor"/>
+
+      <cta_selected_actions name="actions" />
+      <cta_selected_scrollbar>
+        <anchored to="actions" />
+        <target>actions</target>
+      </cta_selected_scrollbar>
+
+      <cta_selected_effects name="effects" />
+      <cta_selected_scrollbar>
+        <anchored to="effects" />
+        <target>effects</target>
+      </cta_selected_scrollbar>
+      
+      <cta_selected_stats name="stats"/>
+      <cta_selected_scrollbar>
+        <anchored to="stats" />
+        <target>stats</target>
+      </cta_selected_scrollbar>
+
+      <cta_selected_skills name="skills" /> 
+      <cta_selected_scrollbar>
+        <anchored to="skills" />
+        <target>skills</target>
+      </cta_selected_scrollbar>
+      
+      <tabs_cta name="tabs_cta">
+        <tab>
+          <subwindow>actions</subwindow>
+          <textres>cta_selected_actions_title</textres>
+        </tab>
+        <tab>
+          <subwindow>effects</subwindow>
+          <textres>cta_selected_effects_title</textres>
+        </tab>
+        <tab>
+          <subwindow>stats</subwindow>
+          <textres>cta_selected_stats_title</textres>
+        </tab>
+        <tab>
+          <subwindow>skills</subwindow>
+          <textres>cta_selected_skills_title</textres>
+        </tab>
+        <activate>1</activate>
+      </tabs_cta>
+
+    </sheetdata>
+  </windowclass>
+ 
+  <!-- the entry in the combatant list on the left -->
+  <windowclass name="combatants_entry_host">
+    <!-- <frame>ctaentrybox</frame> -->
+    <!-- <margins control="-15,-2,-2,-2" /> -->
+    <script file="cta/scripts/cta_entry.lua" />
+    <sheetdata>
+      <anchor_right />
+
+      <string_ct name="name">
+        <anchored height="15">
+          <top relation="relative" anchor="bottom" offset="1" />
+          <left anchor="left" offset="8" />
+          <!-- <right anchor="right" offset="1" /> -->
+        </anchored>
+        <nodrag />
+        <readonly />
+        <font>regular11</font>
+      </string_ct>
+
+      <stringu name="name_hidden">
+        <anchored height="15">
+          <top anchor="bottom" offset="1" />
+          <left parent="name" anchor="right" offset="5" />
+          <right anchor="right" offset="-10" />
+        </anchored>
+        <nodrag />
+        <readonly />
+        <invisible />
+        <font>regular11</font>
+      </stringu>
+      
+      <button_ctaentry_active name="active" />
+      <token_ctaentry name="token" />
+      <button_ctaentry_tokenvis name="tokenvis" />
+      <button_ctaentry_isidentified name="isidentified" />
+      <button_ctaentry_friendfoe name="friendfoe" />
+      <bar_ctaentry_hp name="hpbar" />
+      <button_ctaentry_initresult name="initresult" />
+      <icon_cta_targets name="targets" />
+      <icon_cta_targets_selected name="targetsSelected" />
+      <cta_select_right_button name="cta_select_right" />
+      <idelete_cta_entry name="idelete"/>
+      
+    </sheetdata>
+  </windowclass>
+ 
+  <!-- stats tab subwindow -->
+  <windowclass name="cta_stats_host">
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <subwindow name="cta_saves_and_abilities_host">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="10" />
+          <left  />
+          <right />
+        </anchored>
+        <activate />
+        <fastinit />
+        <class>cta_saves_and_abilities_host</class>
+        <frame name="ct_subgroupbox" offset="0,5,0,5" />
+      </subwindow>
+      <cta_subwindow_toplabel name="cta_saves_and_abilities_host_label">
+        <static textres="cta_stats_and_saves_title" />
+        <anchored to="cta_saves_and_abilities_host">
+          <left offset="-50" />
+        </anchored>
+      </cta_subwindow_toplabel>
+      
+      <subwindow name="cta_tokendetails_host">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="10" />
+          <left  />
+          <right />
+        </anchored>
+        <activate />
+        <fastinit />
+        <class>cta_reach_size_host</class>
+        <frame name="ct_subgroupbox" offset="0,6,0,8" />
+      </subwindow>
+      <cta_subwindow_toplabel name="cta_tokendetails_label">
+        <static textres="cta_tokendetails_host_label" />
+        <anchored to="cta_tokendetails_host">
+          <left anchored="center" offset="-30" />
+        </anchored>
+      </cta_subwindow_toplabel>
+
+    </sheetdata>
+  </windowclass>
+  
+  <!-- token reach and size settings -->
+  <windowclass name="cta_reach_size_host" >
+    <sheetdata>
+    
+      <genericcontrol name="leftanchor">
+        <anchored width="0" height="0">
+          <top />
+          <left />
+        </anchored>
+        <invisible />
+        <disabled />
+      </genericcontrol>
+    
+      <number_ctaentry_tokensize name="space" />
+      <cta_above_label name="tokensize_label">
+        <anchored to="space" />
+        <static textres="cta_tokensize_label" />
+      </cta_above_label>
+
+      <number_ctaentry_tokenreach name="reach" />
+      <cta_above_label name="tokenreach_label">
+        <anchored to="reach" />
+        <static textres="cta_tokenreach_label" />
+      </cta_above_label>
+      
+    </sheetdata>
+  </windowclass>
+  <!-- effects tab sunwindow -->
+  <windowclass name="cta_subwindow_effects_host">
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <subwindow name="cta_subwindow_effects">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="12" />
+          <left anchor="left" offset="15" />
+          <right />
+        </anchored>
+        <activate />
+        <fastinit />
+        <class>cta_effects_host</class>
+        <frame name="ct_subgroupbox" offset="15,5,0,10" />
+      </subwindow>
+      <cta_subwindow_toplabel name="cta_subwindow_effects_label">
+        <static textres="cta_effects_title" />
+        <anchored to="cta_subwindow_effects">
+          <left offset="-20" />
+        </anchored>
+      </cta_subwindow_toplabel>
+
+    </sheetdata>
+  </windowclass>
+
+  <!-- skills tab subwindow -->
+  <windowclass name="cta_skills_host">
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <windowlist name="skills">
+        <script file="cta/scripts/cta_skills.lua" />
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="20" />
+          <left anchor="left" offset="5" />
+          <right offset="-15" />
+        </anchored>
+        <child></child>
+        <child><backcolor>4040301E</backcolor></child>
+        <noscroll />
+        <datasource>.skilllist</datasource>
+        <class>skill_item</class>
+        <sortby><control>name</control></sortby>
+        <script file="campaign/scripts/char_skilllist.lua" />
+        <frame name="ct_subgroupbox" offset="5,10,15,10" />
+      </windowlist>      
+      <cta_subwindow_toplabel name="skills_label">
+        <static textres="cta_skills_title" />
+        <anchored to="skills">
+          <top offset="-14" />
+          <left anchor="center" offset="-60" />
+        </anchored>
+      </cta_subwindow_toplabel>
+      
+      <proficiency_languages name="languages">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="10" />
+          <left anchor="left" offset="25" />
+          <right offset="-15" />
+        </anchored>
+        <frame name="ct_subgroupbox"  offset="25,5,15,5" />
+      </proficiency_languages>
+      
+    </sheetdata>
+  </windowclass>
+
+  <!-- saves and abilities bundled subwindows -->
+   <windowclass name="cta_saves_and_abilities_host">
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <subwindow name="cta_subwindow_ablity_scores">
+        <anchored to="contentanchor" height="40" >
+          <top anchor="bottom" relation="relative" offset="1" />
+          <left anchor="center" offset="-130" />
+          <right />
+        </anchored>
+        <activate />
+        <fastinit />
+        <class>cta_ability_scores</class>
+      </subwindow>
+      
+      <subwindow name="cta_subwindow_savingthrows">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="5" />
+          <left parent="cta_subwindow_ablity_scores" anchor="left" offset="37" />
+          <right />
+        </anchored>
+        <activate />
+        <fastinit />
+        <class>cta_savingthrows</class>
+      </subwindow>
+    </sheetdata>
+  </windowclass>
+  
+  <!-- cta saving throws  -->
+  <windowclass name="cta_savingthrows">
+    <margins control="0,0,0,7" />
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <number_ct_savescore name="paralyzation" source="saves.paralyzation.score">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="10" />
+          <left offset="5" />
+        </anchored>
+        <tooltip textres="save_paralyzation_full" />
+        <target>paralyzation</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="paralyzation_label">
+        <tooltip textres="save_paralyzation_full" />
+        <static textres="para" />
+        <anchored to="paralyzation"  />
+      </ct_save_toplabel>
+            
+      <number_ct_savescore name="poison" source="saves.poison.score">
+        <anchored to="paralyzation" position="righthigh" offset="10,0"/>
+        <tooltip textres="save_poison_full" />
+        <target>poison</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="poison_label">
+        <tooltip textres="save_poison_full" />
+        <static textres="poison" />
+        <anchored to="poison"  />
+      </ct_save_toplabel>
+            
+      <number_ct_savescore name="death" source="saves.death.score">
+        <anchored to="poison" position="righthigh" offset="10,0" />
+        <tooltip textres="save_death_full" />
+        <target>death</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="death_label">
+           <tooltip textres="save_death_full" />
+        <static textres="death" />
+        <anchored to="death" />
+      </ct_save_toplabel>
+            
+      <number_ct_savescore name="rod" source="saves.rod.score">
+        <anchored to="death" position="righthigh" offset="10,0"/>
+        <tooltip textres="save_rod_full" />
+        <target>rod</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="rod_label">
+           <tooltip textres="save_rod_full" />
+        <static textres="rod" />
+        <anchored to="rod" />
+      </ct_save_toplabel>
+
+      <number_ct_savescore name="staff" source="saves.staff.score">
+        <anchored to="rod" position="righthigh" offset="10,0" />
+        <tooltip textres="save_staff_full" />
+        <target>staff</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="staff_label">
+           <tooltip textres="save_staff_full" />
+        <static textres="staff" />
+        <anchored to="staff"  />
+      </ct_save_toplabel>
+
+      <!-- -->
+      <number_ct_savescore name="wand" source="saves.wand.score">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="15" />
+          <left offset="5" />
+        </anchored>
+        <tooltip textres="save_wand_full" />
+        <target>wand</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="wand_label">
+           <tooltip textres="save_wand_full" />
+        <static textres="wand" />
+        <anchored to="wand" />
+      </ct_save_toplabel>
+
+      <number_ct_savescore name="petrification" source="saves.petrification.score">
+        <anchored to="wand" position="righthigh" offset="10,0" />
+        <tooltip textres="save_petrification_full" />
+        <target>petrification</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="petrification_label">
+           <tooltip textres="save_petrification_full" />
+        <static textres="petrify" />
+        <anchored to="petrification" />
+      </ct_save_toplabel>
+
+      <number_ct_savescore name="polymorph" source="saves.polymorph.score">
+        <anchored to="petrification" position="righthigh" offset="10,0" />
+        <tooltip textres="save_polymorph_full" />
+        <target>polymorph</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="polymorph_label">
+        <tooltip textres="save_polymorph_full" />
+        <static textres="poly" />
+        <anchored to="polymorph"  />
+      </ct_save_toplabel>
+
+      <number_ct_savescore name="breath" source="saves.breath.score">
+        <anchored to="polymorph" position="righthigh" offset="10,0" />
+        <tooltip textres="save_breath_full" />
+        <target>breath</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="breath_label">
+           <tooltip textres="save_breath_full" />
+        <static textres="breath" />
+        <anchored to="breath"  />
+      </ct_save_toplabel>
+
+      <number_ct_savescore name="spell" source="saves.spell.score">
+        <anchored to="breath" position="righthigh" offset="10,0" />
+        <tooltip textres="save_spell_full" />
+        <target>spell</target>
+      </number_ct_savescore>
+      <ct_save_toplabel name="spell_label">
+        <tooltip textres="save_spell_full" />
+        <static textres="spell" />
+        <anchored to="spell"  />
+      </ct_save_toplabel>
+    </sheetdata>
+  </windowclass>  
+  
+  <!-- cta ability scores list -->
+  <windowclass name="cta_ability_scores">
+   <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <number_ct_ability name="strength" source="abilities.strength.score">
+        <anchored to="contentanchor" >
+          <top anchor="bottom" relation="relative" offset="15" />
+          <left anchor="left" offset="35" />
+        </anchored>
+        <target>strength</target>
+      </number_ct_ability>
+      <label_ctafieldtop name="strength_label">
+        <anchored to="strength" />
+        <static textres="str" />
+      </label_ctafieldtop>
+      <number_ct_ability name="dexterity" source="abilities.dexterity.score">
+        <anchored to="strength" position="righthigh" offset="10,0" />
+        <target>dexterity</target>
+      </number_ct_ability>
+      <label_ctafieldtop name="dexterity_label">
+        <anchored to="dexterity" />
+        <static textres="dex" />
+      </label_ctafieldtop>
+      <number_ct_ability name="constitution" source="abilities.constitution.score">
+        <anchored to="dexterity" position="righthigh" offset="10,0" />
+        <target>constitution</target>
+      </number_ct_ability>
+      <label_ctafieldtop name="constitution_label">
+        <anchored to="constitution" />
+        <static textres="con" />
+      </label_ctafieldtop>
+      <number_ct_ability name="intelligence" source="abilities.intelligence.score">
+        <anchored to="constitution" position="righthigh" offset="10,0" />
+        <target>intelligence</target>
+      </number_ct_ability>
+      <label_ctafieldtop name="intelligence_label">
+        <anchored to="intelligence"  />
+        <static textres="int" />
+      </label_ctafieldtop>
+      <number_ct_ability name="wisdom" source="abilities.wisdom.score">
+        <anchored to="intelligence" position="righthigh" offset="10,0" />
+        <target>wisdom</target>
+      </number_ct_ability>
+      <label_ctafieldtop name="wisdom_label">
+        <anchored to="wisdom"  />
+        <static textres="wis" />
+      </label_ctafieldtop>
+      <number_ct_ability name="charisma" source="abilities.charisma.score">
+        <anchored to="wisdom" position="righthigh" offset="10,0" />
+        <target>charisma</target>
+      </number_ct_ability>
+      <label_ctafieldtop name="charisma_label">
+        <anchored to="charisma"  />
+        <static textres="cha" />
+      </label_ctafieldtop>
+   </sheetdata>
+  </windowclass>
+  
+  <!-- Effects subsection -->
+  <windowclass name="cta_effects_host">
+    <sheetdata>
+      <contentanchor_ctabox name="contentanchor"/>
+      
+      <windowlist name="effects">
+        <anchored to="contentanchor">
+          <top anchor="bottom" relation="relative" offset="10" />
+          <left anchor="left" offset="5" />
+          <right offset="-12" />
+        </anchored>
+        <child></child>
+        <child><backcolor>4040301E</backcolor></child>
+        <datasource>.effects</datasource>
+        <class>ct_effect</class>
+        <noscroll />
+        <script file="ct/scripts/ct_effectlist.lua" />
+        <activate />
+        <fastinit />
+      </windowlist>
+      <button_iadd name="effects_iadd">
+        <script>
+          function onInit()
+            setVisible(true);
+          end
+        </script>
+        <anchored to="contentanchor" height="20" >
+          <top anchor="bottom" relation="relative" offset="1" />
+          <left anchor="left" offset="1" />
+        </anchored>
+        <target>effects</target>
+        <tooltip textres="ct_tooltip_effectadd" />
+      </button_iadd>
+      
+    </sheetdata>
+  </windowclass>
+  
+  <!-- actions window tab for CTA view, selected nodeCT  -->
+  <windowclass name="cta_actions_host">
+    <!-- <margins control="0,4,0,4" /> -->
+    <script>
+      function onInit()
+        local node = getDatabaseNode()
+        local isPC = ActorManager.isPC(node);
+        if not isPC then
+          DB.setValue(node,"powerdisplaymode","string","action");      
+          DB.setValue(node,"powermode","string","standard");
+        end
+        onModeChanged();
+      end
+            
+      function onModeChanged()
+        weapons.onModeChanged();
+        spellslots_prep.subwindow.onModeChanged();
+        spellslots_cast.subwindow.onModeChanged();
+        actions.subwindow.onModeChanged();
+      end
+    </script>
+    <sheetdata>
+      <anchor_column name="columnanchor" />
+      <genericcontrol name="leftanchor">
+        <anchored width="0" height="0">
+          <top />
+          <left />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top />
+          <right />
+        </anchored>
+        <invisible />
+      </genericcontrol>
+
+      <label_charframetop name="actionstitle">
+        <anchored height="20">
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="15" />
+          <left offset="15" />
+          <right offset="-10" />
+        </anchored>
+        <icons>char_axes</icons>
+        <static textres="cta_selected_actions_title" />
+        <script>
+          function onClickDown()
+            return true;
+          end
+          
+          function onClickRelease()
+            local bVisible = window.weapons.isVisible ();
+            if bVisible then
+              setFont("regular14-white");
+              window.weapons.setVisible(false);
+            else
+              setFont("subwindowsmalltitle");
+              window.weapons.setVisible(true);
+            end
+            return true;
+          end
+        </script>
+      </label_charframetop>
+      <buttoncontrol name="actions_global_detail">
+        <anchored to="actionstitle" position="right" offset="-40,1" width="20" />
+        <state icon="details_white" pressed="details_down" />
+        <script>
+          function onButtonPress()
+            Interface.openWindow("char_weaponmeta", window.getDatabaseNode());
+          end
+        </script>
+      </buttoncontrol>
+
+      <windowlist name="ability_notes">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="9" />
+          <left offset="10" />
+          <right offset="-5" />
+        </anchored>
+        <child></child>
+        <child><backcolor>4040301E</backcolor></child>
+        <noscroll />
+        <columns><width>130</width><filldown /> </columns>
+        <datasource>.abilitynoteslist</datasource>
+        <class>cta_abilitynotes_host</class>
+        <sortby mergerule="replace"><control>name</control></sortby>
+        <noscroll />
+        <frame name="ct_subgroupbox" offset="5,5,5,5" />
+      </windowlist>
+      
+      <list_charweapon name="weapons">
+        <anchored>
+          <sizelimits>
+            <minimum height="20" />
+          </sizelimits>        
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="12" />
+          <left offset="10" />
+          <right offset="-5" />
+        </anchored>
+        <script>
+          function onInit()
+            local node = getDatabaseNode();
+            if not User.isHost() then
+              return;
+            end        
+            registerMenuItem(Interface.getString("list_menu_createitem"), "insert", 5);
+          end
+          function onMenuSelection(selection, subselection)
+            if selection == 5 then
+              addEntry(true);
+            end
+          end                    
+        </script>
+        <class>cta_char_weapon</class>
+        <noscroll />
+      </list_charweapon>
+      <stringcontrol name="initiative_header_label">
+        <frame name="filter" offset="4,4,6,4"/>
+        <anchored to="weapons" >
+          <top offset="-10" />
+          <left offset="10" />
+        </anchored>
+        <font>sheetlabelmini</font>
+        <center />
+        <static textres="init" />
+      </stringcontrol>
+      
+      <stringcontrol name="attack_header_label">
+        <frame name="filter" offset="4,4,6,4"/>
+        <anchored to="weapons" >
+          <top offset="-10" />
+          <right parent="rightanchor" anchor="left" relation="relative" offset="-155" />
+        </anchored>
+        <font>sheetlabelmini</font>
+        <center />
+        <static textres="cta_attack_header" />
+      </stringcontrol>
+      
+      <subwindow name="spellslots_prep">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="3" />
+          <left />
+          <right />
+        </anchored>
+        <class>power_slots_prep</class>
+        <activate />
+        <fastinit />
+        <invisible />
+      </subwindow>
+      
+      <subwindow name="spellslots_cast">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="3" />
+          <left />
+          <right />
+        </anchored>
+        <class>power_slots_cast</class>
+        <activate />
+        <fastinit />
+        <invisible />
+      </subwindow>
+
+      <subwindow name="psionic_stats">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="3" />
+          <left />
+          <right />
+        </anchored>
+        <class>psionic_power_stats</class>
+        <activate />
+        <fastinit />
+        <invisible />
+      </subwindow>
+
+      <subwindow name="actions">
+        <anchored>
+          <top parent="columnanchor" anchor="bottom" relation="relative" offset="2" />
+          <left />
+          <right />
+        </anchored>
+        <activate />
+        <fastinit />
+        <class>power_page</class>
+      </subwindow>
+    </sheetdata>
+  </windowclass>
+  
+  <!-- CTA weapon/attacks subwindow -->
+  <windowclass name="cta_char_weapon">
+    <margins control="0,2,0,2" />
+    <script file="campaign/scripts/char_weapon.lua"/>
+    <sheetdata>
+      <genericcontrol name="rightanchor">
+        <anchored width="0" height="0">
+          <top />
+          <right />
+        </anchored>
+        <invisible />
+        <disabled />
+      </genericcontrol>
+      
+      <genericcontrol name="leftanchor">
+        <anchored width="0" height="0">
+          <top />
+          <left />
+        </anchored>
+        <invisible />
+        <disabled />
+      </genericcontrol>
+
+      <number_ct_crosslink_hidden name="carried" />
+      
+      <link_weapon_shortcut name="shortcut" />
+      <link_npc_quicknotes name="quicknote" />
+      
+      <button_idelete name="idelete">
+        <anchored to="rightanchor">
+          <top offset="8" />
+          <right anchor="left" offset="-2" />
+        </anchored>
+      </button_idelete>
+      
+      <detail_button_action name="activatedetail" />
+      <cta_speedfactor name="speedfactor" />
+      <cta_attack_name name="name"/> 
+      <cta_attack_name name="nonid_name"/> 
+      <cta_type_icon name="type" />
+
+      <!-- attack button, placed over type icon -->
+      <cta_attack_button name="attackview_weapon" />
+
+      <!-- damage section -->
+      <windowlist name="damage_split_list">
+        <anchored>
+          <top offset="5" /> 
+          <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+          <right parent="activatedetail" anchor="left" relation="relative" offset="0" />
+        </anchored>
+        <child></child>
+        <child><backcolor>4040301E</backcolor></child>
+        <!-- <columns><width>100</width><filldown /> </columns> -->
+        <noscroll />
+        <datasource>.damagelist</datasource>
+        <class>split_damage_entries</class>
+      </windowlist>
+            
+      <label name="label_ammo">
+        <anchored width="50">
+          <top parent="name" anchor="bottom" relation="relative" offset="5" />
+          <left offset="15" />
+        </anchored>
+        <static textres="char_label_weaponammo" />
+      </label>
+      
+      <basicnumber name="maxammo">
+        <anchored to="label_ammo" position="righthigh" width="30" height="20" />
+        <min>0</min>
+        <max>100</max>
+      </basicnumber>
+      
+      <state_charammocounter name="ammocounter">
+        <anchored to="maxammo" position="righthigh" offset="8,0" />
+      </state_charammocounter>
+      
+    </sheetdata>
+  </windowclass>
+<!-- END char_weapon class -->
+  
+  <windowclass name="cta_abilitynotes_host">
+    <sheetdata>
+      <stringfield name="name">
+      <script>
+        function onInit()
+          local node = window.getDatabaseNode();
+          local sText = DB.getValue(node,"text","");
+          local sCleaned = UtilityManagerADND.stripFormattedText(sText);
+          setTooltipText(sCleaned);
+        end
+        function onHover(oncontrol)
+          if oncontrol then
+            setColor("ffffff");
+          else
+            setColor(nil);
+          end
+        end
+        function onClickDown(button, x, y)
+          local w = Interface.openWindow('quicknote',window.getDatabaseNode());
+          if w then
+            return true;
+          end          
+        end
+      </script>
+        <anchored width="120">
+          <top anchor="top" offset="2" />
+          <left anchor="left" offset="4"/>
+        </anchored>
+        <multilinespacing>20</multilinespacing>
+        <readonly /> 
+      </stringfield>
+      
+    </sheetdata>
+  </windowclass>
+</root>

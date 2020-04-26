@@ -1,0 +1,1134 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+
+  <template name="label_savescore">
+    <label name="label_save_type">
+      <anchored position="righthigh" offset="5,0" width="60" />
+      <center />
+            <readonly />
+      <font>regular10</font>
+      <!-- <frame name="abilityfields" /> -->
+    </label>
+  </template>
+  
+  <template name="number_charasavescore">
+    <number_savescore>
+      <anchored to="statstitle" position="below"/>
+      <rollable />
+      <script>
+        function action(draginfo)
+          local nTargetDC = 20;
+          local rActor = ActorManager.getActor("", window.getDatabaseNode());
+          local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+          nTargetDC = DB.getValue(nodeActor, "saves." .. self.target[1] .. ".score", 0);
+          ActionSave.performRoll(draginfo, rActor, self.target[1],nTargetDC);
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+          
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+            
+    </number_savescore>
+  </template>
+
+  <template name="number_labeled">
+    <numberfield>
+      <font>sheettext</font>
+      <lineoffset default="on">1</lineoffset>
+      <script>
+        labelwidget = nil;
+      
+        function onInit()
+          if labelres then
+            labelwidget = addTextWidget("sheetlabelinline", string.upper(Interface.getString(labelres[1])));
+          else
+            labelwidget = addTextWidget("sheetlabelinline", string.upper(label[1]));
+          end
+          if labelwidget then
+            local w,h = labelwidget.getSize();
+            labelwidget.setPosition("bottomleft", w/2, h/2-4);
+          end
+        end
+      </script>
+    </numberfield>
+  </template>
+
+    <template name="label_abilityscore_actual">
+        <label>
+            <font>regular10</font>
+            <anchored position="insidebottomright" offset="8,3" width="17" height="10" />
+            <tooltip textres="char_abilityscore_actual_tooltip" />
+            <invisible />
+             <script>
+                function onInit()
+                    local nodeChar = window.getDatabaseNode();
+                    local sTarget = self.target[1];
+                    if (sTarget ~= "") then
+                        DB.addHandler(DB.getPath(nodeChar, "abilities." .. sTarget .. ".score"),    "onUpdate", updateActual);
+                        DB.addHandler(DB.getPath(nodeChar, "abilities." .. sTarget .. ".total"),    "onUpdate", updateActual);
+                        updateActual();
+                    end
+                end
+                function onClose()
+                    local nodeChar = window.getDatabaseNode();
+                    local sTarget = self.target[1];
+                    if (sTarget ~= "") then
+                        DB.removeHandler(DB.getPath(nodeChar, "abilities." .. sTarget .. ".score"),    "onUpdate", updateActual);
+                        DB.removeHandler(DB.getPath(nodeChar, "abilities." .. sTarget .. ".total"),    "onUpdate", updateActual);
+                    end
+                end
+                
+                function updateActual()
+                    local nodeChar = window.getDatabaseNode();
+                    local sTarget = self.target[1];
+                    if (sTarget ~= "") then
+                        local nTotal = DB.getValue(nodeChar,"abilities." .. sTarget .. ".total",0);
+                        local nScore = DB.getValue(nodeChar,"abilities." .. sTarget .. ".score",0);
+                        if (nTotal ~= nScore and nTotal ~= 0) then
+                            self.setValue("(" .. nTotal .. ")");
+                            self.setVisible(true);
+                        else
+                            self.setVisible(false);
+                        end
+                    end
+                end
+                
+            </script>
+        </label>
+    </template>
+    
+  <template name="number_charabilityscore2">
+    <basicnumber>
+      <anchored to="statstitle" position="insidetopleft"/> 
+      <rollable />
+      <readonly />
+      <min>1</min>
+      <max>25</max>
+      <default>9</default>
+      <font>bold20</font>
+      <frame name="abilityscore_box" />
+      <script file="campaign/scripts/number_abilityscore.lua" />
+    </basicnumber>
+  </template>
+    
+  <template name="number_saves_modifier">
+    <number>
+      <anchored position="righthigh" offset="1,0" width="30" height="30"/>
+      <displaysign />
+      <center />
+        <min>-25</min>
+        <max>25</max>
+      <default>0</default>
+      <hideonvalue>0</hideonvalue>
+      <font>regular11</font>
+      <frame name="abilityscore_box" /> 
+    </number>
+  </template>
+
+     <template name="label_ability_fields">
+    <label_fieldtop>
+      <anchored offset="-2,-5" />
+      <frame name="abilityfields" />
+<!--       <frame name="abilityscore" /> -->
+    </label_fieldtop>
+  </template>
+
+     <template name="label_mod_fields">
+    <label_fieldtop>
+      <anchored position="below" offset="-2,-10" />
+      <frame name="abilityfields" />
+<!--       <frame name="abilityscore" /> -->
+      <font>regular10</font>
+    </label_fieldtop>
+  </template>
+
+
+  <template name="number_abilitypercent_score">
+    <numbercontrol>
+      <labelres>char_label_ability_percent</labelres>
+      <tooltip textres="char_tooltip_percentile" />
+            <min>0</min>
+            <max>100</max>
+      <anchored position="below" offset="-8,-5" />
+      <frame name="abilityscore" />
+      <font>sheetlabelmini_percent</font>
+      <!-- <center /> -->
+      <script>
+        function onValueChanged()
+          local rActor = ActorManager.getActor("pc", window.getDatabaseNode());
+          local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+          AbilityScoreADND.updateStrength(nodeActor);
+        end
+      </script>
+    </numbercontrol>
+  </template>
+
+  <template name="number_abilitypercent_disabled">
+    <number>
+      <labelres>char_label_ability_percent</labelres>
+      <tooltip textres="char_tooltip_percentile" />
+      <anchored position="below" offset="-8,-5" />
+      <frame name="abilityscorepercent" />
+      <font>sheetlabelmini</font>
+      <center />
+            <min> 0 </min>
+            <max> 100 </max>
+      <script>
+        function onValueChanged()
+          local rActor = ActorManager.getActor("pc", window.getDatabaseNode());
+          local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+          AbilityScoreADND.updateStrength(nodeActor);
+        end
+      </script>
+    </number>
+  </template>
+
+  <template name="number_abilityfield">
+      <number>
+        <frame name="abilityscore_box" />
+        <anchored position="right" offset="0,0" width="40"/>
+        <displaysign />
+        <center />
+        <nokeyedit />
+        <font>regular11</font>
+      </number>
+  </template>
+
+  <template name="number_abilityfield_noplus">
+      <number>
+        <frame name="abilityscore_box" />
+<!--    <backcolor>#ff99cc</backcolor> -->
+        <anchored position="right" offset="0,0" width="40"/>
+        <center />
+        <nokeyedit />
+        <font>regular11</font>
+      </number>
+  </template>
+  <!-- some checks use "roll this or below" others use "roll this or above" -->
+  <!-- 'reverse' checks roll "this or above" as success but gives low end value so use "100 - value" -->
+  <template name="number_abilityfield_noplus_percentchecks">
+    <number_abilityfield_noplus>
+        <script>
+          function onDoubleClick(x,y)
+            action(nil);
+          end    
+          function action(draginfo)
+            local nodeChar = getDatabaseNode();
+            local nTargetDC = getValue();
+            if check_type and check_type[1] == 'reverse' then
+              nTargetDC = 100 - getValue();
+            end
+            local rActor = ActorManager.getActor("", nodeChar);
+            
+            local aCheckDice = { "d100" };
+            if Interface.getVersion() &lt; 4 then
+              table.insert(aCheckDice, "d10");
+            end
+            ActionCheck.performRoll(draginfo, rActor, self.target[1], nTargetDC, nil, aCheckDice );
+            return true;
+          end
+          function onDragStart(button, x, y, draginfo)
+            return action(draginfo);
+          end          
+        </script>        
+        <rollable />
+    </number_abilityfield_noplus>
+  </template>
+
+  <template name="percentile_abilityfield">
+      <number>
+        <readonly />
+        <frame name="abilityscore_box" />
+        <anchored position="right" offset="0,0" width="30" height="25"/>
+           <center />
+        <font>regular11</font>
+      </number>
+  </template>
+  
+  <template name="string_abilityfield">
+    <stringfield>
+      <!-- <frame name="fielddark" offset="3,3,3,3" /> -->
+      <frame name="abilityscore_box" offset="3,3,3,3" />
+      <anchored position="right" offset="0,0" width="40" />
+      <center />
+      <readonly />
+      <font>regular11</font>
+    </stringfield>
+  </template>
+  
+  <template name="ability_fields_container">
+      <frame_char>
+        <anchored position="right" offset="0,0" width="280"/>
+        <frame name="bonus_box" />
+      </frame_char>      
+  </template>
+  
+  <template name="label_npc">
+    <stringcontrol>
+      <anchored />
+      <font>sheetlabel</font>
+      <nodrag />
+      <readonly />
+    </stringcontrol>
+  </template>
+
+  <template name="cycler_skill_type">
+    <button_stringcycler>
+      <parameters>
+        <defaultlabelres mergerule="replace">dash</defaultlabelres>
+        <labelsres>str|dex|con|int|wis|cha|percent</labelsres>
+        <values>strength|dexterity|constitution|intelligence|wisdom|charisma|percent</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+    <template name="number_charskill_nosign">
+        <basicnumber>
+            <anchored width="32" height="20" />
+            <!-- <delaykeyupdate /> -->
+            <hideonvalue>0</hideonvalue>
+            <nodrag />
+        </basicnumber>
+    </template>
+  <template name="number_charskilltotal_nosign">
+    <number_linked>
+      <anchored width="32" height="20" />
+      <frame name="fieldlight" offset="7,5,7,5" />
+      <rollable />
+      <script file="campaign/scripts/number_charskill.lua" />
+    </number_linked>
+  </template>
+    
+    <template name="number_charthaco_charsheet">
+    <number_charthaco>
+    </number_charthaco>
+    </template>
+    
+  <template name="number_charthaco">
+    <basicnumber>
+      <script>
+      function action(draginfo)
+        local nodeChar = getDatabaseNode().getChild("....");
+        local rActor = ActorManager.getActor("", nodeChar);
+        ActionAttack.performRoll(draginfo, rActor, nil);        
+        return true;
+      end
+
+      function onDragStart(button, x, y, draginfo)
+        return action(draginfo);
+      end
+
+      function onDoubleClick(x,y)
+        return action();
+      end
+      </script>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <rollable />
+      <showemptywidget />
+        <!-- <frame name="fieldlight" offset="7,5,7,5" /> -->
+      <min>-10</min>
+      <max>30</max>
+      <default>20</default>
+      <font>reference-b-large</font>
+    </basicnumber>
+  </template>
+
+  <template name="label_skill">
+    <stringcontrol>
+      <anchored />
+      <font>sheetlabel</font>
+      <nodrag />
+      <readonly />
+    </stringcontrol>
+  </template>
+
+  <template name="label_fieldbottom">
+    <stringcontrol>
+      <anchored position="below" offset="3,1" />
+      <font>sheetlabelmini</font>
+      <center />
+    </stringcontrol>
+  </template>
+    
+  <template name="actions_attack">
+    <label>
+      <rollable />
+      <displaysign />
+      <default>0</default>     
+      <readonly />
+      <cursor hover="hand" /> 
+      <script>
+        function onHover(bOnControl)
+          if bOnControl then
+            setColor("#FFFFFF");
+          else
+            setColor(nil);
+          end
+        end
+
+        function onDoubleClick(x,y)
+          return window.onAttackAction();
+        end      
+
+        function onDragStart(button, x, y, draginfo)
+          return window.onAttackAction(draginfo);
+        end
+      </script>
+      <frame name="field-red" offset="5,6,5,6" />
+      <tooltip textres="char_label_attack_tooltip" />
+      <anchored height="20" width="25" >
+        <top offset="4" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <center />
+    </label>
+  </template>
+  
+  <template name="number_actions_init">
+    <label>
+      <anchored height="20" width="25" >
+        <top offset="3" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+      </anchored>
+      <center />
+      <!-- <frame name="fielddark" offset="5,6,5,6" /> -->
+      <frame name="field-initiative" offset="5,6,5,6" />
+      <stateframe>
+        <hover name="rowshade" offset="5,6,5,6" />
+      </stateframe>
+      <!-- <frame name="fieldlight" offset="7,5,7,5" /> -->
+      <showemptywidget />
+      <cursor hover="hand" />
+      <font>regular11</font>
+      <hideonvalue>0</hideonvalue>
+      <rollable />
+      <displaysign />
+      <script>
+        function onInit()
+          local node = window.getDatabaseNode();
+          DB.addHandler(DB.getPath(node, "speedfactor"), "onUpdate", setLabelValue);
+          setLabelValue();
+        end
+        function onClose()
+          local node = window.getDatabaseNode();
+          DB.removeHandler(DB.getPath(node, "speedfactor"), "onUpdate", setLabelValue);
+        end
+        function setLabelValue()
+          local nodeWeapon = window.getDatabaseNode();
+          local nSpeedFactor = DB.getValue(nodeWeapon,"speedfactor",0);
+          setValue(nSpeedFactor);
+          onHover(nil);
+        end
+        function onHover(oncontrol)
+          if oncontrol then
+            setColor("c44242");
+          else
+            setColor(nil);
+          end
+        end
+        function action(draginfo)
+          local nodeWeapon = window.getDatabaseNode();
+          local nodeChar = nodeWeapon.getChild("...");
+
+          local sName = DB.getValue(nodeWeapon,"name","");
+          local nSpeedFactor = DB.getValue(nodeWeapon,"speedfactor",0);
+          local rItem = {};
+          rItem.sName = sName;
+          rItem.nInit = nSpeedFactor;
+
+          local rActor = ActorManager.getActor("pc", nodeChar);
+          local _, sRecord = DB.getValue(nodeWeapon.getChild(".."), "shortcut", "", "");
+          rActor.itemPath = sRecord;
+          ActionInit.performRoll(draginfo, rActor, nil, rItem);
+
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+          
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+      <tooltip textres="power_label_initiative_tooltip" />
+    </label>
+  </template>
+  
+  <template name="number_power_init">
+    <basicnumber>
+      <!-- <frame name="fieldlight" offset="7,5,7,5" /> -->
+      <showemptywidget />
+      <font>regular10</font>
+      <rollable />
+      <displaysign />
+      <script>
+        function action(draginfo)
+          local nValue = getValue();
+          local node = getDatabaseNode();
+          local nodePower = getDatabaseNode();
+          nodeSpell = node.getChild("..");
+          nodeChar = node.getChild("....");
+          local sGroup = DB.getValue(nodeSpell, "group", ""):lower();
+          local bIsConcentrationSpell = (string.match(sGroup,"^spell"))
+          local sName = DB.getValue(nodeSpell,"name","");
+          local rItem = {};
+          rItem.sName = sName;
+          rItem.nInit = nValue;
+          if (bIsConcentrationSpell) then
+            rItem.spellPath = nodeSpell.getPath();
+          else
+            rItem.spellPath = nil;
+          end
+          local rActor = ActorManager.getActor("pc", nodeChar);
+          local _, sRecord = DB.getValue(nodeSpell, "shortcut", "", "");
+          rActor.itemPath = sRecord;
+          ActionInit.performRoll(draginfo, rActor, nil, rItem);
+
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+          
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+    </basicnumber>
+  </template>
+
+  <template name="button_charabiltiesdetail">
+    <buttoncontrol>
+      <anchored width="20"/>
+      <state icon="details_white" pressed="details_down" />
+      <script>
+        function onButtonPress()
+          Interface.openWindow("charsheet_abilities_details", window.getDatabaseNode());
+        end
+      </script>
+    </buttoncontrol>
+  </template>
+  <template name="button_charasavesdetail">
+    <buttoncontrol>
+      <anchored width="20" height="20" />
+      <state icon="details_white" pressed="details_down" />
+      <script>
+        function onButtonPress()
+          Interface.openWindow("charsheet_saves_details", window.getDatabaseNode());
+        end
+      </script>
+    </buttoncontrol>
+  </template>
+    
+  <template name="label_plus">
+    <label_plus2>
+      <anchored>
+        <top  />
+        <left anchor="right" relation="relative" offset="5" />
+      </anchored>
+    </label_plus2>
+  </template>
+  <template name="label_plus2">
+    <label>
+      <center />
+      <static textres="plus"/>
+    </label>
+  </template>
+  
+    <template name="ability_number_base">
+      <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="10" />
+        </anchored>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <cursor hover="hand" />
+        <font>bold12</font>
+        <default>9</default>
+        <hideonvalue>0</hideonvalue>
+        <min>0</min>
+        <max>25</max>
+      </basicnumber>
+  </template>
+    <template name="ability_percent_number_base">
+            <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="10" />
+        </anchored>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <cursor hover="hand" />
+                <font>bold12</font>
+                <default>0</default>
+                <hideonvalue>0</hideonvalue>
+                <min>0</min>
+                <max>100</max>
+            </basicnumber>
+    
+    </template>
+    <template name="ability_number_mod">
+            <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="5" />
+        </anchored>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <cursor hover="hand" />
+                <font>regular10</font>
+                <hideonvalue>0</hideonvalue>
+                <default>0</default>
+                <displaysign />
+            </basicnumber>
+    </template>
+    <template name="ability_details_total">
+      <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="10" />
+        </anchored>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <cursor hover="hand" />
+        <readonly />
+        <font>bold12</font>
+        <readonly />
+        <hideonvalue>0</hideonvalue>
+      </basicnumber>
+    </template>
+    <template name="ability_details_percent_total" >
+            <basicnumber>
+                <anchored width="30" height="20">
+                    <top  />
+                    <left anchor="right" relation="relative" offset="10" />
+                </anchored>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <cursor hover="hand" />
+                <readonly />
+                <font>bold12</font>
+                <readonly />
+                <hideonvalue>0</hideonvalue>
+            </basicnumber>
+    </template>
+    
+    <template name="label_ability_details_stat">
+      <label>
+        <center />
+         <backcolor>#afaf83</backcolor>
+        <anchored to="leftanchor" width="75">
+          <top relation="relative"/>
+          <left anchor="right" offset="70"/>
+        </anchored>
+        <font>semibold12</font>
+      </label>
+    </template>
+    <template name="label_ability_details">
+      <label>
+        <center />
+        <anchored to="leftanchor"  width="75">
+          <top relation="relative" />
+          <left anchor="right" offset="70"/>
+        </anchored>
+        <font>semibold12</font>
+      </label>
+    </template>
+
+  <template name="number_char_save_charsheet">
+    <number_char_save>
+    </number_char_save>
+  </template>
+  <template name="number_char_save">
+    <basicnumber>
+      <script file="campaign/scripts/char_saves_details.lua" />
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <default>20</default>
+      <anchored to="statstitle" position="below"/>
+      <rollable />
+      <readonly />
+    </basicnumber>
+  </template>
+
+    <template name="label_save_details">
+      <label>
+        <center />
+        <anchored to="leftanchor"  width="75">
+          <top relation="relative" />
+          <left anchor="right" offset="55"/>
+        </anchored>
+        <font>semibold12</font>
+      </label>
+    </template>
+    <template name="save_details_total">
+      <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="10" />
+        </anchored>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+            <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <cursor hover="hand" />
+        <readonly />
+        <font>bold12</font>
+        <readonly />
+        <hideonvalue>0</hideonvalue>
+      </basicnumber>
+    </template>
+    <template name="save_number_base">
+            <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="10" />
+        </anchored>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <cursor hover="hand" />
+                <font>bold12</font>
+                <default>20</default>
+                <hideonvalue>0</hideonvalue>
+                <min>0</min>
+                <max>25</max>
+            </basicnumber>
+    
+    </template>
+    <template name="save_number_mod">
+            <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="5" />
+        </anchored>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <cursor hover="hand" />
+                <font>regular10</font>
+                <hideonvalue>0</hideonvalue>
+                <default>0</default>
+                <displaysign />
+            </basicnumber>
+    </template>
+    
+  <template name="class_cycler_do_as">
+    <button_stringcycler>
+      <parameters>
+        <labelsres>warrior|priest|wizard|rogue</labelsres>
+        <values>warrior|priest|wizard|rogue</values>
+      </parameters>
+    </button_stringcycler>
+  </template>
+    
+  <template name="number_adjustment">
+    <basicnumber>
+          <anchored width="20" height="15"/>
+              <default>0</default>
+              <displaysign />
+      <hideonvalue>0</hideonvalue>
+    </basicnumber>
+  </template>
+  
+  <template name="speed_number_base"> 
+    <basicnumber>
+      <anchored height="18" width="30" >
+        <top parent="leftanchor" offset="12" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <font>regular10</font>
+      <hideonvalue>0</hideonvalue>
+      <default>0</default>
+    </basicnumber>
+  </template>
+  <template name="speed_number_mod">
+    <basicnumber>
+      <anchored height="18" width="30" >
+        <top parent="leftanchor" offset="12" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <font>regular10</font>
+      <hideonvalue>0</hideonvalue>
+      <default>0</default>
+    </basicnumber>
+  </template>
+  
+  <template name="surprise_dice_roll">
+    <basicdice>
+      <anchored height="18" width="50" >
+        <top parent="leftanchor" offset="12" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <rollable />
+      <tooltip textres="char_label_surprisedice_tooltip" />
+      <script>
+        function action()
+          local nodeChar = window.getDatabaseNode();
+          ActionSurprise.performRoll(draginfo, rActor, nodeChar);
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+            
+        function onDoubleClick(x,y)
+          return action();
+        end                    
+      </script>
+    </basicdice>
+  </template>
+   
+  <template name="surprise_base">
+    <basicnumber name="surprisebase" source="surprise.base">
+      <anchored height="18" width="30" >
+        <top parent="leftanchor" offset="12" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="15" />
+      </anchored>
+      <default>3</default>
+      <tooltip textres="char_label_surprisebase_tooltip" />
+    </basicnumber>
+  </template>
+  <template name="surprise_number_mod">
+    <basicnumber> 
+      <anchored height="18" width="30" >
+        <top parent="leftanchor" offset="12" />
+        <left parent="leftanchor" anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <font>regular10</font>
+      <hideonvalue>0</hideonvalue>
+      <default>0</default>
+    </basicnumber>
+  </template>
+
+  <template name="number_charspeed_defaults_charsheet">
+    <number_charspeed_defaults>
+      <anchored to="combatanchor" width="30" height="30">
+        <top parent="combatanchor" offset="4" />
+        <left anchor="right" relation="relative" offset="15" />
+      </anchored>    
+    </number_charspeed_defaults>
+  </template>
+
+    <template name="surprise_number_total_charsheet">
+        <surprise_number_total>
+        </surprise_number_total>
+    </template>            
+    
+    <template name="surprise_number_total">
+      <basicnumber>
+        <rollable />
+        <script>
+          function action(draginfo)
+            local nodeChar = window.getDatabaseNode();
+            ActionSurprise.performRoll(draginfo, rActor, nodeChar);
+            return true;
+          end
+          
+          function onDragStart(button, x, y, draginfo)
+            return action(draginfo);
+          end
+              
+          function onDoubleClick(x,y)
+            return action();
+          end                    
+        </script>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <cursor hover="hand" />
+        <readonly />
+      </basicnumber>
+    </template>
+
+    <template name="number_profs_weapon">
+        <basicnumber>
+            <default>0</default>
+            <min>0</min>
+            <max>99</max>
+            <gmeditonly />
+            <tooltip textres="class_profs_weapon_tooltip" />                
+        </basicnumber>
+    </template>
+
+    <template name="number_profs_weapon_used">
+        <basicnumber>
+            <default>0</default>
+            <min>0</min>
+            <max>99</max>
+            <tooltip textres="class_profs_weapon_used_tooltip" />                
+        </basicnumber>
+    </template>
+    
+    <template name="number_profs_nonweapon">
+        <basicnumber>
+            <default>0</default>
+            <min>0</min>
+            <max>99</max>
+            <gmeditonly />
+            <tooltip textres="class_profs_nonweapon_tooltip" />                
+        </basicnumber>
+    </template>
+
+    <template name="number_profs_nonweapon_used">
+        <basicnumber>
+            <default>0</default>
+            <min>0</min>
+            <max>99</max>
+            <tooltip textres="class_profs_nonweapon_used_tooltip" />                
+        </basicnumber>
+    </template>
+    
+  <template name="label_titlechar">
+    <label>
+      <font>subwindowsmalltitle</font>
+      <center />
+    </label>
+  </template>
+  <template name="number_charinit_charsheet">
+    <number_chartotal>
+      <font>reference-b-large</font>
+      <rollable />
+      <displaysign />
+      <script>
+        function action(draginfo)
+          local rActor = ActorManager.getActor("", window.getDatabaseNode());
+          ActionInit.performRoll(draginfo, rActor);
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+          
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+    </number_chartotal>
+  </template>
+  <template name="number_charwounds_charsheet">
+    <number_charwounds>
+    </number_charwounds>
+  </template>
+  <template name="number_hptotal_charsheet">
+    <number_dropadd>
+    </number_dropadd>
+  </template>
+  <template name="number_hptemp">
+      <basicnumber name="temphp" source="hp.temporary">
+        <font>bold20</font>
+        <color>0000AA</color>
+        <description textres="temphp" />
+        <hideonvalue>0</hideonvalue>
+        <script>
+          function onDrop(x, y, draginfo)
+            if draginfo.getType() == "number" then
+              if draginfo.getNumberData() &gt; 0 then
+                setValue(draginfo.getNumberData());
+              else
+                setValue(getValue() + draginfo.getNumberData());
+              end
+            end
+            
+            return true;
+          end
+        </script>
+      </basicnumber>
+  </template>
+  <template name="number_hptemp_charsheet">
+        <number_hptemp>
+        </number_hptemp>
+  </template>
+    
+  <template name="cycler_casterlevel_type">
+   <button_stringcycler>
+    <parameters>
+      <defaultlabelres mergerule="replace">dash</defaultlabelres>
+      <labelsres>casterlevel|casterlevelby2|casterlevelby3|casterlevelby4|casterlevelby5</labelsres>
+      <values>casterlevel|casterlevelby2|casterlevelby3|casterlevelby4|casterlevelby5</values>
+    </parameters>
+  </button_stringcycler>
+  
+  </template>
+
+  <template name="number_basic">
+    <basicnumber>
+      <anchored width="30" />
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <font>regular10</font>
+      <hideonvalue>0</hideonvalue>
+      <default>0</default>
+    </basicnumber>
+  </template>
+  
+  <template name="text_plus">
+    <label>
+      <anchored width="10" />
+      <static textres="plus"/>
+    </label>
+  </template>     
+  
+  <template name="label_equal">
+    <label>
+      <anchored width="10" />
+      <static textres="equal" />
+    </label>
+  </template>            
+
+  <template name="link_npc_quicknotes">
+    <buttoncontrol>
+      <anchored to="rightanchor" width="20" height="20">
+        <top offset="8" />
+        <right anchor="left" relation="relative" offset="-2" />
+      </anchored>
+      <icon normal="button_link" pressed="button_link_down" empty="button_link_empty" />
+      <invisible />
+      <script>
+        function onDrop(x, y, draginfo)
+          if draginfo.isType("shortcut") then
+            local node = window.getDatabaseNode();
+            local sClass, sRecord = draginfo.getShortcutData();
+            if (sClass == "quicknote") then
+              local nodeEncounter = DB.findNode(sRecord);
+              if (nodeEncounter) then
+                local sName = DB.getValue(nodeEncounter,"name","");
+                local sText = DB.getValue(nodeEncounter,"text","");
+                local nLocked = DB.getValue(nodeEncounter,"locked",0);
+                DB.setValue(node,"itemnote.name","string",sName);
+                DB.setValue(node,"itemnote.text","formattedtext",sText);
+                DB.setValue(node,"itemnote.locked","number",nLocked);
+              end
+            end
+            return true;
+          end
+        end
+
+        function onDragStart(button, x, y, draginfo)
+          local node = window.getDatabaseNode();
+          local sName = DB.getValue(node,"name","");
+          local sPathToItem = node.getPath() .. ".itemnote";
+         	draginfo.setType("shortcut");
+          draginfo.setShortcutData( "quicknote", sPathToItem );
+          draginfo.setDescription(sName);
+          draginfo.setIcon("button_link_down");
+          return true;
+        end
+        
+        function onButtonPress()
+          local node = window.getDatabaseNode();
+          local sPathToItem = node.getPath() .. ".itemnote";
+          local sPath, sModule = node.getPath():match("([^@]*)@(.*)");
+          if sPath and sModule then
+            sPathToItem = sPath .. ".itemnote" .. "@" .. sModule;
+          end
+          Interface.openWindow("quicknote", sPathToItem);
+          return true;
+        end
+
+      </script>
+    </buttoncontrol>
+  </template>
+
+  <template name="list_item_subitems">
+    <windowlist>
+      <script>
+        function update()
+          local bEditMode = (window.parentcontrol.window.subitems_iedit.getValue() == 1);
+          for _,w in ipairs(getWindows()) do
+            w.idelete.setVisibility(bEditMode);
+          end
+        end
+      </script>
+      <sortby mergerule="replace"><control>name</control></sortby>
+      <noscroll />
+      <allowdelete />
+      <child></child>
+      <child><backcolor>4040301E</backcolor></child>
+      <datasource>.subitems</datasource>
+      <empty font="list-empty" textres="empty_inventory_label" />
+      <class>item_subitem</class>
+    </windowlist>
+  </template>
+	<template name="number_itemsubitems">
+		<basicnumber>
+			<nodrag />
+			<hideonvalue>0</hideonvalue>
+			<min>0</min>
+      <gmeditonly />
+		</basicnumber>
+	</template>
+	<template name="string_itemsubitems">
+		<string_textlistitem>
+			<nodrop />
+      <gmeditonly />
+		</string_textlistitem>
+	</template>
+  
+  <template name="button_cycler_classbonusxp">
+    <button_stringcycler name="bonusxp">
+      <parameters>
+        <labelsres>char_classbonusxp_label_5|char_classbonusxp_label_10</labelsres>
+        <values>5|10</values>
+        <defaultlabelres>char_classbonusxp_label_0</defaultlabelres> 
+      </parameters>
+      <tooltip textres="char_classbonusxp_tooltip" />
+    </button_stringcycler>
+  </template>
+  
+</root>
