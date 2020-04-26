@@ -250,22 +250,11 @@ function getEncumbranceRank2e(nodeChar)
   local nStrength = DB.getValue(nodeChar, "abilities.strength.score", 0);
   local nPercent = DB.getValue(nodeChar, "abilities.strength.percent", 0);
   local nWeightCarried = DB.getValue(nodeChar, "encumbrance.load", 0);
-  
-  -- Deal with 18 01-100 strength
-  if ((nStrength == 18) and (nPercent > 0)) then
-    local nPercentRank = 50;
-    if (nPercent == 100) then 
-      nPercentRank = 100
-    elseif (nPercent >= 91 and nPercent <= 99) then
-      nPercentRank = 99
-    elseif (nPercent >= 76 and nPercent <= 90) then
-      nPercentRank = 90
-    elseif (nPercent >= 51 and nPercent <= 75) then
-      nPercentRank = 75
-    elseif (nPercent >= 1 and nPercent <= 50) then
-      nPercentRank = 50
-    end
-    nStrength = nPercentRank;
+   
+   -- HM4 mod: different strength spread
+  nStrength = (nStrength * 2) - 1; 
+  if(nPercent > 50) then
+	nStrength = nStrength +1
   end
   
   -- determine if wt carried is greater than a encumbrance rank for strength value
@@ -312,22 +301,11 @@ function updateMoveFromEncumbrance1e(nodeChar)
         local nBaseEnc = 0; 
         local sEncRank = "Normal";
         
-        -- Deal with 18 01-100 strength
-        if ((nStrength == 18) and (nPercent > 0)) then
-            local nPercentRank = 50;
-            if (nPercent == 100) then 
-                nPercentRank = 100
-            elseif (nPercent >= 91 and nPercent <= 99) then
-                nPercentRank = 99
-            elseif (nPercent >= 76 and nPercent <= 90) then
-                nPercentRank = 90
-            elseif (nPercent >= 51 and nPercent <= 75) then
-                nPercentRank = 75
-            elseif (nPercent >= 1 and nPercent <= 50) then
-                nPercentRank = 50
-            end
-            nStrength = nPercentRank;
-        end
+		-- HM4 mod: Different strength spread
+	    nStrength = (nStrength * 2) - 1; 
+	    if(nPercent > 50) then
+          nStrength = nStrength +1
+	    end
         
         local nWeightAllowance = DataCommonADND.aStrength[nStrength][3];
         nWeightAllowance = math.floor(nWeightAllowance/10); -- convert the coin weight 1e style to actual pounds

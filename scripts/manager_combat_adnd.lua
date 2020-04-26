@@ -968,8 +968,9 @@ function rollNPCHitPoints(nodeNPC)
               nHP = n80;
           end
     end
+	nHP = nHP + 20; -- HM4 mod: add kicker
   end
-  return nHP
+  return nHP;
 end
 
 

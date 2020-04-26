@@ -215,75 +215,160 @@ function onInit()
     aDefaultSurpriseDice = {"d6"};
   end
   
+  -- HM4 mod: different strength spread
   -- aStrength[abilityScore]={hit adj, dam adj, weight allow, max press, open doors, bend bars, light enc, moderate enc, heavy enc, severe enc, max enc}
-  aStrength[1]  = {-5,-4,1,3,"1(0)",0 ,2,3,4,5,7};
-  aStrength[2]  = {-3,-2,1,5,"1(0)",0 ,2,3,4,5,7};
-  aStrength[3]  = {-3,-1,5,10,"2(0)",0 ,2,3,4,5,7};
+  aStrength[1]  = {-3,-8,1,3,"1(0)",0 ,2,3,4,5,7};
+  aStrength[2]  = {-3,-8,2,4,"1(0)",0 ,2,3,4,5,7};
   
-  aStrength[4]  = {-2,-1,10,25,"3(0)",0 ,11,14,17,20,25};
-  aStrength[5]  = {-2,-1,10,25,"3(0)",0 ,11,14,17,20,25};
+  aStrength[3]  = {-3,-7,3,5,"1(0)",0 ,2,3,4,5,7};
+  aStrength[4]  = {-3,-7,4,7,"1(0)",0 ,2,3,4,5,7};
   
-  aStrength[6]  = {-1,0,20,55,"4(0)",0 ,21,30,39,47,55};
-  aStrength[7]  = {-1,0,20,55,"4(0)",0 ,21,30,39,47,55};
+  aStrength[5]  = {-3,-6,5,10,"2(0)",0 ,2,3,4,5,7};
+  aStrength[6]  = {-3,-6,7,20,"2(0)",0 ,2,3,4,5,7};
   
-  aStrength[8]  = {0,0,35,90,"5(0)",1 ,36,51,66,81,90};
-  aStrength[9]  = {0,0,35,90,"5(0)",1 ,36,51,66,81,90};
+  aStrength[7]  = {-2,-5,9,25,"3(0)",0 ,11,14,17,20,25};
+  aStrength[8]  = {-2,-5,11,35,"3(0)",0 ,11,14,17,20,25};
   
-  aStrength[10] = {0,0,40,115,"6(0)",2 ,41,59,77,97,110};
-  aStrength[11] = {0,0,40,115,"6(0)",2 ,41,59,77,97,110};
+  aStrength[9]  = {-2,-4,13,30,"3(0)",0 ,11,14,17,20,25};
+  aStrength[10]  = {-2,-4,15,40,"3(0)",0 ,11,14,17,20,25};
   
-  aStrength[12] = {0,0,45,140,"7(0)",4 ,46,70,94,118,140};
-  aStrength[13] = {0,0,45,140,"7(0)",4 ,46,70,94,118,140};
+  aStrength[11]  = {-2,-3,18,55,"4(0)",0 ,21,30,39,47,55};
+  aStrength[12]  = {-2,-3,21,68,"4(0)",0 ,21,30,39,47,55};
   
-  aStrength[14] = {0,0,55,170,"8(0)",7 ,56,86,116,146,170};
-  aStrength[15] = {0,0,55,170,"8(0)",7 ,56,86,116,146,170};
+  aStrength[13]  = {-1,-2,24,70,"4(0)",0 ,21,30,39,47,55};
+  aStrength[14]  = {-1,-2,27,80,"5(0)",0 ,21,30,39,47,55};
   
-  aStrength[16] = {0,1,70,195,"9(0)",10 ,71,101,131,161,195};
+  aStrength[15]  = {-1,-1,30,90,"5(0)",1 ,36,51,66,81,90};
+  aStrength[16]  = {-1,-1,33,95,"5(0)",1 ,36,51,66,81,90};
   
-  aStrength[17] = {1,1,85,220,"10(0)",13 ,86,122,158,194,220};
+  aStrength[17]  = {0,-1,36,100,"5(0)",1 ,36,51,66,81,90};
+  aStrength[18]  = {0,-1,39,110,"6(0)",1 ,36,51,66,81,90};
   
-  aStrength[18] = {1,2,110,255,"11(0)",16 ,111,150,189,228,255};
+  aStrength[19] = {0,0,43,115,"6(0)",2 ,41,59,77,97,110};
+  aStrength[20] = {0,0,47,125,"6(0)",3 ,41,59,77,97,110};
   
-  aStrength[19] = {3,7,485,640,"16(8)",50 ,486,500,550,600,640};
-  aStrength[20] = {3,8,535,700,"17(10)",60 ,536,580,610,670,700};
-  aStrength[21] = {4,9,635,810,"17(12)",70 ,636,680,720,790,810};
-  aStrength[22] = {4,10,785,970,"18(14)",80 ,786,830,870,900,970};
-  aStrength[23] = {5,11,935,1130,"18(16)",90 ,936,960,1000,1090,1130};
-  aStrength[24] = {6,12,1235,1440,"19(17)",95 ,1236,1290,1300,1380,1440};
-  aStrength[25] = {7,14,1535,1750,"19(18)",99 ,1536,1590,1600,1680,1750};
-  -- Deal with 18 01-100 strength
-  aStrength[50] = {1,3,135,280,"12(0)",20 ,136,175,214,253,280};
-  aStrength[75] = {2,3,160,305,"13(0)",25 ,161,200,239,278,305};
-  aStrength[90] = {2,4,185,330,"14(0)",30 ,186,225,264,303,330};
-  aStrength[99] = {2,5,235,380,"15(3)",35 ,236,275,314,353,380};
-  aStrength[100] ={3,6,335,480,"16(6)",40 ,336,375,414,453,480};
+  aStrength[21] = {0,0,51,130,"6(0)",4 ,41,59,77,97,110};
+  aStrength[22] = {0,0,55,135,"7(0)",4 ,41,59,77,97,110};
+  
+  aStrength[23] = {0,1,59,140,"7(0)",5 ,46,70,94,118,140};
+  aStrength[24] = {0,1,63,145,"7(0)",5 ,46,70,94,118,140};
+  
+  aStrength[25] = {1,1,67,150,"7(0)",6 ,46,70,94,118,140};
+  aStrength[26] = {1,1,71,160,"8(0)",6 ,46,70,94,118,140};
+  
+  aStrength[27] = {1,2,76,170,"8(0)",7 ,56,86,116,146,170};
+  aStrength[28] = {1,2,81,175,"8(0)",8 ,56,86,116,146,170};
+  
+  aStrength[29] = {1,3,86,185,"9(0)",9 ,56,86,116,146,170};
+  aStrength[30] = {1,3,91,190,"9(0)",10 ,56,86,116,146,170};
+  
+  aStrength[31] = {2,4,97,195,"10(0)",11 ,71,101,131,161,195};
+  aStrength[32] = {2,4,103,220,"10(0)",12 ,71,101,131,161,195};
+  
+  aStrength[33] = {2,5,109,255,"11(0)",15 ,86,122,158,194,220};
+  aStrength[34] = {2,5,115,290,"11(0)",20 ,86,122,158,194,220};
+  
+  aStrength[35] = {3,6,130,350,"12(3)",25 ,111,150,189,228,255};
+  aStrength[36] = {3,6,160,480,"14(6)",35 ,111,150,189,228,255};
+  
+  aStrength[37] = {3,7,200,640,"15(8)",50 ,486,500,550,600,640};
+  aStrength[38] = {3,7,300,660,"16(9)",50 ,486,500,550,600,640};
+  
+  aStrength[39] = {3,8,400,700,"17(10)",60 ,536,580,610,670,700};
+  aStrength[40] = {3,8,500,625,"17(11)",65 ,536,580,610,670,700};
+  
+  aStrength[41] = {4,9,600,810,"17(12)",70 ,636,680,720,790,810};
+  aStrength[42] = {4,9,700,865,"18(13)",75 ,636,680,720,790,810};
+  
+  aStrength[43] = {4,10,800,970,"18(14)",80 ,786,830,870,900,970};
+  aStrength[44] = {4,10,900,1050,"18(15)",85 ,786,830,870,900,970};
+  
+  aStrength[45] = {5,11,1000,1130,"18(16)",90 ,936,960,1000,1090,1130};
+  aStrength[46] = {5,11,1100,1320,"19(16)",95 ,936,960,1000,1090,1130};
+  
+  aStrength[47] = {6,12,1200,1440,"19(16)",97 ,1236,1290,1300,1380,1440};
+  aStrength[48] = {6,12,1300,1540,"19(17)",98 ,1236,1290,1300,1380,1440};
+  
+  aStrength[49] = {7,14,1500,1750,"19(18)",99 ,1536,1590,1600,1680,1750};
+  aStrength[50] = {7,14,1500,1750,"19(18)",99 ,1536,1590,1600,1680,1750};
 
+
+  -- HM4 mod: different dexterity spread
   -- aDexterity[abilityScore]={reaction, missile, defensive}
-  aDexterity[1]  =  {-6,-6,5};
-  aDexterity[2]  =  {-4,-4,5};
-  aDexterity[3]  =  {-3,-3,4};
-  aDexterity[4]  =  {-2,-2,3};
-  aDexterity[5]  =  {-1,-1,2};
-  aDexterity[6]  =  {0,0,1};
-  aDexterity[7]  =  {0,0,0};
-  aDexterity[8]  =  {0,0,0};
-  aDexterity[9]  =  {0,0,0};
-  aDexterity[10]  = {0,0,0};
-  aDexterity[11]  = {0,0,0};
-  aDexterity[12]  = {0,0,0};
-  aDexterity[13]  = {0,0,0};
-  aDexterity[14]  = {0,0,0};
-  aDexterity[15]  = {0,0,-1};
-  aDexterity[16]  = {1,1,-2};
-  aDexterity[17]  = {2,2,-3};
-  aDexterity[18]  = {2,2,-4};
-  aDexterity[19]  = {3,3,-4};
-  aDexterity[20]  = {3,3,-4};
-  aDexterity[21]  = {4,4,-5};
-  aDexterity[22]  = {4,4,-5};
-  aDexterity[23]  = {4,4,-5};
-  aDexterity[24]  = {5,5,-6};
-  aDexterity[25]  = {5,5,-6};
+  aDexterity[1]  =  {-5,-6,5};
+  aDexterity[2]  =  {-5,-5,5};
+  
+  aDexterity[3]  =  {-5,-5,4};
+  aDexterity[4]  =  {-4,-5,4};
+  
+  aDexterity[5]  =  {-4,-4,4};
+  aDexterity[6]  =  {-4,-4,3};
+  
+  aDexterity[7]  =  {-3,-4,3};
+  aDexterity[8]  =  {-3,-3,3};
+  
+  aDexterity[9]  =  {-3,-3,2};
+  aDexterity[10]  =  {-2,-3,2};
+  
+  aDexterity[11]  =  {-2,-2,2};
+  aDexterity[12]  =  {-2,-2,1};
+  
+  aDexterity[13]  =  {-1,-2,1};
+  aDexterity[14]  =  {-1,-1,1};
+  
+  aDexterity[15]  =  {-1,-1,0};
+  aDexterity[16]  =  {0,-1,0};
+  
+  aDexterity[17]  =  {0,0,0};
+  aDexterity[18]  =  {0,0,0};
+  
+  aDexterity[19]  = {0,0,0};
+  aDexterity[20]  = {0,0,0};
+  
+  aDexterity[21]  = {0,0,0};
+  aDexterity[22]  = {0,0,0};
+  
+  aDexterity[23]  = {0,0,0};
+  aDexterity[24]  = {0,1,0};
+  
+  aDexterity[25]  = {1,1,0};
+  aDexterity[26]  = {1,1,-1};
+  
+  aDexterity[27]  = {1,2,-1};
+  aDexterity[28]  = {2,2,-1};
+  
+  aDexterity[29]  = {2,2,-2};
+  aDexterity[30]  = {2,3,-2};
+  
+  aDexterity[31]  = {3,3,-2};
+  aDexterity[32]  = {3,3,-3};
+  
+  aDexterity[33]  = {3,4,-3};
+  aDexterity[34]  = {4,4,-3};
+  
+  aDexterity[35]  = {4,4,-4};
+  aDexterity[36]  = {4,5,-4};
+  
+  aDexterity[37]  = {5,5,-4};
+  aDexterity[38]  = {5,5,-5};
+  
+  aDexterity[39]  = {5,6,-5};
+  aDexterity[40]  = {6,6,-5};
+  
+  aDexterity[41]  = {6,6,-6};
+  aDexterity[42]  = {6,7,-6};
+  
+  aDexterity[43]  = {7,7,-6};
+  aDexterity[44]  = {7,7,-7};
+  
+  aDexterity[45]  = {7,8,-7};
+  aDexterity[46]  = {8,8,-7};
+  
+  aDexterity[47]  = {8,8,-8};
+  aDexterity[48]  = {8,9,-8};
+  
+  aDexterity[49]  = {9,9,-8};
+  aDexterity[50]  = {9,9,-8};
   
   -- aWisdom[abilityScore]={magic adj, spell bonuses, spell failure, spell imm., MAC base, PSP bonus }
   aWisdom[1]   =    {-6, "None", 80, "None",10,0};
@@ -322,32 +407,33 @@ function onInit()
   aWisdom[124]  =    { 4, "Bonus Spells: 4x1st, 3x2nd, 3x3rd, 3x4th, 3x5th, 2x6th", 0, "Spells: cause fear,charm person, command, friends, hypnotism, forget, hold person, enfeeble, scare, fear, charm monster, confusion, emotion, fumble, suggestion, chaos, feeblemind, hold monster,magic jar,quest, geas, mass suggestion, rod of ruleship"};
   aWisdom[125]  =    { 4, "Bonus Spells: 4x1st, 3x2nd, 3x3rd, 3x4th, 3x5th, 3x6th,1x7th", 0, "Spells: cause fear,charm person, command, friends, hypnotism, forget, hold person, enfeeble, scare, fear, charm monster, confusion, emotion, fumble, suggestion, chaos, feeblemind, hold monster,magic jar,quest, geas, mass suggestion, rod of ruleship, antipathy/sympath, death spell,mass charm"};
 
+-- HM4 mod: different con  spread
   -- aConstitution[abilityScore]={hp, system shock, resurrection survivial, poison save, regeneration, psp bonus}
-  aConstitution[1]  =   {"-3",25,30,-2,"None",0};
-  aConstitution[2]  =   {"-2",30,35,-1,"None",0};
-  aConstitution[3]  =   {"-2",35,40,0,"None",0};
-  aConstitution[4]  =   {"-1",40,45,0,"None",0};
-  aConstitution[5]  =   {"-1",45,50,0,"None",0};
-  aConstitution[6]  =   {"-1",50,55,0,"None",0};
-  aConstitution[7]  =   {"0",55,60,0,"None",0};
-  aConstitution[8]  =   {"0",60,65,0,"None",0};
-  aConstitution[9]  =   {"0",65,70,0,"None",0};
+  aConstitution[1]  =   {"-5",25,30,-2,"None",0};
+  aConstitution[2]  =   {"-4",30,35,-1,"None",0};
+  aConstitution[3]  =   {"-4",35,40,0,"None",0};
+  aConstitution[4]  =   {"-3",40,45,0,"None",0};
+  aConstitution[5]  =   {"-3",45,50,0,"None",0};
+  aConstitution[6]  =   {"-2",50,55,0,"None",0};
+  aConstitution[7]  =   {"-2",55,60,0,"None",0};
+  aConstitution[8]  =   {"-1",60,65,0,"None",0};
+  aConstitution[9]  =   {"-1",65,70,0,"None",0};
   aConstitution[10]  =  {"0",70,75,0,"None",0};
   aConstitution[11]  =  {"0",75,80,0,"None",0};
-  aConstitution[12]  =  {"0",80,85,0,"None",0};
-  aConstitution[13]  =  {"0",85,90,0,"None",0};
-  aConstitution[14]  =  {"0",88,92,0,"None",0};
-  aConstitution[15]  =  {"1",90,94,0,"None",0};
-  aConstitution[16]  =  {"2",95,96,0,"None",1};
-  aConstitution[17]  =  {"2/3",97,98,0,"None",2};
-  aConstitution[18]  =  {"2/4",99,100,0,"None",3};
-  aConstitution[19]  =  {"2/5",99,100,1,"None",4};
-  aConstitution[20]  =  {"2/5",99,100,1,"1/6 turns",5};
-  aConstitution[21]  =  {"2/6",99,100,2,"1/5 turns",6};
-  aConstitution[22]  =  {"2/6",99,100,2,"1/4 turns",7};
-  aConstitution[23]  =  {"2/6",99,100,3,"1/3 turns",8};
-  aConstitution[24]  =  {"2/7",99,100,3,"1/2",9};
-  aConstitution[25]  =  {"2/7",100,100,4,"1 turn",10};
+  aConstitution[12]  =  {"1",80,85,0,"None",0};
+  aConstitution[13]  =  {"1",85,90,0,"None",0};
+  aConstitution[14]  =  {"2",88,92,0,"None",0};
+  aConstitution[15]  =  {"2",90,94,0,"None",0};
+  aConstitution[16]  =  {"3",95,96,0,"None",1};
+  aConstitution[17]  =  {"3",97,98,0,"None",2};
+  aConstitution[18]  =  {"4",99,100,0,"None",3};
+  aConstitution[19]  =  {"4",99,100,1,"None",4};
+  aConstitution[20]  =  {"5",99,100,1,"1/6 turns",5};
+  aConstitution[21]  =  {"5",99,100,2,"1/5 turns",6};
+  aConstitution[22]  =  {"6",99,100,2,"1/4 turns",7};
+  aConstitution[23]  =  {"6",99,100,3,"1/3 turns",8};
+  aConstitution[24]  =  {"7",99,100,3,"1/2",9};
+  aConstitution[25]  =  {"7",100,100,4,"1 turn",10};
   
   -- aCharisma[abilityScore]={reaction, missile, defensive}
   aCharisma[1]   =  {0, -8,-7};

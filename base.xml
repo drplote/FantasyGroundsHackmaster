@@ -9,6 +9,7 @@
 <root version="3.0" release="32" logo="logo.png">
   <announcement text="Advanced Dungeons &amp; Dragons 2nd Edition \r(c) Wizards of the Coast" font="emotefont" icon="rulesetlogo_DungeonClassic" />
   <announcement text="2E v2020.04.16 For Fantasy Grounds\r--by Celestian 2017-2020" font="emotefont" icon="celestian" />
+  <announcement text="Modded for Hackmaster 4E" font="emotefont" icon="celestian" />
   
   <!-- Attributes -->
   

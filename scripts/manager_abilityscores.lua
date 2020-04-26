@@ -62,24 +62,12 @@ function getStrengthProperties(nodeChar)
     end
     nScore = abilityScoreSanity(nScore);
     local nScoreSaved = nScore;
-    
-    -- Deal with 18 01-100 strength
-    if ((nScore == 18) and (nPercent > 0)) then
-        local nPercentRank = 50;
-        if (nPercent == 100) then 
-            nPercentRank = 100
-        elseif (nPercent >= 91 and nPercent <= 99) then
-            nPercentRank = 99
-        elseif (nPercent >= 76 and nPercent <= 90) then
-            nPercentRank = 90
-        elseif (nPercent >= 51 and nPercent <= 75) then
-            nPercentRank = 75
-        elseif (nPercent >= 1 and nPercent <= 50) then
-            nPercentRank = 50
-        end
-        nScore = nPercentRank;
-    end
-    
+	
+	nScore = (nScore * 2) - 1; 
+	if(nPercent > 50) then
+	  nScore = nScore +1
+	end
+       
     local dbAbility = {};
     dbAbility.score = nScoreSaved;
     dbAbility.scorepercent = nPercent;
@@ -96,6 +84,7 @@ end
 
 function getDexterityProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.dexterity.total", DB.getValue(nodeChar, "abilities.dexterity.score", 0));
+	local nPercent = DB.getValue(nodeChar, "abilities.dexterity.percenttotal", DB.getValue(nodeChar, "abilities.dexterity.percenttotal", 0));
 --Debug.console("manager_abilityscores.lua","getDexterityProperties","nodeChar",nodeChar);
 --Debug.console("manager_abilityscores.lua","getDexterityProperties","nScore",nScore);
 
@@ -120,8 +109,16 @@ function getDexterityProperties(nodeChar)
     end
 --Debug.console("manager_abilityscores.lua","getDexterityProperties","TWO",nScore);
     nScore = abilityScoreSanity(nScore);
+	local nScoreSaved = nScore;
+	
+	-- HM4 mod: different strength spread
+	nScore = (nScore * 2) - 1; 
+	if(nPercent > 50) then
+	  nScore = nScore +1
+	end
+	
     local dbAbility = {};
-    dbAbility.score = nScore;
+    dbAbility.score = nScoreSaved;
     dbAbility.reactionadj = DataCommonADND.aDexterity[nScore][1];
     dbAbility.hitadj = DataCommonADND.aDexterity[nScore][2];
     dbAbility.defenseadj = DataCommonADND.aDexterity[nScore][3];
@@ -338,6 +335,7 @@ function updateCharisma(nodeChar)
     DB.setValue(nodeChar, "abilities.charisma.score", "number", nScore);
     return dbAbility;
 end
+
 
 function updateIntelligence(nodeChar)
     local dbAbility = getIntelligenceProperties(nodeChar);
