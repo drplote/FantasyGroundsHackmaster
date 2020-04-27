@@ -226,6 +226,27 @@ function getCharismaProperties(nodeChar)
     return dbAbility;
 end
 
+function getComelinessProperties(nodeChar)
+    local nScore = DB.getValue(nodeChar, "abilities.comeliness.total", DB.getValue(nodeChar, "abilities.comeliness.score", 0));
+    local rActor = ActorManager.getActor("", nodeChar);
+    if rActor then
+      -- adjust ability scores from effects!
+      local sAbilityEffect = "BCOM";
+      local nAbilityMod, nAbilityEffects = EffectManager5E.getEffectsBonus(rActor, sAbilityEffect, true);
+      if (nAbilityMod ~= 0) then
+       nScore = nAbilityMod;
+      end
+      
+      sAbilityEffect = "COM";
+      nAbilityMod, nAbilityEffects = EffectManager5E.getEffectsBonus(rActor, sAbilityEffect, true);
+      nScore = nScore + nAbilityMod;
+    end
+    nScore = abilityScoreSanity(nScore);
+    local dbAbility = {};
+    dbAbility.score = nScore;
+    return dbAbility;
+end
+
 function getIntelligenceProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.intelligence.total", DB.getValue(nodeChar, "abilities.intelligence.score", 0));
     local rActor = ActorManager.getActor("", nodeChar);
@@ -336,6 +357,13 @@ function updateCharisma(nodeChar)
     return dbAbility;
 end
 
+function updateComeliness(nodeChar)
+    local dbAbility = getComelinessProperties(nodeChar);
+    local nScore = dbAbility.score;
+    DB.setValue(nodeChar, "abilities.comeliness.score", "number", nScore);
+    return dbAbility;
+end
+
 
 function updateIntelligence(nodeChar)
     local dbAbility = getIntelligenceProperties(nodeChar);
@@ -368,7 +396,7 @@ end
 
 function detailsUpdate(nodeChar)
   ----Debug.console("char_abilities_details.lua","detailsUpdate","sTarget",sTarget);
-  for i = 1,6,1 do
+  for i = 1,7,1 do
     local sTarget = DataCommon.abilities[i];
     local nBase =       DB.getValue(nodeChar, "abilities." .. sTarget .. ".base",9);
     local nBaseMod =    DB.getValue(nodeChar, "abilities." .. sTarget .. ".basemod",0);
@@ -394,7 +422,7 @@ function detailsUpdate(nodeChar)
 end
 
 function detailsPercentUpdate(nodeChar)
-  for i = 1,6,1 do
+  for i = 1,7,1 do
     local sTarget = DataCommon.abilities[i];
     local nBase =       DB.getValue(nodeChar, "abilities." .. sTarget .. ".percentbase",0);
     local nBaseMod =    DB.getValue(nodeChar, "abilities." .. sTarget .. ".percentbasemod",0);

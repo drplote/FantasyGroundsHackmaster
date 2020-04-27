@@ -136,7 +136,6 @@ function updateAbilityScores(node)
   if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
     nodeChar = node;
   end
-
   AbilityScoreADND.detailsUpdate(nodeChar);
   AbilityScoreADND.detailsPercentUpdate(nodeChar);
 
@@ -145,6 +144,7 @@ function updateAbilityScores(node)
   AbilityScoreADND.updateConstitution(nodeChar);
   AbilityScoreADND.updateDexterity(nodeChar);
   AbilityScoreADND.updateStrength(nodeChar);
+  AbilityScoreADND.updateComeliness(nodeChar);
   CharManager.updateEncumbrance(nodeChar);
   local dbAbility = AbilityScoreADND.updateWisdom(nodeChar);
   if (wisdom_immunity and wisdom_immunity_label 

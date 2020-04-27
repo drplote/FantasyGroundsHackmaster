@@ -271,8 +271,8 @@
   <string name="char_tooltip_dexterity">Dexterity of the character</string>
   <string name="char_tooltip_wisdom">Wisdom of the character</string>
   <string name="char_tooltip_intelligence">Intelligence of the character</string>
-  <string name="char_tooltip_charisma">Strength of the character.</string>
   <string name="char_tooltip_charisma">Charisma of the character.</string>
+  <string name="char_tooltip_comeliness">Comeliness of the character.</string>
   <string name="char_label_activatedetail_tooltip">Click to view details of power.</string>
     <!-- skill -->
   <string name="skill_label_name">Name</string>

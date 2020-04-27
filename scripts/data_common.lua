@@ -10,7 +10,8 @@ abilities = {
   "constitution",
   "intelligence",
   "wisdom",
-  "charisma"
+  "charisma",
+  "comeliness"
 };
 
 ability_ltos = {
@@ -19,7 +20,8 @@ ability_ltos = {
   ["constitution"] = "CON",
   ["intelligence"] = "INT",
   ["wisdom"] = "WIS",
-  ["charisma"] = "CHA"
+  ["charisma"] = "CHA",
+  ["comeliness"] = "COM"
 };
 
 ability_stol = {
@@ -28,7 +30,8 @@ ability_stol = {
   ["CON"] = "constitution",
   ["INT"] = "intelligence",
   ["WIS"] = "wisdom",
-  ["CHA"] = "charisma"
+  ["CHA"] = "charisma",
+  ["COM"] = "comeliness"
 };
 
 

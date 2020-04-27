@@ -114,6 +114,7 @@ function updateAbilityScores(node)
     AbilityScoreADND.detailsPercentUpdate(nodeChar);
 
     --AbilityScoreADND.updateForEffects(nodeChar);
+	AbilityScoreADND.updateComeliness(nodeChar);
     AbilityScoreADND.updateCharisma(nodeChar);
     AbilityScoreADND.updateConstitution(nodeChar);
     AbilityScoreADND.updateDexterity(nodeChar);
