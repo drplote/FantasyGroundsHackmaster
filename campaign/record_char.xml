@@ -9,10 +9,10 @@
   <windowclass name="charsheet">
     <frame>charsheet</frame>
     <placement>
-      <size width="530" height="580" />
+      <size width="530" height="800" />
     </placement>
     <sizelimits>
-      <minimum width="530" height="580" />
+      <minimum width="530" height="650" />
       <!-- <maximum width="510" /> -->
       <dynamic />
     </sizelimits>

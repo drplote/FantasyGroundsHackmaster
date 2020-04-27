@@ -8,6 +8,7 @@
 <root>
   <icon name="desktopdecal_adnd1" file="graphics/decals/decal-adnd-1.png" />
   <icon name="rulesetlogo_DungeonClassic" file="graphics/icons/DnD_ClassicLogo.png" />
+  <icon name="hackmaster_logo" file="graphics/icons/hackmaster_logo.png" />
   
   <!-- Common -->
   <icon name="details" file="graphics/icons/wheels-icon.png" />

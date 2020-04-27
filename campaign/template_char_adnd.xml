@@ -122,6 +122,20 @@
       <script file="campaign/scripts/number_abilityscore.lua" />
     </basicnumber>
   </template>
+  
+  <template name="number_honorscore">
+    <basicnumber>
+      <anchored to="statstitle" position="insidetopleft"/> 
+      <rollable />
+      <readonly />
+      <min>1</min>
+      <max>500</max>
+      <default>0</default>
+      <font>bold20</font>
+      <frame name="abilityscore_box" />
+      <script file="campaign/scripts/number_abilityscore.lua" />
+    </basicnumber>
+  </template>
     
   <template name="number_saves_modifier">
     <number>
@@ -571,6 +585,26 @@
         <max>25</max>
       </basicnumber>
   </template>
+  
+    <template name="honor_number_base">
+      <basicnumber>
+        <anchored width="30" height="20">
+          <top  />
+          <left anchor="right" relation="relative" offset="10" />
+        </anchored>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <cursor hover="hand" />
+        <font>bold12</font>
+        <default>9</default>
+        <hideonvalue>0</hideonvalue>
+        <min>0</min>
+        <max>999</max>
+      </basicnumber>
+  </template>
+  
     <template name="ability_percent_number_base">
             <basicnumber>
         <anchored width="30" height="20">

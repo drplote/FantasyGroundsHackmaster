@@ -227,6 +227,8 @@
   <string name="char_tooltip_strength_opendoors">Open doors (open magically barred)</string>
   <string name="char_label_strength_bendbars">Bars</string>
   <string name="char_tooltip_strength_bendbars">Bend bars or lift gates</string>
+  <string name="char_label_honor_honordie">Honor Die</string>
+  <string name="char_tooltip_honor_honordie">What you roll for your honor die</string>
 
   <string name="char_tooltip_dexterity_reactionadj">Reaction Adjustment</string>
   <string name="char_label_dexterity_reactionadj">Reaction Adj</string>
@@ -273,7 +275,8 @@
   <string name="char_tooltip_intelligence">Intelligence of the character</string>
   <string name="char_tooltip_charisma">Charisma of the character.</string>
   <string name="char_tooltip_comeliness">Comeliness of the character.</string>
-  <string name="char_label_activatedetail_tooltip">Click to view details of power.</string>
+  <string name="char_tooltip_honor">Current honor of the character.</string>
+    <string name="char_label_activatedetail_tooltip">Click to view details of power.</string>
     <!-- skill -->
   <string name="skill_label_name">Name</string>
   <string name="char_label_skill_base_check">Base Percent</string>

@@ -364,7 +364,6 @@ function updateComeliness(nodeChar)
     return dbAbility;
 end
 
-
 function updateIntelligence(nodeChar)
     local dbAbility = getIntelligenceProperties(nodeChar);
     local nScore = dbAbility.score;
@@ -391,6 +390,7 @@ function updateForEffects(nodeChar)
     updateIntelligence(nodeChar);
     updateStrength(nodeChar);
     updateWisdom(nodeChar);
+	updateComeliness(nodeChar);
 end
 
 
@@ -413,7 +413,7 @@ function detailsUpdate(nodeChar)
     if (nTotal < 1) then
       nTotal = 1;
     end
-    if (nTotal > 25) then
+    if (nTotal > 25 ) then
       nTotal = 25;
     end
     DB.setValue(nodeChar, "abilities." .. sTarget .. ".score","number", nTotal);
