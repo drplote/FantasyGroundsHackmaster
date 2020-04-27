@@ -249,6 +249,9 @@
 
   <string name="char_tooltip_intelligence_languages">Number of Additional Languages (Or proficiencies) you have.</string>
   <string name="char_label_intelligence_languages">Lang</string>
+  
+  <string name="char_label_comeliness_effects">Effects</string>
+  <string name="char_tooltip_comeliness_effects">How others view the character</string>
 
   <string name="char_label_ability_details_base">Base</string>
   <string name="char_label_ability_details_basemod">Mod</string>

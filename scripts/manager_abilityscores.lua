@@ -241,9 +241,14 @@ function getComelinessProperties(nodeChar)
       nAbilityMod, nAbilityEffects = EffectManager5E.getEffectsBonus(rActor, sAbilityEffect, true);
       nScore = nScore + nAbilityMod;
     end
+	
+	
+	
     nScore = abilityScoreSanity(nScore);
     local dbAbility = {};
     dbAbility.score = nScore;
+	dbAbility.effects = DataCommonADND.aComeliness[nScore][1];
+	dbAbility.effects_TT = DataCommonADND.aComeliness[nScore][2];
     return dbAbility;
 end
 
@@ -360,7 +365,9 @@ end
 function updateComeliness(nodeChar)
     local dbAbility = getComelinessProperties(nodeChar);
     local nScore = dbAbility.score;
+	
     DB.setValue(nodeChar, "abilities.comeliness.score", "number", nScore);
+	DB.setValue(nodeChar, "abilities.comeliness.effects", "string", dbAbility.effects);
     return dbAbility;
 end
 

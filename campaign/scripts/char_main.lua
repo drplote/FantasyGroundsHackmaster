@@ -144,26 +144,22 @@ function updateAbilityScores(node)
   AbilityScoreADND.updateConstitution(nodeChar);
   AbilityScoreADND.updateDexterity(nodeChar);
   AbilityScoreADND.updateStrength(nodeChar);
-  AbilityScoreADND.updateComeliness(nodeChar);
   CharManager.updateEncumbrance(nodeChar);
   local dbAbility = AbilityScoreADND.updateWisdom(nodeChar);
   if (wisdom_immunity and wisdom_immunity_label 
     and wisdom_spellbonus and wisdom_spellbonus_label) then
-    -- set tooltip for this because it's just to big for the
-    -- abilities pane
+    -- set tooltip for this because it's just to big for the abilities pane
     wisdom_immunity.setTooltipText(dbAbility.sImmunity_TT);
-    wisdom_immunity_label.setTooltipText(dbAbility.sImmunity_TT);
-
     wisdom_spellbonus.setTooltipText(dbAbility.sBonus_TT);
-    wisdom_spellbonus_label.setTooltipText(dbAbility.sBonus_TT);
   end
   dbAbility = AbilityScoreADND.updateIntelligence(nodeChar);
   if (intelligence_illusion and intelligence_illusion_label) then
-    -- set tooltip for this because it's just to big for the
-    -- abilities pane
+    -- set tooltip for this because it's just to big for the abilities pane
     intelligence_illusion.setTooltipText(dbAbility.sImmunity_TT);
-    intelligence_illusion_label.setTooltipText(dbAbility.sImmunity_TT);
   end
+  dbAbility = AbilityScoreADND.updateComeliness(nodeChar);
+  -- set tooltip for this because it's just to big for the abilities pane
+  comeliness_effects.setTooltipText(dbAbility.effects_TT);
   
   -- this makes sure if con changes hp con adjustments are managed
   updateHealthScore();

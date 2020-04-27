@@ -8,9 +8,6 @@
 <root>
   <windowclass name="charsheet_main" >
     <script file="campaign/scripts/char_main.lua" />
-	<placement>
-		<size height="1200" />
-	</placement>
     <!-- <margins control="15,0,0,0" /> -->
     <sheetdata>
       <anchor_title_charsheet name="contentanchor" >
@@ -684,6 +681,17 @@
         <static textres="char_label_ability_percent" />
       </label_ability_fields>
 	  
+	  <string_abilityfield name="comeliness_effects" source="abilities.comeliness.effects">
+        <anchored to="comeliness_percent" width="240"/>
+        <tooltip textres="char_tooltip_comeliness_effects" />
+        <labelres>char_label_comeliness_effects</labelres>
+      </string_abilityfield>
+       <label_ability_fields name="comeliness_effects_label">
+        <anchored to="comeliness_effects" />
+           <tooltip textres="char_tooltip_comeliness_effects" />
+        <static textres="char_label_comeliness_effects" />
+      </label_ability_fields>
+	  
 	  <!-- Honor -->
 	  <number_honorscore name="honor" source="abilities.honor.score">
         <tooltip textres="char_tooltip_comeliness" />
@@ -702,7 +710,8 @@
       <ability_fields_container name="hondetailframe">
         <anchored to="honor" />
       </ability_fields_container>   
- 	  
+	  
+	  
       <!-- END Ability Scores -->
       
 <!-- SAVES -->
