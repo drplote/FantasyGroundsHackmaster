@@ -12,7 +12,6 @@ function onInit()
 
   ActionsManager.registerModHandler("damage", modDamage);
   ActionsManager.registerPostRollHandler("damage", onDamageRoll);
-  --DiceMechanicsManager.registerDiceMechanic('damage', DiceMechanicsManager.processPenetratingDice, onPenetratingDamageRoll);
   ActionsManager.registerResultHandler("damage", onDamage);
 end
 
@@ -473,102 +472,8 @@ function modDamage(rSource, rTarget, rRoll)
   ActionsManager2.encodeDesktopMods(rRoll);
 end
 
---function onPenetratingDamageRoll(draginfo)
---	ActionsManager.onDiceLanded(draginfo)
---end
-
-function needsPenetrationRoll(rSides, rResult, penPlus)
-	if rSides <= 2 then
-		return false
-	elseif rResult == rSides  then
-		return true
-	elseif penPlus and rResult == rSides - 1 then
-		return true
-	else
-		return false
-	end
-end
-
-function getPenetrationRolls(rRolls, rSides, penPlus)
-	
-	local lDamage = math.random(1, rSides);
-	table.insert(rRolls, lDamage);
-	
-	if needsPenetrationRoll(rSides, lDamage, penPlus) then	
-		getPenetrationRolls(rRolls, rSides, penPlus)
-	end	
-end
-
-function toCommaSepartedString(tt)
-	local s = "";
-	for _, p in ipairs(tt) do
-		s = s .. "," .. p
-	end
-	return string.sub(s, 2);
-end
-
-function totalPenetrationDamage(rRolls)
-	local lDamage = 0;
-	for _, rRoll in ipairs(rRolls) do
-		lDamage = lDamage + rRoll - 1;
-	end
-	return lDamage;
-end
-
 
 function onDamageRoll(rSource, rRoll)
-
-  for _,vDie in ipairs(rRoll.aDice) do
-    local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
-	local nSides = tonumber(sDieSides) or 0;
-	if needsPenetrationRoll(nSides, vDie.result, false) then	
-		local lRolls = {};
-	  	getPenetrationRolls(lRolls, nSides, false);
-		local nNumPenetrations = table.getn(lRolls);
-		rRoll.sDesc = rRoll.sDesc .. " [Penetration {" .. toCommaSepartedString(lRolls) ..  "}]";    
-		vDie.result = vDie.result + totalPenetrationDamage(lRolls);
-		if sColor == "d" or sColor == "D" then
-          if sSign == "-" then
-            vDie.type = "-b" .. sDieSides;
-          else
-            vDie.type = "b" .. sDieSides;
-          end
-        end
-    end
-  end
-  
- 
-  -- Handle max damage
-  local bMax = rRoll.sDesc:match("%[MAX%]") or rRoll.sCriticalType:match("max");
-  if bMax then
-    for _,vDie in ipairs(rRoll.aDice) do
-      local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
-      if sDieSides then
-        local nResult;
-        if sDieSides == "F" then
-          nResult = 1;
-        else
-          nResult = tonumber(sDieSides) or 0;
-        end
-        
-        if sSign == "-" then
-          nResult = 0 - nResult;
-        end
-        
-        vDie.result = nResult;
-        if sColor == "d" or sColor == "D" then
-          if sSign == "-" then
-            vDie.type = "-b" .. sDieSides;
-          else
-            vDie.type = "b" .. sDieSides;
-          end
-        end
-      end
-    end
-    if rRoll.aDice.expr then
-      rRoll.aDice.expr = nil;
-    end
-  end
 
   local bXTwoDamage = rRoll.sCriticalType:match("timestwo");
   -- crit == x2, so we double the result of all rolls
@@ -614,7 +519,10 @@ function onDamageRoll(rSource, rRoll)
       rRoll.aDice.expr = nil;
     end
   end
-  Debug.console("manager_action_damage.lua","onDamageRoll","rRoll.aDice",rRoll.aDice);
+  
+  DiceMechanicsManager.handlePenetration(rRoll, false);
+  
+  --Debug.console("manager_action_damage.lua","onDamageRoll","rRoll.aDice",rRoll.aDice);
   decodeDamageTypes(rRoll, true);
 end
 

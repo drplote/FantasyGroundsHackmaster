@@ -10,6 +10,77 @@ function onInit()
 	Comm.registerSlashHandler("pdiep", onPenetratingDicePlusSlashCommand)
 end
 
+function handlePenetration(rRoll, penPlus)
+  DiceMechanicsManager.checkForPenetration(rRoll, penPlus);  
+  DiceMechanicsManager.createPenetrationDice(rRoll);
+end
+
+function createPenetrationDice(rRoll)
+  for _,vDie in ipairs(rRoll.aDice) do
+	local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
+	if vDie.penetrationRolls then
+		vDie.type = "b" .. sDieSides;
+		for _, rPenRoll in ipairs(vDie.penetrationRolls) do
+			local newDie = {}
+			newDie.type = "r" .. sDieSides
+			newDie.result = rPenRoll - 1
+			table.insert(rRoll.aDice, newDie);
+		end		
+	end
+  end
+end
+
+function checkForPenetration(rRoll, penPlus)
+  for _,vDie in ipairs(rRoll.aDice) do
+    local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
+	local nSides = tonumber(sDieSides) or 0;
+	if DiceMechanicsManager.needsPenetrationRoll(nSides, vDie.result, penPlus) then	
+		local lRolls = {};
+	  	DiceMechanicsManager.getPenetrationRolls(lRolls, nSides, penPlus);
+		vDie.penetrationRolls = lRolls;
+    end
+  end
+end
+
+function needsPenetrationRoll(rSides, rResult, penPlus)
+	if rSides <= 2 then
+		return false
+	elseif rResult == rSides  then
+		return true
+	elseif penPlus and rResult == rSides - 1 then
+		return true
+	else
+		return false
+	end
+end
+
+function getPenetrationRolls(rRolls, rSides, penPlus)
+	
+	local lDamage = math.random(1, rSides);
+	table.insert(rRolls, lDamage);
+	
+	if needsPenetrationRoll(rSides, lDamage, penPlus) then	
+		getPenetrationRolls(rRolls, rSides, penPlus)
+	end	
+end
+
+function toCommaSepartedString(tt)
+	local s = "";
+	for _, p in ipairs(tt) do
+		s = s .. "," .. p
+	end
+	return string.sub(s, 2);
+end
+
+function totalPenetrationDamage(rRolls)
+	local lDamage = 0;
+	for _, rRoll in ipairs(rRolls) do
+		lDamage = lDamage + rRoll - 1;
+	end
+	return lDamage;
+end
+
+
 function onPenetratingDiceSlashCommand(sCmd, sParam)
 	if sParam then
 		local sDieString = sParam
@@ -244,7 +315,7 @@ function processDefaultResults(draginfo)
 	rMessage.text = draginfo.getDescription()
 	rMessage.dice = aDieResults
 	rMessage.diemodifier = draginfo.getNumberData()
-	Debug.console("manager_dicemechanics.lua","processDefaultResults","rMessage.dice",rMessage.dice);
+	--Debug.console("manager_dicemechanics.lua","processDefaultResults","rMessage.dice",rMessage.dice);
 	Comm.deliverChatMessage(rMessage)
 
 	return true
