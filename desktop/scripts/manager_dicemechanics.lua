@@ -80,7 +80,6 @@ function unregisterDiceMechanic(sDiceMechanicType)
 end
 
 function onDiceLanded(draginfo)
-	Debug.console("manager_dicemechanics.lua","onDiceLanded","draginfo",draginfo);
 	local sDragType = draginfo.getType()
 	local bProcessed = false
 	local bPreventProcess = false
@@ -144,32 +143,32 @@ function processPenetratingDicePlus(draginfo)
 	return processPenetration(draginfo, true)
 end
 
+function getNumSides(rDieType)
+	return tonumber(rDieType:match("^d(%d+)"))
+end
+
+function isMaxResult(rDie)
+	local rSides = getNumSides(rDie.type)
+	if rSides <= 2 then
+		return 0
+	elseif rDie.result >= rSides  then
+		return 1
+	elseif penPlus and rDie.result == rSides - 1 then
+		return 1
+	else
+		return 0
+	end
+end
+
 -- penetration means if you roll max on the die (or also max -1 for penPlus), you roll again and subtract 1
 function processPenetration(draginfo, penPlus)
-	Debug.console("manager_dicemechanics.lua","processPenetration","draginfo",draginfo);
-	local isMaxResult = function(rDie)
-		local rSides = tonumber(rDie.type:match("^d(%d+)"))
-		if rSides <= 2 then
-			return 0
-		elseif rDie.result == rSides  then
-			return 1
-		elseif penPlus and rDie.result == rSides - 1 then
-			return 1
-		else
-			return 0
-		end
-	end
-	
-	local lShortcuts = draginfo.getShortcutList()
-	local lRoll = ActionsManager.decodeRollFromDrag(draginfo, 1, true);
-	Debug.console("manager_dicemechanics.lua","processPenetration","lRoll", lRoll);
-
 	local newRoll = function(draginfo, aDieResults, rCustomData, aExplodedDices)		
 		local rThrow = {}
 		rThrow.type = draginfo.getType()
 		rThrow.description = draginfo.getDescription()
 		rThrow.secret = draginfo.getSecret()
-		rThrow.shortcuts = lShortcuts
+		rThrow.shortcuts = {}
+		--rThrow.shortcuts = lShortcuts
 
 		local rSlot = {}
 		rSlot.number = draginfo.getNumberData()
@@ -200,6 +199,7 @@ function processPenetration(draginfo, penPlus)
 						rDie.result = rDie.result + rNewDie.result - 1
 						rDie.exploded = rNewDie.exploded
 						table.remove(aNewDieResults, nIndex)
+						
 						break
 					end
 				end
@@ -223,7 +223,6 @@ function processPenetration(draginfo, penPlus)
 	
 	rCustomData.rollresults = encodeDiceResults(aDieResults)
 	draginfo.setCustomData(rCustomData)
-	ActionsManager.encodeRollForDrag(draginfo, 1, lRoll)
 	return true
 end
 
@@ -231,6 +230,13 @@ end
 function processDefaultResults(draginfo)
 	local rCustomData = draginfo.getCustomData() or {}
 	local aDieResults = decodeDiceResults(rCustomData.rollresults)
+	for _, vDie in pairs(aDieResults) do
+		if isMaxResult(vDie) == 1 then
+			vDie.type = "b" .. getNumSides(vDie.type)
+		end
+	end
+	
+
 
 	local rMessage = ChatManager.createBaseMessage()
     rMessage.dicedisplay = 1; --  display total
@@ -238,6 +244,7 @@ function processDefaultResults(draginfo)
 	rMessage.text = draginfo.getDescription()
 	rMessage.dice = aDieResults
 	rMessage.diemodifier = draginfo.getNumberData()
+	Debug.console("manager_dicemechanics.lua","processDefaultResults","rMessage.dice",rMessage.dice);
 	Comm.deliverChatMessage(rMessage)
 
 	return true
