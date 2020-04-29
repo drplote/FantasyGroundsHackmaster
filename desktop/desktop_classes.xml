@@ -6,6 +6,23 @@
 -->
 
 <root>
+
+	<windowclass name="chat" merge="join">
+		<sheetdata>
+			<chatwindow name="chat">
+				<script>
+					function onDiceLanded(draginfo)
+						local bRes = DiceMechanicsManager.onDiceLanded(draginfo)
+						if not bRes then
+							bRes = super.onDiceLanded(draginfo)
+						end
+						return bRes
+					end
+				</script>
+			</chatwindow>
+		</sheetdata>
+	</windowclass>
+
 	<panel name="modifierstack" modes="host,client" merge="join">
     <bounds>15,-100,200,57</bounds>
 	</panel>

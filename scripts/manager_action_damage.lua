@@ -12,6 +12,7 @@ function onInit()
 
   ActionsManager.registerModHandler("damage", modDamage);
   ActionsManager.registerPostRollHandler("damage", onDamageRoll);
+  DiceMechanicsManager.registerDiceMechanic('damage', DiceMechanicsManager.processPenetratingDice, onPenetratingDamageRoll);
   ActionsManager.registerResultHandler("damage", onDamage);
 end
 
@@ -93,7 +94,7 @@ function getRoll(rActor, rAction)
   
   -- Encode the damage types
   encodeDamageTypes(rRoll);
-  
+    
   return rRoll;
 end
 
@@ -472,8 +473,16 @@ function modDamage(rSource, rTarget, rRoll)
   ActionsManager2.encodeDesktopMods(rRoll);
 end
 
+function onPenetratingDamageRoll(draginfo)
+	Debug.console("manager_action_damage.lua","onPenetratingDamageRoll","draginfo.metadata",draginfo.getMetaDataList());
+	ActionsManager.onDiceLanded(draginfo)
+end
+
 function onDamageRoll(rSource, rRoll)
 
+  Debug.console("manager_action_damage.lua","onDamageRoll","rSource",rSource);
+  Debug.console("manager_action_damage.lua","onDamageRoll","rRoll",rRoll);
+  
   -- Handle max damage
   local bMax = rRoll.sDesc:match("%[MAX%]") or rRoll.sCriticalType:match("max");
   if bMax then
@@ -555,6 +564,7 @@ function onDamageRoll(rSource, rRoll)
 end
 
 function onDamage(rSource, rTarget, rRoll)
+  	
   local rMessage = ActionsManager.createActionMessage(rSource, rRoll);
   rMessage.text = string.gsub(rMessage.text, " %[MOD:[^]]*%]", "");
 

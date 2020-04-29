@@ -44,6 +44,7 @@
   <includefile source="graphics/graphics_tabs_adnd.xml" />
   <includefile source="graphics/graphics_buttons_adnd.xml" />
   <includefile source="graphics/graphics_radial_adnd.xml" />
+
   
   <!-- Strings -->
   <includefile source="strings/strings_5e.xml" />
@@ -205,4 +206,7 @@
   <script name="UtilityManagerADND" file="scripts/manager_utilities_adnd.lua" />
   
   <script name="JSON" file="scripts/manager_json.lua" />
+  
+  <!-- Needed for penetration dice -->
+  <script name="DiceMechanicsManager" file="desktop/scripts/manager_dicemechanics.lua" />
 </root>
