@@ -1,13 +1,10 @@
--- 
--- Please see the license.html file included with this distribution for 
--- attribution and copyright information.
---
-
 function onInit()
 	registerDiceMechanic("penDice", processPenetratingDice, processDefaultResults)
 	registerDiceMechanic("penDicePlus", processPenetratingDicePlus, processDefaultResults)
 	Comm.registerSlashHandler("pdie", onPenetratingDiceSlashCommand)
 	Comm.registerSlashHandler("pdiep", onPenetratingDicePlusSlashCommand)
+	Comm.registerSlashHandler("pen", onPenetratingDiceSlashCommand)
+	Comm.registerSlashHandler("penplus", onPenetratingDicePlusSlashCommand)
 end
 
 function handlePenetration(rRoll, penPlus)
@@ -176,34 +173,6 @@ function onDiceLanded(draginfo)
 	return bProcessed
 end
 
-function decodeDiceResults(sSource)
-	if not sSource then
-		return {}
-	end
-	local aDieResults = {}
-	local nIndex = 0
-	while nIndex do
-		local nStartIndex, nNextIndex = sSource:find("^d%d+:%d+:%d;", nIndex)
-		if nNextIndex then
-			local sDieSource = sSource:sub(nStartIndex, nNextIndex-1)
-			local sType, sResult, sExploded = sDieSource:match("^(d%d+):(%d+):(%d)")
-			table.insert(aDieResults, { type = sType, result = tonumber(sResult), exploded = tonumber(sExploded) })
-			nIndex = nNextIndex + 1
-		else
-			nIndex = nil 
-		end
-	end
-	return aDieResults
-end
-	
-function encodeDiceResults(aDieResults)
-	local sDieResults = ""
-	for _,rDie in pairs(aDieResults) do
-		sDieResults = sDieResults .. rDie.type .. ":" .. rDie.result .. ":" .. rDie.exploded .. ";"
-	end
-	return sDieResults
-end
-
 -- penetrate on max
 function processPenetratingDice(draginfo)
 	return processPenetration(draginfo, false)
@@ -214,110 +183,16 @@ function processPenetratingDicePlus(draginfo)
 	return processPenetration(draginfo, true)
 end
 
-function getNumSides(rDieType)
-	return tonumber(rDieType:match("^d(%d+)"))
-end
-
-function isMaxResult(rDie)
-	local rSides = getNumSides(rDie.type)
-	if rSides <= 2 then
-		return 0
-	elseif rDie.result >= rSides  then
-		return 1
-	elseif penPlus and rDie.result == rSides - 1 then
-		return 1
-	else
-		return 0
-	end
-end
-
 -- penetration means if you roll max on the die (or also max -1 for penPlus), you roll again and subtract 1
 function processPenetration(draginfo, penPlus)
-	local newRoll = function(draginfo, aDieResults, rCustomData, aExplodedDices)		
-		local rThrow = {}
-		rThrow.type = draginfo.getType()
-		rThrow.description = draginfo.getDescription()
-		rThrow.secret = draginfo.getSecret()
-		rThrow.shortcuts = {}
-		--rThrow.shortcuts = lShortcuts
 
-		local rSlot = {}
-		rSlot.number = draginfo.getNumberData()
-		rSlot.dice = aExplodedDices
-		rSlot.custom = rCustomData
-		rThrow.slots = { rSlot }
+	local rSource, rRolls, aTargets = ActionsManager.decodeActionFromDrag(draginfo, true);
 	
-		Comm.throwDice(rThrow)
-	end
-
-	local rCustomData = draginfo.getCustomData() or {}	
-	local nKeep = rCustomData.keep
-	local aPreviousDieResults = decodeDiceResults(rCustomData.rollresults)
-	local aNewDieResults = {}
-
-	for _, rDie in pairs(draginfo.getDieList() or {}) do
-		table.insert(aNewDieResults, {type = rDie.type, result = rDie.result, exploded = isMaxResult(rDie)})
-	end
-	
-	local aDieResults = {}
-	if #aPreviousDieResults < 1 then
-		aDieResults = aNewDieResults
-	else
-		for _, rDie in pairs(aPreviousDieResults) do
-			if rDie.exploded == 1 then
-				for nIndex, rNewDie in pairs(aNewDieResults) do
-					if rNewDie.type == rDie.type then
-						rDie.result = rDie.result + rNewDie.result - 1
-						rDie.exploded = rNewDie.exploded
-						table.remove(aNewDieResults, nIndex)
-						
-						break
-					end
-				end
-			end
-			table.insert(aDieResults, rDie)
+	for _,vRoll in ipairs(rRolls) do
+		if (#(vRoll.aDice) > 0) or ((vRoll.aDice.expr or "") ~= "") then
+			handlePenetration(vRoll, penPlus);
+			ActionsManager.resolveAction(rSource, nil, vRoll);
 		end
 	end
-	
-	local aExplodedDices = {}
-	for _, rDie in pairs(aDieResults) do
-		if rDie.exploded == 1 then
-			table.insert(aExplodedDices, rDie.type)
-		end
-	end
-	
-	if #aExplodedDices > 0 then
-		local rCustomData = { keep = nKeep, rollresults = encodeDiceResults(aDieResults) }
-		newRoll(draginfo, aDieResults, rCustomData, aExplodedDices)
-		return true, true
-	end
-	
-	rCustomData.rollresults = encodeDiceResults(aDieResults)
-	draginfo.setCustomData(rCustomData)
-	return true
-end
-
-
-function processDefaultResults(draginfo)
-	local rCustomData = draginfo.getCustomData() or {}
-	local aDieResults = decodeDiceResults(rCustomData.rollresults)
-	for _, vDie in pairs(aDieResults) do
-		if isMaxResult(vDie) == 1 then
-			vDie.type = "b" .. getNumSides(vDie.type)
-		end
-	end
-	
-
-
-	local rMessage = ChatManager.createBaseMessage()
-    rMessage.dicedisplay = 1; --  display total
-	rMessage.font = "systemfont"
-	rMessage.text = draginfo.getDescription()
-	rMessage.dice = aDieResults
-	rMessage.diemodifier = draginfo.getNumberData()
-	--Debug.console("manager_dicemechanics.lua","processDefaultResults","rMessage.dice",rMessage.dice);
-	Comm.deliverChatMessage(rMessage)
-
-	return true
 end
 
