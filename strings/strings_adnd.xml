@@ -252,6 +252,9 @@
   
   <string name="char_label_comeliness_effects">Effects</string>
   <string name="char_tooltip_comeliness_effects">How others view the character</string>
+  
+  <string name="char_label_honor_dice">Honor Dice</string>
+  <string name="char_tooltip_honor_dice">The die type you roll for your honor die</string>
 
   <string name="char_label_ability_details_base">Base</string>
   <string name="char_label_ability_details_basemod">Mod</string>

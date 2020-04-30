@@ -12,6 +12,8 @@ function onInit()
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.percentbasemod"),   "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.percentadjustment"),"onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.percenttempmod"),   "onUpdate", updateAbilityScores);
+  
+  DB.addHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateHonor);
 
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.base"),       "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.basemod"),    "onUpdate", updateAbilityScores);
@@ -50,11 +52,15 @@ function onClose()
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.percentbasemod"),    "onUpdate", updateAbilityScores);
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.percentadjustment"), "onUpdate", updateAbilityScores);
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.percenttempmod"),    "onUpdate", updateAbilityScores);
+  
+  DB.removeHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateHonor);
 
   DB.removeHandler(DB.getPath(nodeChar, "hp.base"),       "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.basemod"),    "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.adjustment"), "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.tempmod"),    "onUpdate", updateHealthScore);
+  
+  
   
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.base"),       "onUpdate", updateAbilityScores);
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.basemod"),    "onUpdate", updateAbilityScores);
@@ -113,6 +119,14 @@ function updateSurpriseScores()
   local nTmpMod = DB.getValue(nodeChar,"surprise.tempmod",0);
   local nTotal = nBase + nMod + nTmpMod;
   DB.setValue(nodeChar,"surprise.total","number",nTotal);
+end
+
+---
+--- Update honor
+---
+function updateHonor(node)
+	local nodeChar = node.getChild("....");
+	DB.setValue(nodeChar, "abilities.honor.honor_dice", "string", "1d4");
 end
 
 ---
