@@ -14,6 +14,7 @@ function onInit()
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.percenttempmod"),   "onUpdate", updateAbilityScores);
   
   DB.addHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateHonor);
+  DB.addHandler(DB.getPath(nodeChar, "classes.*.level"), "onUpdate", updateHonor);
 
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.base"),       "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.basemod"),    "onUpdate", updateAbilityScores);
@@ -36,6 +37,8 @@ function onInit()
   
   DB.addHandler(DB.getPath(nodeChar, "initiative.tempmod"),     "onUpdate", updateInitiativeScores);
   DB.addHandler(DB.getPath(nodeChar, "initiative.misc"),     "onUpdate", updateInitiativeScores);
+  
+  DB.addHandler(DB.getPath(node, "classes.*.level"), "onUpdate", updateHonor);
 
   DB.addHandler("combattracker.list", "onChildDeleted", updatesBulk);
   
@@ -53,7 +56,7 @@ function onClose()
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.percentadjustment"), "onUpdate", updateAbilityScores);
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.percenttempmod"),    "onUpdate", updateAbilityScores);
   
-  DB.removeHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateHonor);
+  DB.removeHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateAbilityScores);
 
   DB.removeHandler(DB.getPath(nodeChar, "hp.base"),       "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.basemod"),    "onUpdate", updateHealthScore);
@@ -122,14 +125,6 @@ function updateSurpriseScores()
 end
 
 ---
---- Update honor
----
-function updateHonor(node)
-	local nodeChar = node.getChild("....");
-	DB.setValue(nodeChar, "abilities.honor.honor_dice", "string", "1d4");
-end
-
----
 --- Update initiative totals
 ---
 function updateInitiativeScores()
@@ -143,6 +138,17 @@ end
 --- Update ability score total
 ---
 ---
+
+function updateHonor(node)
+  local nodeChar = node.getChild("....");
+  Debug.console("char_main.lua", "updateHonor", "node", node);
+  if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
+    nodeChar = node;
+  end
+  
+  AbilityScoreADND.updateHonor(nodeChar);
+end
+
 function updateAbilityScores(node)
   local nodeChar = node.getChild("....");
   -- onInit doesn't have the same path for node, so we check here so first time
@@ -150,6 +156,7 @@ function updateAbilityScores(node)
   if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
     nodeChar = node;
   end
+  
   AbilityScoreADND.detailsUpdate(nodeChar);
   AbilityScoreADND.detailsPercentUpdate(nodeChar);
 

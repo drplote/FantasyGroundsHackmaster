@@ -163,7 +163,9 @@
   
   <!-- AD&D, this needs to be above manager_version2 or the updates wont work properly  -->
   <script name="DataCommonADND" file="scripts/data_common_adnd.lua" />
-  <!-- Override CoreRPG item manager for npc inventory requirements, items for npcs/etc -->
+  <script name="DataCommonHM4" file="scripts/data_common_hm4.lua" />
+  
+    <!-- Override CoreRPG item manager for npc inventory requirements, items for npcs/etc -->
   <script name="ItemManager" file="scripts/manager_item_CoreRPG_3.3.10.lua" />
 <!-- Override CoreRPG's "TokenManager" We do this because I have special flags to show bars/effects 
      to DM only and players only. Not just "on for all, or off for all" -->

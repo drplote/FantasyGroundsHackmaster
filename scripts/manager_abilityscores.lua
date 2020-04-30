@@ -20,6 +20,40 @@ function abilityScoreSanity(nScore)
 
   return nScore;
 end
+
+function levelSanityCheck(nLevel)
+	if nLevel > 20 then
+		nLevel = 20;
+	end
+	if nLevel < 1 then
+		nLevel = 1;
+	end
+	return nLevel;
+end
+
+function honorSanityCheck(nHonor)
+	if nHonor < 1 then	
+		nHonor = 1;
+	end
+	if nHonor > 405 then -- TODO: should go to 405
+		nHonor = 405;
+	end
+	return nHonor;
+end
+
+function getHonorProperties(nodeChar)
+	local nScore = DB.getValue(nodeChar, "abilities.honor.score", 0);
+	local nSaneLevel = levelSanityCheck(CharManager.getActiveClassMaxLevel(nodeChar));
+	local nChartIndex = math.ceil(honorSanityCheck(nScore) / 5);
+	
+	local sHonorDice = DataCommonHM4.aHonorDice[nChartIndex][nSaneLevel];
+		
+	local dbAbility = {};
+    dbAbility.score = nScore;
+    dbAbility.honorDice = sHonorDice;
+	return dbAbility;
+end
+
 -- get ability properties adjusted for effects.
 function getStrengthProperties(nodeChar)
 
@@ -291,6 +325,13 @@ function getIntelligenceProperties(nodeChar)
     return dbAbility;
 end
 
+function updateHonor(nodeChar)
+	local dbAbility = getHonorProperties(nodeChar);
+	
+	DB.setValue(nodeChar, "abilities.honor.honor_dice", "string", dbAbility.honorDice);
+	DB.setValue(nodeChar, "abilities.honor.score", "number", dbAbility.score);
+end
+
 --
 -- Update ability values
 --
@@ -399,7 +440,6 @@ function updateForEffects(nodeChar)
     updateWisdom(nodeChar);
 	updateComeliness(nodeChar);
 end
-
 
 function detailsUpdate(nodeChar)
   ----Debug.console("char_abilities_details.lua","detailsUpdate","sTarget",sTarget);
