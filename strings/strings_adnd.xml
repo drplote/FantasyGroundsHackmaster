@@ -256,8 +256,11 @@
   <string name="char_label_comeliness_effects">Effects</string>
   <string name="char_tooltip_comeliness_effects">How others view the character</string>
   
+  
   <string name="char_label_honor_dice">Honor Dice</string>
   <string name="char_tooltip_honor_dice">The die type you roll for your honor die</string>
+  <string name="char_label_honor_window">Honor Window</string>
+  <string name="char_tooltip_honor_window">Great Honor gives +1 to every die rolled, 5% bonus XP, a 10% cost reduction on training, and one mulligan per session. Dishonor gives -1 to every die rolled, a 10% XP penalty, and a 10% cost increase on training.</string>
 
   <string name="char_label_ability_details_base">Base</string>
   <string name="char_label_ability_details_basemod">Mod</string>

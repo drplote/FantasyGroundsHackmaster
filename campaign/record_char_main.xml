@@ -711,20 +711,20 @@
         <anchored to="honor" />
       </ability_fields_container>      
 
-      <percentile_abilityfield name="honor_temp" source="abilities.honor.temp">
+      <number_input_abilityfield name="honor_temp" source="abilities.honor.temp">
         <center />
         <anchored to="hondetailframe" position="insidetopleft" offset="5,6"/>
         <labelres>char_label_ability_honor_temporary</labelres>
         <tooltip textres="char_tooltip_honor_temporary" />
-      </percentile_abilityfield>
+      </number_input_abilityfield>
        <label_ability_fields>
         <anchored to="honor_temp" />
          <tooltip textres="char_tooltip_honor_temporary" />
         <static textres="char_label_ability_honor_temporary" />
       </label_ability_fields>
 	  
-	  <string_abilityfield name="honor_dice" source="abilities.honor.honor_dice">
-        <anchored to="honor_temp" width="240"/>
+	  <string_abilityfield name="honor_dice" source="abilities.honor.honorDice">
+        <anchored to="honor_temp" width="115"/>
         <tooltip textres="char_tooltip_honor_dice" />
         <labelres>char_label_honor_dice</labelres>
       </string_abilityfield>
@@ -732,6 +732,17 @@
         <anchored to="honor_dice" />
            <tooltip textres="char_tooltip_honor_dice" />
         <static textres="char_label_honor_dice" />
+      </label_ability_fields>
+	  
+	  <string_abilityfield name="honor_window" source="abilities.honor.honorWindow">
+        <anchored to="honor_dice" width="115"/>
+        <tooltip textres="char_tooltip_honor_window" />
+        <labelres>char_label_honor_window</labelres>
+      </string_abilityfield>
+       <label_ability_fields name="honor_dice_label">
+        <anchored to="honor_window" />
+           <tooltip textres="char_tooltip_honor_window" />
+        <static textres="char_label_honor_window" />
       </label_ability_fields>
 
 	  
@@ -855,7 +866,7 @@
       <label_charframetop name="combattitle">
         <!-- <anchored to="charisma" position="belowleft" offset="10,15" height="20" width="300"/> -->
         <anchored to="contentanchor" height="20">
-          <top parent="honor_dice" anchor="bottom" offset="15" />
+          <top parent="honor" anchor="bottom" offset="15" />
           <left offset="0" />
           <right />
         </anchored>
@@ -868,7 +879,7 @@
       </button_charcombatcalc>
 
       <genericcontrol name="combatanchor">
-        <anchored to="honor_dice" position="belowleft" offset="0,50" width="45" height="40" />
+        <anchored to="honor" position="belowleft" offset="0,50" width="45" height="40" />
       </genericcontrol>
 
       <!--       THACO/AC/INIT/MOVE  -->

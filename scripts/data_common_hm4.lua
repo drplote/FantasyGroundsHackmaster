@@ -1,4 +1,5 @@
 aHonorDice = {};
+aHonorThresholdsByLevel = {};
 
 function onInit()
 	-- index is honor index,values are levels 1-20
@@ -83,6 +84,27 @@ function onInit()
 	aHonorDice[79] = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","d3"};
 	aHonorDice[80] = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","d3"};
 	aHonorDice[81] = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
+	
+	aHonorThresholdsByLevel[1] = {6, 17, 20};
+	aHonorThresholdsByLevel[2] = {9, 25, 30};
+	aHonorThresholdsByLevel[3] = {12, 33, 40};
+	aHonorThresholdsByLevel[4] = {15, 41, 50};
+	aHonorThresholdsByLevel[5] = {18, 49, 60};
+	aHonorThresholdsByLevel[6] = {21, 57, 70};
+	aHonorThresholdsByLevel[7] = {24, 65, 80};
+	aHonorThresholdsByLevel[8] = {27, 73, 90};
+	aHonorThresholdsByLevel[9] = {30, 81, 100};
+	aHonorThresholdsByLevel[10] = {33, 89, 110};
+	aHonorThresholdsByLevel[11] = {36, 97, 120};
+	aHonorThresholdsByLevel[12] = {39, 105, 130};
+	aHonorThresholdsByLevel[13] = {42, 113, 140};
+	aHonorThresholdsByLevel[14] = {45, 121, 150};
+	aHonorThresholdsByLevel[15] = {48, 129, 160};
+	aHonorThresholdsByLevel[16] = {51, 137, 170};
+	aHonorThresholdsByLevel[17] = {54, 145, 180};
+	aHonorThresholdsByLevel[18] = {57, 153, 190};
+	aHonorThresholdsByLevel[19] = {60, 161, 200};
+	aHonorThresholdsByLevel[20] = {63, 169, 210};
 end
 
 

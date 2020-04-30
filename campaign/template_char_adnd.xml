@@ -271,6 +271,15 @@
       </number>
   </template>
   
+  <template name="number_input_abilityfield">
+      <number>
+        <frame name="abilityscore_box" offset="3,3,3,3" />
+        <anchored position="right" offset="0,0" width="40" height="25"/>
+           <center />
+        <font>regular11</font>
+      </number>
+  </template>
+  
   <template name="string_abilityfield">
     <stringfield>
       <!-- <frame name="fielddark" offset="3,3,3,3" /> -->
