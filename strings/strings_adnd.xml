@@ -188,6 +188,9 @@
   <string name="char_label_mod_temp">Temp</string>
   <string name="char_label_mod_temp_tooltip">Temporary modifier.</string>
     
+  <string name="char_label_ability_honor_temporary">TMP</string>
+  <string name="char_tooltip_honor_temporary">Temporary Honor converts at 25% to normal Honor at the end of a session</string>
+	
   <string name="char_label_ability_percent">%</string>
   <string name="char_tooltip_percentile">Percentile score of this ability.</string>
   <string name="CHR">CHR</string>

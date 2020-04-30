@@ -693,11 +693,11 @@
       </label_ability_fields>
 	  
 	  <!-- Honor -->
-	  <number_honorscore name="honor" source="abilities.honor.score">
-        <tooltip textres="char_tooltip_comeliness" />
+	  <number_charabilityscore2 name="honor" source="abilities.honor.score">
+        <tooltip textres="char_tooltip_honor" />
         <anchored to="comeliness" position="below" offset="0,5" height="36"/>
         <target>honor</target>
-      </number_honorscore>
+      </number_charabilityscore2>
        <label_abilityscore>
         <anchored to="honor" />
         <static textres="HON" />
@@ -709,32 +709,31 @@
       
       <ability_fields_container name="hondetailframe">
         <anchored to="honor" />
-      </ability_fields_container>   
-	  
-	  <percentile_abilityfield name="honor_percent" >
+      </ability_fields_container>      
+
+      <percentile_abilityfield name="honor_temp" source="abilities.honor.temp">
         <center />
-        <min> 0 </min>
-        <max> 100 </max>
         <anchored to="hondetailframe" position="insidetopleft" offset="5,6"/>
-        <labelres>char_label_ability_percent</labelres>
-        <tooltip textres="char_tooltip_percentile" />
+        <labelres>char_label_ability_honor_temporary</labelres>
+        <tooltip textres="char_tooltip_honor_temporary" />
       </percentile_abilityfield>
        <label_ability_fields>
-        <anchored to="" />
-         <tooltip textres="char_tooltip_percentile" />
-        <static textres="char_label_ability_percent" />
+        <anchored to="honor_temp" />
+         <tooltip textres="char_tooltip_honor_temporary" />
+        <static textres="char_label_ability_honor_temporary" />
       </label_ability_fields>
 	  
 	  <string_abilityfield name="honor_dice" source="abilities.honor.honor_dice">
-        <anchored to="honor_percent" position="insidetopleft" offset="5,6" width="270"/>
+        <anchored to="honor_temp" width="240"/>
         <tooltip textres="char_tooltip_honor_dice" />
-        <labelres>char_label_comeliness_effects</labelres>
+        <labelres>char_label_honor_dice</labelres>
       </string_abilityfield>
        <label_ability_fields name="honor_dice_label">
         <anchored to="honor_dice" />
            <tooltip textres="char_tooltip_honor_dice" />
         <static textres="char_label_honor_dice" />
       </label_ability_fields>
+
 	  
 	  
       <!-- END Ability Scores -->
