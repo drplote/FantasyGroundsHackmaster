@@ -209,4 +209,5 @@
   
   <!-- Needed for penetration dice -->
   <script name="DiceMechanicsManager" file="desktop/scripts/manager_dicemechanics.lua" />
+  <script name="FumbleManager" file="scripts/manager_fumble.lua" />
 </root>
