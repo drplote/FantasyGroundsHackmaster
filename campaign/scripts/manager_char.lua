@@ -118,6 +118,41 @@ function onCharItemDelete(nodeItem)
   removeFromPowerDB(nodeItem);
 end
 
+function updateFatigueSave(nodeChar)
+	local nCon = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
+	local nWis = DB.getValue(nodeChar, "abilities.wisdom.total", DB.getValue(nodeChar, "abilities.wisdom.score", 0));
+	local nFatigueSave = math.floor((nCon + nWis) / 2);
+	Debug.console("manager_char.lua", "updateFatigueSave", "nFatigueSave", nFatigueSave);
+	
+	DB.setValue(nodeChar, "saves.fatigue.base", "number", nFatigueSave);
+end
+
+function updateFatigueFactor(nodeChar)
+	
+	local lEnumbranceMultipliersByRank = {};
+	lEnumbranceMultipliersByRank["Normal"] = 1.0;
+	lEnumbranceMultipliersByRank["Light"] = .75;
+	lEnumbranceMultipliersByRank["Moderate"] = .5;
+	lEnumbranceMultipliersByRank["Heavy"] = .25;
+	lEnumbranceMultipliersByRank["Severe"] = 0;
+	lEnumbranceMultipliersByRank["MAX"] = 0;
+	
+	-- con / 2 * rank (unc =1, light=.75,mod=.5,heavy=.25, severe=0)
+	local nCon = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
+	Debug.console("manager_char.lua", "updateFatigueFactor", "nCon", nCon);
+	
+	local sEncRank, nBaseEnc, nBaseMove = getEncumbranceRank2e(nodeChar);
+	Debug.console("manager_char.lua", "updateFatigueFactor", "sEncRank", sEncRank);
+	
+	local lEncMultiplier = lEnumbranceMultipliersByRank[sEncRank] or 0;
+	Debug.console("manager_char.lua", "updateFatigueFactor", "lEncMultiplier", lEncMultiplier);
+	
+	local nFatigueFactor = math.floor(nCon / 2 * lEncMultiplier);
+	Debug.console("manager_char.lua", "updateFatigueFactor", "nFatigueFactor", nFatigueFactor);
+	
+	DB.setValue(nodeChar, "fatigueFactor", "number", nFatigueFactor);
+end
+
 -- weight carried
 function updateEncumbrance(nodeChar)
   local sOptionHREC = OptionsManager.getOption("HouseRule_Encumbrance_Coins");
@@ -158,6 +193,7 @@ function updateEncumbrance(nodeChar)
   else
     updateMoveFromEncumbrance1e(nodeChar); 
   end
+  updateFatigueFactor(nodeChar);
 end
 
 -- update speed.basemodenc due to weight adjustments for AD&D 2e

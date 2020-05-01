@@ -749,7 +749,7 @@
 	  
       <!-- END Ability Scores -->
       
-<!-- SAVES -->
+	<!-- SAVES -->
       <label_charframetop name="savestitle">
         <anchored to="statstitle" position="righthigh" offset="30,0" height="20" width="90"/>
         <static textres="char_label_save" />
@@ -860,6 +860,28 @@
         <anchored to="spell" />
         <static textres="save_spell_wrapped" />
       </label_savescore>
+	  
+	  <number_char_save_charsheet name="apology" source="saves.apology.score">
+        <anchored to="spell"   height="25"  />
+        <target>apology</target>
+      </number_char_save_charsheet>
+      <label_savescore>
+           <tooltip textres="save_apology_full" />
+        <anchored to="apology" />
+        <static textres="save_apology_wrapped" />
+      </label_savescore>
+	  
+	  <number_char_save_charsheet name="fatigue" source="saves.fatigue.score">
+        <anchored to="apology"  height="25"  />
+        <target>fatigue</target>
+      </number_char_save_charsheet>
+      <label_savescore>
+           <tooltip textres="save_fatigue_full" />
+        <anchored to="fatigue" />
+        <static textres="save_fatigue_wrapped" />
+      </label_savescore>
+	  
+	  
             <!-- END SAVES -->
 
       <!-- THACO/AC/Move -->
@@ -2729,7 +2751,7 @@
   <windowclass name="charsheet_saves_details">
     <frame>charsheethelper</frame>
     <placement>
-      <size width="420" height="400" />
+      <size width="420" height="450" />
     </placement>
     <nodelete />
     <sheetdata>
@@ -3229,9 +3251,9 @@
             <!-- spell -->
             <!-- spell base label -->
             <label_save_details name="spell_label">
-        <anchored>
-          <top offset="230" />
-        </anchored>
+			<anchored>
+			  <top offset="230" />
+			</anchored>
         <static textres="spell" />
             </label_save_details>
 
@@ -3269,8 +3291,104 @@
 
             <!-- spell total -->
             <save_details_total name="spell_total" source="saves.spell.score">
-        <target>spell</target>
+				<target>spell</target>
                 <anchored to="spell_label"/>
+            </save_details_total>
+			
+			
+			<!-- apology -->
+            <!-- apology base label -->
+            <label_save_details name="apology_label">
+				<anchored>
+				  <top offset="255" />
+				</anchored>
+				<static textres="apology" />
+            </label_save_details>
+
+			<!-- apology base -->
+            <save_number_base name="apology_base" source="saves.apology.base">
+                <tooltip textres="charsheet_saves_base_tooltip" />
+				<anchored to="apology_label" />
+            </save_number_base>
+            
+            <!-- apology basemod -->
+            <save_number_base name="apology_base_mod" source="saves.apology.basemod">
+                <tooltip textres="charsheet_saves_basemod_tooltip" />
+                <gmeditonly />
+                <default>0</default>
+				<anchored to="apology_label" />
+            </save_number_base>
+
+            <!-- apology mods -->
+            <label_plus>
+                <anchored to="apology_label"/>
+            </label_plus>
+            <save_number_mod name="apology_mod" source="saves.apology.adjustment">
+                <tooltip textres="charsheet_saves_adjustment_tooltip" />
+				<anchored to="apology_label" />
+            </save_number_mod>
+
+            <!-- apology temp mods -->
+            <label_plus>
+                <anchored to="apology_label"/>
+            </label_plus>
+            <save_number_mod name="apology_temp" source="saves.apology.tempmod">
+                <tooltip textres="charsheet_saves_tempmod_tooltip" />
+				<anchored to="apology_label" />
+            </save_number_mod>
+
+            <!-- apology total -->
+            <save_details_total name="apology_total" source="saves.apology.score">
+				<target>apology</target>
+                <anchored to="apology_label"/>
+            </save_details_total>
+			
+			
+			<!-- fatigue -->
+            <!-- fatigue base label -->
+            <label_save_details name="fatigue_label">
+				<anchored>
+				  <top offset="280" />
+				</anchored>
+				<static textres="fatigue" />
+            </label_save_details>
+
+                <!-- fatigue base -->
+            <save_number_base name="fatigue_base" source="saves.fatigue.base">
+                <tooltip textres="charsheet_saves_base_tooltip" />
+				<anchored to="fatigue_label" />
+            </save_number_base>
+            
+            <!-- fatigue basemod -->
+            <save_number_base name="fatigue_base_mod" source="saves.fatigue.basemod">
+                <tooltip textres="charsheet_saves_basemod_tooltip" />
+                <gmeditonly />
+                <default>0</default>
+				<anchored to="fatigue_label" />
+            </save_number_base>
+
+            <!-- fatigue mods -->
+            <label_plus>
+                <anchored to="fatigue_label"/>
+            </label_plus>
+            <save_number_mod name="fatigue_mod" source="saves.fatigue.adjustment">
+                <tooltip textres="charsheet_saves_adjustment_tooltip" />
+				<anchored to="fatigue_label" />
+            </save_number_mod>
+
+            <!-- fatigue temp mods -->
+            <label_plus>
+                <anchored to="fatigue_label"/>
+            </label_plus>
+            <save_number_mod name="fatigue_temp" source="saves.fatigue.tempmod">
+                <tooltip textres="charsheet_saves_tempmod_tooltip" />
+				<anchored to="fatigue_label" />
+            </save_number_mod>
+
+            <!-- fatigue total -->
+            <save_details_total name="fatigue_total" source="saves.fatigue.score">
+				<target>fatigue</target>
+                <anchored to="fatigue_label"/>
             </save_details_total>
             
             <!-- END -->

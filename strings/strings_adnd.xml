@@ -71,12 +71,16 @@
   <string name="polymorph">Polymorph</string>
   <string name="breath">Breath</string>
   <string name="spell">Spell</string>
+  <string name="fatigue">Fatigue</string>
+  <string name="apology">Apology</string>
   
   <string name="save_paralyzation_poison_death">Paralyzation, Poison or Death</string>
   <string name="save_rod_staff_wand">Rod, Staff or Wand</string>
   <string name="save_petrify_polymorph">Petrify, Polymorph</string>
   <string name="save_breath">Breath</string>
   <string name="save_spell">Spell</string>
+  <string name="save_fatigue">Fatigue</string>
+  <string name="save_apology">Apology</string>
 
   <string name="save_paralyzation_wrapped">Paralyzation</string>
   <string name="save_poison_wrapped">Poison</string>
@@ -88,6 +92,9 @@
   <string name="save_polymorph_wrapped">Polymorph</string>
   <string name="save_breath_wrapped">Breath</string>
   <string name="save_spell_wrapped">Spell</string>
+  <string name="save_fatigue_wrapped">Fatigue</string>
+  <string name="save_apology_wrapped">Apology</string>
+  
 
   <string name="save_details_tooltip">Save detail window. Set scores and adjustments.</string>
   <string name="ability_details_tooltip">Ability detail window. Set scores and adjustments.</string>
@@ -106,7 +113,9 @@
   <string name="save_polymorph_full">Polymorph</string>
 
   <string name="save_breath_full">Breath Weapon</string>
-  <string name="save_spell_full">Spell or Other</string>
+  <string name="save_spell_full">Spell or Other</string> 
+  <string name="save_fatigue_full">Fatigue</string>
+  <string name="save_apology_full">Apology</string>
     
   <string name="background">Kit</string>
 

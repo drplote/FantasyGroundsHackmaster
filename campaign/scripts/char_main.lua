@@ -184,6 +184,7 @@ function updateAbilityScores(node)
   
   -- this makes sure if con changes hp con adjustments are managed
   updateHealthScore();
+  CharManager.updateFatigueSave(nodeChar);
 end
 
 function updateAscendingValues()

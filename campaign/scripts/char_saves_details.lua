@@ -73,7 +73,6 @@ function detailsUpdate()
         nTotal = 50;
     end
     DB.setValue(nodeChar, "saves." .. sTarget .. ".score","number", nTotal);
-    --Debug.console("char_abilities_details.lua","detailsUpdate","nTotal",nTotal);
     
     --setValue(nTotal);
 end

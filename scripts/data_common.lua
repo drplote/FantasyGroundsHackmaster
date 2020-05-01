@@ -45,7 +45,9 @@ saves = {
     "petrification",
     "polymorph",
     "breath",
-    "spell"
+    "spell",
+	"apology",
+	"fatigue"
 };
 
 saves_stol = {
@@ -59,6 +61,8 @@ saves_stol = {
     ["polymorph"] = "Polymorph",
     ["breath"] = "Breath",
     ["spell"] = "Spell",
+	["apology"] = "Apology",
+	["fatigue"] = "Fatigue"
 };
 
 saves_multi_name = {
@@ -77,7 +81,9 @@ saves_multi_name = {
   ["breath"] = "breath",
   ["other"] = "other",
   ["spell"] = "spell",
-  ["spells"] = "spell"
+  ["spells"] = "spell",
+  ["apology"] = "apology",
+  ["fatigue"] = "fatigue"
 };
 
 saves_shortnames = {
@@ -90,7 +96,9 @@ saves_shortnames = {
   "petrification",
   "polymorph",
   "breath",
-  "spell"
+  "spell",
+  "apology",
+  "fatigue"
 };
 
 -- Basic class values (not display values)
