@@ -138,16 +138,10 @@ function updateFatigueFactor(nodeChar)
 	
 	-- con / 2 * rank (unc =1, light=.75,mod=.5,heavy=.25, severe=0)
 	local nCon = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
-	Debug.console("manager_char.lua", "updateFatigueFactor", "nCon", nCon);
 	
 	local sEncRank, nBaseEnc, nBaseMove = getEncumbranceRank2e(nodeChar);
-	Debug.console("manager_char.lua", "updateFatigueFactor", "sEncRank", sEncRank);
-	
 	local lEncMultiplier = lEnumbranceMultipliersByRank[sEncRank] or 0;
-	Debug.console("manager_char.lua", "updateFatigueFactor", "lEncMultiplier", lEncMultiplier);
-	
 	local nFatigueFactor = math.floor(nCon / 2 * lEncMultiplier);
-	Debug.console("manager_char.lua", "updateFatigueFactor", "nFatigueFactor", nFatigueFactor);
 	
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end

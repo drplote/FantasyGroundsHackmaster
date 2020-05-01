@@ -1063,22 +1063,38 @@
         <static textres="hp" />
       </label>
 	  
-	  <number_charwounds_charsheet name="fatigue_factor" source="fatigue.factor">
-        <anchored to="combatanchor" width="40" height="30">
-          <top parent="speedspecial" />
-		  <left parent="wounds" offset="0" />
+	  <number_hptotal_charsheet name="fatigue_factor" source="fatigue.factor">
+        <anchored to="contentanchor" width="40" height="30">
+          <top parent="wounds" anchor="bottom"  offset="20" />
+		  <left parent="hp" offset="0" />
         </anchored>
         <font>bold20</font>
 		<readonly/>
-        <description textres="char_tooltip_fatigue_Factor" />
-      </number_charwounds_charsheet>
+        <description textres="char_tooltip_fatigue_factor" />
+      </number_hptotal_charsheet>
       <label_combatscores name="fatigue_factor_label">
         <anchored to="fatigue_factor" />
         <static textres="char_label_fatigue_factor" />
+		<tooltip textres="char_tooltip_fatigue_factor" />
       </label_combatscores>
-
+  
+	  <number_charwounds_charsheet name="current_fatigue" source="fatigue.score">
+        <anchored to="contentanchor" width="40" height="30">
+          <top parent="wounds" anchor="bottom" offset="20" />
+		  <right parent="fatigue_factor" anchor="left" relation="relative" offset="-10" />
+        </anchored>
+        <font>bold20</font>
+        <description textres="char_tooltip_current_fatigue" />
+      </number_charwounds_charsheet>
+	  
+      <label_combatscores name="current_fatigue_label">
+        <anchored to="current_fatigue" />
+        <static textres="char_label_current_fatigue" />
+		<tooltip textres="char_tooltip_current_fatigue" />
+      </label_combatscores>
+	  
       <label>
-        <anchored to="fatigue_factor" position="lefthigh" offset="10,5" />
+        <anchored to="current_fatigue" position="lefthigh" offset="10,5" />
         <static textres="fatigue" />
       </label>
       
