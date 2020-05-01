@@ -121,8 +121,7 @@ end
 function updateFatigueSave(nodeChar)
 	local nCon = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
 	local nWis = DB.getValue(nodeChar, "abilities.wisdom.total", DB.getValue(nodeChar, "abilities.wisdom.score", 0));
-	local nFatigueSave = math.floor((nCon + nWis) / 2);
-	Debug.console("manager_char.lua", "updateFatigueSave", "nFatigueSave", nFatigueSave);
+	local nFatigueSave = 20 - math.floor((nCon + nWis) / 2);
 	
 	DB.setValue(nodeChar, "saves.fatigue.base", "number", nFatigueSave);
 end
@@ -150,7 +149,7 @@ function updateFatigueFactor(nodeChar)
 	local nFatigueFactor = math.floor(nCon / 2 * lEncMultiplier);
 	Debug.console("manager_char.lua", "updateFatigueFactor", "nFatigueFactor", nFatigueFactor);
 	
-	DB.setValue(nodeChar, "fatigueFactor", "number", nFatigueFactor);
+	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end
 
 -- weight carried

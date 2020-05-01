@@ -871,13 +871,13 @@
         <static textres="save_apology_wrapped" />
       </label_savescore>
 	  
-	  <number_char_save_charsheet name="fatigue" source="saves.fatigue.score">
+	  <number_char_save_charsheet name="fatigue_save" source="saves.fatigue.score">
         <anchored to="apology"  height="25"  />
         <target>fatigue</target>
       </number_char_save_charsheet>
       <label_savescore>
            <tooltip textres="save_fatigue_full" />
-        <anchored to="fatigue" />
+        <anchored to="fatigue_save" />
         <static textres="save_fatigue_wrapped" />
       </label_savescore>
 	  
@@ -982,7 +982,16 @@
         <static textres="char_label_speed" />
       </label_combatscores>
 
-            <!-- special move/defense string -->
+      <!-- senses/special move/defense string -->
+	  <string_labeled name="sensesspecial" source="senses">
+        <anchored to="combatanchor">
+          <top anchor="bottom" relation="relative" offset="0" />
+          <left offset="0" />
+          <right offset="200" />
+        </anchored>
+        <labelres>char_label_senses</labelres>
+        <multilinespacing>20</multilinespacing>
+      </string_labeled>
       <string_labeled name="speedspecial" source="speed.special">
         <anchored to="combatanchor">
           <top anchor="bottom" relation="relative" offset="0" />
@@ -1053,16 +1062,25 @@
         <anchored to="wounds" position="lefthigh" offset="10,5" />
         <static textres="hp" />
       </label>
-      
-      <string_labeled name="sensesspecial" source="senses">
-        <anchored to="combatanchor">
+	  
+	  <number_charwounds_charsheet name="fatigue_factor" source="fatigue.factor">
+        <anchored to="combatanchor" width="40" height="30">
           <top parent="speedspecial" />
-          <left parent= "wounds" offset="0" />
-          <right parent="temphp" />
+		  <left parent="wounds" offset="0" />
         </anchored>
-        <labelres>char_label_senses</labelres>
-        <multilinespacing>20</multilinespacing>
-      </string_labeled>
+        <font>bold20</font>
+		<readonly/>
+        <description textres="char_tooltip_fatigue_Factor" />
+      </number_charwounds_charsheet>
+      <label_combatscores name="fatigue_factor_label">
+        <anchored to="fatigue_factor" />
+        <static textres="char_label_fatigue_factor" />
+      </label_combatscores>
+
+      <label>
+        <anchored to="fatigue_factor" position="lefthigh" offset="10,5" />
+        <static textres="fatigue" />
+      </label>
       
     </sheetdata>
   </windowclass>
@@ -2789,17 +2807,17 @@
         <invisible />
       </genericcontrol>
 
-            <!-- paralyzation base label -->
-            <label_save_details name="paralyzation_label">
+		<!-- paralyzation base label -->
+		<label_save_details name="paralyzation_label">
         <anchored>
           <top offset="5" />
         </anchored>
         <static textres="paralyzation" />
             </label_save_details>
 
-                <!-- paralyzation base -->
-            <save_number_base name="paralyzation_base" source="saves.paralyzation.base">
-                <tooltip textres="charsheet_saves_base_tooltip" />
+			<!-- paralyzation base -->
+		<save_number_base name="paralyzation_base" source="saves.paralyzation.base">
+			<tooltip textres="charsheet_saves_base_tooltip" />
         <anchored to="paralyzation_label" />
             </save_number_base>
       <label_fieldtop name="label_save_base_top">
@@ -2808,11 +2826,11 @@
         <static textres="char_label_save_details_base" />
       </label_fieldtop>
             
-            <!-- paralyzation basemod -->
-            <save_number_base name="paralyzation_base_mod" source="saves.paralyzation.basemod">
-                <tooltip textres="charsheet_saves_basemod_tooltip" />
-                <gmeditonly />
-                <default>0</default>
+		<!-- paralyzation basemod -->
+		<save_number_base name="paralyzation_base_mod" source="saves.paralyzation.basemod">
+			<tooltip textres="charsheet_saves_basemod_tooltip" />
+			<gmeditonly />
+			<default>0</default>
         <anchored to="paralyzation_label" />
             </save_number_base>
       <label_fieldtop name="label_save_basemod_top">
@@ -2826,12 +2844,12 @@
         <static textres="char_label_save_details_basemod" />
       </label_fieldtop>
 
-            <!-- paralyzation mods -->
-            <label_plus>
-                <anchored to="paralyzation_label"/>
-            </label_plus>
-            <save_number_mod name="paralyzation_mod" source="saves.paralyzation.adjustment">
-                <tooltip textres="charsheet_saves_adjustment_tooltip" />
+		<!-- paralyzation mods -->
+		<label_plus>
+			<anchored to="paralyzation_label"/>
+		</label_plus>
+		<save_number_mod name="paralyzation_mod" source="saves.paralyzation.adjustment">
+			<tooltip textres="charsheet_saves_adjustment_tooltip" />
         <anchored to="paralyzation_label" />
             </save_number_mod>
       <label_fieldtop name="label_saves_mod_top">
@@ -2840,12 +2858,12 @@
         <static textres="char_label_save_details_basemod" />
       </label_fieldtop>
 
-            <!-- paralyzation temp mods -->
-            <label_plus>
-                <anchored to="paralyzation_label"/>
-            </label_plus>
-            <save_number_mod name="paralyzation_temp" source="saves.paralyzation.tempmod">
-                <tooltip textres="charsheet_saves_tempmod_tooltip" />
+		<!-- paralyzation temp mods -->
+		<label_plus>
+			<anchored to="paralyzation_label"/>
+		</label_plus>
+		<save_number_mod name="paralyzation_temp" source="saves.paralyzation.tempmod">
+			<tooltip textres="charsheet_saves_tempmod_tooltip" />
         <anchored to="paralyzation_label" />
             </save_number_mod>
       <label_fieldtop name="label_saves_tempmod_top">
@@ -2859,7 +2877,7 @@
         <static textres="char_label_save_details_basemod2" />
       </label_fieldtop>
 
-            <!-- paralyzation total -->
+		<!-- paralyzation total -->
             <save_details_total name="paralyzation_total" source="saves.paralyzation.score">
         <target>paralyzation</target>
                 <anchored to="paralyzation_label"/>

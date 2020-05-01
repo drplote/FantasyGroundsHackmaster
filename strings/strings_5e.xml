@@ -268,7 +268,9 @@
   <string name="char_label_hpmax">MAX</string>
   <string name="char_label_hptemp">TMP</string>
   <string name="char_label_wounds">WND</string>
+  <string name="char_label_fatigue_factor">FF</string>
   <string name="char_tooltip_wounds">Wounds</string>
+  <string name="char_tooltip_fatigue_factor">Fatigue Factor</string>
   <string name="char_label_deathsave">Death Saves</string>
   <string name="char_label_deathsave_succ">S</string>
   <string name="char_label_deathsave_fail">F</string>
