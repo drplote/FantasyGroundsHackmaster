@@ -1077,15 +1077,15 @@
         <static textres="char_label_fatigue_factor" />
 		<tooltip textres="char_tooltip_fatigue_factor" />
       </label_combatscores>
-  
-	  <number_charwounds_charsheet name="current_fatigue" source="fatigue.score">
+    
+	  <number_fatigue_charsheet name="current_fatigue" source="fatigue.score">
         <anchored to="contentanchor" width="40" height="30">
           <top parent="wounds" anchor="bottom" offset="20" />
 		  <right parent="fatigue_factor" anchor="left" relation="relative" offset="-10" />
         </anchored>
         <font>bold20</font>
         <description textres="char_tooltip_current_fatigue" />
-      </number_charwounds_charsheet>
+      </number_fatigue_charsheet>
 	  
       <label_combatscores name="current_fatigue_label">
         <anchored to="current_fatigue" />

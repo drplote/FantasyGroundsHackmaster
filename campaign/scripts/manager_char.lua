@@ -144,6 +144,7 @@ function updateFatigueFactor(nodeChar)
 	local nFatigueFactor = math.floor(nCon / 2 * lEncMultiplier);
 	
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
+	Debug.console("manager_char.lua", "updateFatigueFactor", "fatigue factor from db", DB.getValue(nodeChar, "fatigue.factor", 0));
 end
 
 -- weight carried

@@ -1005,6 +1005,10 @@
     <number_charwounds>
     </number_charwounds>
   </template>
+  <template name="number_fatigue_charsheet">
+    <number_fatigue>
+    </number_fatigue>
+  </template>
   <template name="number_hptotal_charsheet">
     <number_dropadd>
     </number_dropadd>

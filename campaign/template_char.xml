@@ -528,6 +528,19 @@
     </basicnumber>
   </template>
   
+  <template name="number_fatigue">
+    <basicnumber>
+      <min value="0" />
+      <script>
+        function onValueChanged()
+          if window.onFatigueChanged then
+            window.onFatigueChanged();
+          end
+        end
+      </script>
+    </basicnumber>
+  </template>
+  
   <template name="stringu_action_attack">
     <stringu> 
       <script>

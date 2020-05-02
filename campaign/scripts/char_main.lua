@@ -20,6 +20,7 @@ function onInit()
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.basemod"),    "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.adjustment"), "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.tempmod"),    "onUpdate", updateAbilityScores);
+  DB.addHandler(DB.getPath(nodeChar, "abilities.*.fatiguemod"), "onUpdate", updateAbilityScores);
   
   DB.addHandler(DB.getPath(nodeChar, "hp.base"),        "onUpdate", updateHealthScore);
   DB.addHandler(DB.getPath(nodeChar, "hp.basemod"),     "onUpdate", updateHealthScore);
@@ -61,8 +62,7 @@ function onClose()
   DB.removeHandler(DB.getPath(nodeChar, "hp.base"),       "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.basemod"),    "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.adjustment"), "onUpdate", updateHealthScore);
-  DB.removeHandler(DB.getPath(nodeChar, "hp.tempmod"),    "onUpdate", updateHealthScore);
-  
+  DB.removeHandler(DB.getPath(nodeChar, "hp.tempmod"),    "onUpdate", updateHealthScore); 
   
   
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.base"),       "onUpdate", updateAbilityScores);
@@ -112,6 +112,11 @@ function onHealthChanged()
   wounds.setColor(sColor);
 end
 
+function onFatigueChanged()
+	local node = getDatabaseNode();
+	updateFatigueScore(node);
+end
+
 ---
 --- Update surprise totals
 ---
@@ -141,11 +146,9 @@ end
 
 function updateHonor(node)
   local nodeChar = node.getChild("....");
-  Debug.console("char_main.lua", "updateHonor", "node", node);
   if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
     nodeChar = node;
   end
-  
   AbilityScoreADND.updateHonor(nodeChar);
 end
 
@@ -156,6 +159,7 @@ function updateAbilityScores(node)
   if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
     nodeChar = node;
   end
+  Debug.console("char_main.lua", "updateAbilityScores", "nodeChar", nodeChar);
   
   AbilityScoreADND.detailsUpdate(nodeChar);
   AbilityScoreADND.detailsPercentUpdate(nodeChar);
@@ -245,7 +249,16 @@ end
 ---
 function updateHealthScore()
   local nodeChar = getDatabaseNode();
+  Debug.console("char_main.lua", "updateHealthScore", "nodeChar", nodeChar);
   CharManager.updateHealthScore(nodeChar);
+end
+
+function updateFatigueScore(node)
+  local nodeChar = node.getChild("....");
+  if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
+    nodeChar = node;
+  end
+  AbilityScoreADND.updateFatigue(nodeChar);
 end
 
 -- item deleted, update encumbrance

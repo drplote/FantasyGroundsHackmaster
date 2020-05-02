@@ -339,6 +339,87 @@ function updateHonor(nodeChar)
 	DB.setValue(nodeChar, "abilities.honor.honorWindow", "string", dbAbility.honorWindow);
 end
 
+function removeFatigue(nodeChar, nAmount)
+	local nCurrentFatigue = DB.getValue(nodeChar, "fatigue.score", 0);
+	if nCurrentFatigue > 0 then
+		local nNewFatigue = 0;
+		if nAmount then
+			nNewFatigue = math.max(nCurrentFatigue - nAmount, 0);
+		end
+		DB.setValue(nodeChar, "fatigue.score", nNewFatigue);
+	end
+end
+
+function tryToRemoveFatiguePenalty(nodeChar, sAttribute)
+	local nConScore = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
+	local nAttrMod = DB.getValue(nodeChar, "abilities." .. sAttribute .. ".fatiguemod", 0);
+	if nAttrMod > 0 then
+		local sName = DB.getValue(nodeChar, "name", "");
+		local nConRoll = math.random(1, 20);
+		if  nConRoll <= nConScore then
+			nAttrMod = nAttrMod - 1;
+			DB.setValue(nodeChar, "abilities." .. sAttribute .. ".fatiguemod", "number", nAttrMod);
+			
+			local sMessage = sName .. " succeeds at a Constitution check to remove fatigue[" .. nConRoll .. " <= " .. nConScore .. "]. " .. sAttribute .. " penalty drops to " .. nAttrMod .. ".";
+			ChatManager.SystemMessage(sMessage);
+		else
+			local sMessage = sName .. " fails a Constitution check to remove fatigue[" .. nConRoll .. " > " .. nConScore .. "]. " .. sAttribute .. " penalty remains at " .. nAttrMod .. ".";
+			ChatManager.SystemMessage(sMessage);
+		end
+	end
+end
+
+function checkForFatiguePenalty(nodeChar)
+	local sName = DB.getValue(nodeChar, "name", "");
+	local nFatigueSave = DB.getValue(nodeChar, "saves.fatigue.score", 20);
+	local nFatigueSaveRoll = math.random(1, 20);
+	if nFatigueSaveRoll >= nFatigueSave then
+		local sMessage = sName .. " makes a fatigue save[" .. nFatigueSaveRoll .. " >= " .. nFatigueSave .. "]. No fatigue penalty gained." ;
+		ChatManager.SystemMessage(sMessage);
+	else	
+		local nStrengthMod = DB.getValue(nodeChar, "abilities.strength.fatiguemod", 0) + 1;
+		local nDexMod = DB.getValue(nodeChar, "abilities.dexterity.fatiguemod", 0) + 1;
+		local sMessage = sName .. " fails a fatigue save[" .. nFatigueSaveRoll .. " < " .. nFatigueSave .. "]. Fatigue penalty rises to " .. nDexMod .. " dexterity and " .. nStrengthMod .. " strength.";
+		ChatManager.SystemMessage(sMessage);
+
+		DB.setValue(nodeChar, "abilities.strength.fatiguemod", "number", nStrengthMod);
+		DB.setValue(nodeChar, "abilities.dexterity.fatiguemod", "number", nDexMod);
+		-- report fatigue added
+	end
+end
+
+function updateFatigue(nodeChar)
+	-- get current fatigue
+		-- If increasing, get fatigue factor
+			-- if past fatigue factor, make fatigue check
+			-- if failed, add fatiguemod penalty to str and dexterity
+	-- display some messages
+	-- set new fatigue
+	local nPreviousFatigue = DB.getValue(nodeChar, "fatigue.previous", 0);
+	local nCurrentFatigue = DB.getValue(nodeChar, "fatigue.score", 0);
+	local nFatigueFactor = DB.getValue(nodeChar, "fatigue.factor", 0);
+
+	if nCurrentFatigue == 0 then
+		local sName = DB.getValue(nodeChar, "name", "");
+		local nStrMod = DB.getValue(nodeChar, "abilities.strength.fatiguemod", 0);
+		local nDexMod = DB.getValue(nodeChar, "abilities.dexterity.fatiguemod", 0);
+		DB.setValue(nodeChar, "abilities.strength.fatiguemod", "number", 0);
+		DB.setValue(nodeChar, "abilities.dexterity.fatiguemod", "number", 0);
+		if nStrMod > 0 or nDexMod > 0 then
+			ChatManager.SystemMessage(sName .. "'s fatigue drops to 0. All fatigue penalties cleared.");
+		end
+	elseif nCurrentFatigue <= nFatigueFactor and nCurrentFatigue < nPreviousFatigue then
+		-- House rule: Fatigue is dropping, and is under fatigue factor. Roll checks to lose fatigue penalty
+		tryToRemoveFatiguePenalty(nodeChar, "strength");
+		tryToRemoveFatiguePenalty(nodeChar, "dexterity");
+	elseif nCurrentFatigue > nFatigueFactor and nCurrentFatigue > nPreviousFatigue then
+		-- Fatigue is rising and is over fatigue factor. Roll a fatigue save or gain fatigue penalty.
+		checkForFatiguePenalty(nodeChar);
+	end
+	
+	DB.setValue(nodeChar, "fatigue.previous", "number", nCurrentFatigue);
+end
+
 --
 -- Update ability values
 --
@@ -456,6 +537,7 @@ function detailsUpdate(nodeChar)
     local nBaseMod =    DB.getValue(nodeChar, "abilities." .. sTarget .. ".basemod",0);
     local nAdjustment = DB.getValue(nodeChar, "abilities." .. sTarget .. ".adjustment",0);
     local nTempMod =    DB.getValue(nodeChar, "abilities." .. sTarget .. ".tempmod",0);
+	local nFatigueMod = DB.getValue(nodeChar, "abilities." .. sTarget .. ".fatiguemod",0);
     local nFinalBase = nBase;
 
     -- if Base Modifier isn't 0 then lets use that instead
@@ -463,7 +545,7 @@ function detailsUpdate(nodeChar)
       nFinalBase = nBaseMod;
     end
     
-    local nTotal = (nFinalBase + nAdjustment + nTempMod);
+    local nTotal = (nFinalBase + nAdjustment + nTempMod - nFatigueMod);
     if (nTotal < 1) then
       nTotal = 1;
     end
