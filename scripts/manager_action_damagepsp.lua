@@ -622,10 +622,10 @@ function decodeDamageTypes(rRoll, bFinal)
     local nFinalTotal = ActionsManager.total(rRoll);
 
     -- Handle minimum damage
-    if nFinalTotal < 0 and rRoll.aDice and #rRoll.aDice > 0 then
+    if nFinalTotal <= 0 and rRoll.aDice and #rRoll.aDice > 0 then
       rRoll.sDesc = rRoll.sDesc .. " [MIN DAMAGE]";
-      rRoll.nMod = rRoll.nMod - nFinalTotal;
-      nFinalTotal = 0;
+      rRoll.nMod = rRoll.nMod - nFinalTotal + 1;
+      nFinalTotal = 1;
     end
 
     -- Capture any manual modifiers and adjust damage types accordingly

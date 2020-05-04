@@ -527,7 +527,7 @@ function onDamageRoll(rSource, rRoll)
 end
 
 function onDamage(rSource, rTarget, rRoll)
-  	
+  Debug.console("manager_action_damage.lua", "onDamage", "nRoll", rRoll);	
   local rMessage = ActionsManager.createActionMessage(rSource, rRoll);
   rMessage.text = string.gsub(rMessage.text, " %[MOD:[^]]*%]", "");
 
@@ -542,6 +542,7 @@ function onDamage(rSource, rTarget, rRoll)
 
   -- Apply damage to the PC or CT entry referenced
   local nTotal = ActionsManager.total(rRoll);
+  Debug.console("manager_action_damage.lua", "onDamage", "nTotal", nTotal);
   
   
     -- -- Apply damage MATH -- TESTING
@@ -688,9 +689,9 @@ function decodeDamageTypes(rRoll, bFinal)
     local nFinalTotal = ActionsManager.total(rRoll);
 
     -- Handle minimum damage
-    if nFinalTotal < 0 and rRoll.aDice and #rRoll.aDice > 0 then
+    if nFinalTotal <= 0 and rRoll.aDice and #rRoll.aDice > 0 then
       rRoll.sDesc = rRoll.sDesc .. " [MIN DAMAGE]";
-      rRoll.nMod = rRoll.nMod - nFinalTotal;
+      rRoll.nMod = rRoll.nMod - nFinalTotal + 1;
       nFinalTotal = 0;
     end
 
