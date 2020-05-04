@@ -75,6 +75,8 @@
   <icon name="ct_select_left" file="graphics/icons/ct_select_left.png" />
   <icon name="cta_visibilityon" file="graphics/icons/cta_visibilityon.png" />
   <icon name="cta_visibilityoff" file="graphics/icons/cta_visibilityoff.png" />
+  <icon name="select_up_icon" file="graphics/icons/select_up.png" />
+  <icon name="select_down_icon" file="graphics/icons/select_down.png" />
 
   <!-- charlist_ -->
   <icon name="init_rolled" file="graphics/icons/d10_ricon.png" />

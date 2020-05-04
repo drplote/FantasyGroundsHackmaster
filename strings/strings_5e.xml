@@ -276,6 +276,9 @@
   <string name="char_label_deathsave">Death Saves</string>
   <string name="char_label_deathsave_succ">S</string>
   <string name="char_label_deathsave_fail">F</string>
+  
+  <string name="char_tooltip_add_fatigue">Adds a level of fatigue and rolls appropriate checks if this takes you over you Fatigue Factor</string>
+  <string name="char_tooltip_remove_fatigue">Removes a level of fatigue and rolls appropriate checks to remove fatigue penalties if you are at or below your Fatigue Factor. Clears all penalties if fatigue reduced to 0.</string>
 
   <string name="char_label_hd">HIT DIE</string>
   <string name="char_label_hdused">USED</string>

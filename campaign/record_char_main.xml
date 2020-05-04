@@ -1084,8 +1084,41 @@
 		  <right parent="fatigue_factor" anchor="left" relation="relative" offset="-10" />
         </anchored>
         <font>bold20</font>
-        <description textres="char_tooltip_current_fatigue" />
+        <readonly />
+		<description textres="char_tooltip_current_fatigue" />
       </number_fatigue_charsheet>
+	  
+	  <buttoncontrol name="add_fatigue_button">
+	    <anchored to="contentanchor" width="20" height="30">
+		  <top parent="wounds" anchor="bottom"  offset="20" />
+		  <left parent="temphp" offset="0" />
+		  </anchored>
+        <icon normal="select_up_icon" />
+		<script>
+			function onButtonPress()
+				local lCurrentFatigue = DB.getValue(window.getDatabaseNode(), "fatigue.score", 0);
+				DB.setValue(window.getDatabaseNode(), "fatigue.score", "number", lCurrentFatigue + 1);
+			end
+		</script>
+		<tooltip textres="char_tooltip_add_fatigue" />
+	  </buttoncontrol>
+	  
+	  <buttoncontrol name="remove_fatigue_button">
+	    <anchored to="contentanchor" width="20" height="30">
+		  <top parent="wounds" anchor="bottom"  offset="20" />
+		  <left parent="add_fatigue_button" anchor="right" relation="relative" offset="10" />
+		  </anchored>
+        <icon normal="select_down_icon" />
+		<script>
+			function onButtonPress()
+				local lCurrentFatigue = DB.getValue(window.getDatabaseNode(), "fatigue.score", 0);
+				if lCurrentFatigue > 0 then
+					DB.setValue(window.getDatabaseNode(), "fatigue.score", "number", lCurrentFatigue - 1);
+				end
+			end
+		</script>
+		<tooltip textres="char_tooltip_remove_fatigue" />
+	  </buttoncontrol>
 	  
       <label_combatscores name="current_fatigue_label">
         <anchored to="current_fatigue" />
