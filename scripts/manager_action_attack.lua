@@ -552,7 +552,7 @@ function onAttack(rSource, rTarget, rRoll)
   -- insert AC hit
 --Debug.console("manager_action_attack.lua","onAttack","nDefenseVal",nDefenseVal);
   local nACHit = (20 - (rAction.nTotal + rRoll.nBaseAttack));
-  if DataCommonADND.coreVersion == "1e" or DataCommonADND.coreVersion == "becmi" then
+  if true or DataCommonADND.coreVersion == "becmi" then
     local nodeForMatrix = DB.findNode(rSource.sCreatureNode);
     nACHit = CombatManagerADND.getACHitFromMatrix(nodeForMatrix,nAttackMatrixRoll);
 --Debug.console("manager_action_attack.lua","onAttack","Matrix ACHit--------->",nACHit);  
@@ -929,7 +929,9 @@ function getTHACO(rActor)
     nTHACO = DB.getValue(nodeActor, "combat.thaco.score", 20);
   else
   -- npc thaco calcs
-    nTHACO = DB.getValue(nodeActor, "thaco", 20);
+	local sHitDice = CombatManagerADND.getNPCHitDice(node);
+	nTHACO = DataCommonADND.aMatrix[sHitDice][11];
+    -- nTHACO = DB.getValue(nodeActor, "thaco", 20);
   end
   return nTHACO
 end

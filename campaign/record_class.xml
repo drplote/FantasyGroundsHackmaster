@@ -851,7 +851,7 @@
     <script>
       function onInit()
         class_advancement_leveling.subwindow.level.setFocus();
-        class_advancement_matrix_1e.setVisible((DataCommonADND.coreVersion == "1e"));
+        class_advancement_matrix_1e.setVisible(true);
         class_advancement_matrix_becmi.setVisible((DataCommonADND.coreVersion == "becmi"));
       end
     </script>

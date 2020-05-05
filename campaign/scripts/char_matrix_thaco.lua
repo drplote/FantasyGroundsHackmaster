@@ -9,7 +9,7 @@ function onInit()
 --Debug.console("char_matrix_thaco.lua","onInit","node",node);      
   local bisPC = (ActorManager.isPC(node)); 
 --Debug.console("char_matrix_thaco.lua","onInit","bisPC",bisPC);      
-  local bUseMatrix = (DataCommonADND.coreVersion == "1e");
+  local bUseMatrix = true;
 --Debug.console("char_matrix_thaco.lua","onInit","bUseMatrix1",bUseMatrix);    
   if bUseMatrix then
     DB.addHandler(DB.getPath(node, "combat.matrix.*"), "onUpdate", update);
@@ -26,7 +26,7 @@ end
 function onClose()
   local node = getDatabaseNode();
   local bisPC = (ActorManager.isPC(node)); 
-  local bUseMatrix = (DataCommonADND.coreVersion == "1e");
+  local bUseMatrix = true;
   if bUseMatrix then
     DB.removeHandler(DB.getPath(node, "combat.matrix.*"), "onUpdate", update);
   else
@@ -41,7 +41,7 @@ end
 function createTHACOMatrix()
   local node = getDatabaseNode();
   local bisPC = (ActorManager.isPC(node)); 
-  local bUseMatrix = (DataCommonADND.coreVersion == "1e");
+  local bUseMatrix = true;
 --Debug.console("char_matrix_thaco.lua","createTHACOMatrix","node",node);
   local nTHACO = DB.getValue(node,"combat.thaco.score",20);
   if (not bisPC) then

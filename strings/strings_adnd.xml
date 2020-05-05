@@ -343,6 +343,8 @@
   <string name="char_classbonusxp_label_0">-</string>
   <string name="char_classbonusxp_label_5">5%</string>
   <string name="char_classbonusxp_label_10">10%</string>
+  <string name="char_classbonusxp_label_15">15%</string>
+  <string name="char_classbonusxp_label_20">20%</string>
   <string name="char_classbonusxp_title">BXP</string>
   <string name="char_classbonusxp_title_tooltip">Bonus experience for above average ability score requisites.</string>
   

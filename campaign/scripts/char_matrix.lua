@@ -30,7 +30,7 @@ function createAttackMatrix()
   local sRollLabelName = "matrix_roll_label";
 
   -- 1e matrix
-  local bUseMatrix = (DataCommonADND.coreVersion == "1e");
+  local bUseMatrix = true;
   local bisPC = (ActorManager.isPC(node)); 
   local aMatrixRolls = {};
   if not bClassRecord and bUseMatrix and not bisPC then 

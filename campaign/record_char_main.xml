@@ -1503,7 +1503,7 @@
     <playercontrol />
     <script>
       function onInit()
-        combat_matrix_1e.setVisible((DataCommonADND.coreVersion == "1e"));
+        combat_matrix_1e.setVisible(true);
         combat_matrix_becmi.setVisible((DataCommonADND.coreVersion == "becmi"));
         button_psionic_config.setVisible(DataCommonADND.coreVersion == "2e");
         label_details_psionicpowers.setVisible(DataCommonADND.coreVersion == "2e");

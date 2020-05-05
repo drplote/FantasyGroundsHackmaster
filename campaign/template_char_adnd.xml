@@ -1170,8 +1170,8 @@
   <template name="button_cycler_classbonusxp">
     <button_stringcycler name="bonusxp">
       <parameters>
-        <labelsres>char_classbonusxp_label_5|char_classbonusxp_label_10</labelsres>
-        <values>5|10</values>
+        <labelsres>char_classbonusxp_label_5|char_classbonusxp_label_10|char_classbonusxp_label_15|char_classbonusxp_label_20</labelsres>
+        <values>5|10|15|20</values>
         <defaultlabelres>char_classbonusxp_label_0</defaultlabelres> 
       </parameters>
       <tooltip textres="char_classbonusxp_tooltip" />
