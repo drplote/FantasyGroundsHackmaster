@@ -105,6 +105,32 @@ function onInit()
 	aHonorThresholdsByLevel[18] = {57, 153, 190};
 	aHonorThresholdsByLevel[19] = {60, 161, 200};
 	aHonorThresholdsByLevel[20] = {63, 169, 210};
+	
+	
+	aArmorDamageSteps = {};
+	-- [lowest ac step, next ac step, ..., worst ac step]
+	
+	aArmorDamageSteps[1] = {1}; -- Robes
+	aArmorDamageSteps[2] = {2, 1}; -- Leather
+	aArmorDamageSteps[3] = {2, 1}; -- Padded
+	aArmorDamageSteps[4] = {6, 2, 1}; -- Ring Mail
+	aArmorDamageSteps[5] = {4, 2, 1}; -- Studded Leather
+	aArmorDamageSteps[6] = {7, 4, 2, 1}; -- Scale Mail
+	aArmorDamageSteps[7] = {5, 4, 2, 1}; -- Hide 
+	aArmorDamageSteps[8] = {5, 4, 2, 1}; -- Hide 
+	aArmorDamageSteps[9] = {6, 4, 2, 1}; -- Brigandine
+	aArmorDamageSteps[10] = {8, 6, 4, 2, 1}; -- Chain mail
+	aArmorDamageSteps[11] = {12, 8, 6, 4, 2, 1}; -- Bronze plate mail
+	aArmorDamageSteps[12] = {9, 8, 6, 4, 2, 1}; -- Banded mail
+	aArmorDamageSteps[13] = {8, 8, 6, 4, 2, 1}; -- Splint mail
+	aArmorDamageSteps[14] = {12, 10, 8, 6, 4, 2, 1}; -- Plate mail
+	aArmorDamageSteps[15] = {24, 12, 10, 8, 6, 4, 2, 1}; -- Field plate
+	aArmorDamageSteps[16] = {36, 24, 12, 10, 8, 6, 4, 2, 1}; -- Full plate
+	aArmorDamageSteps[17] = {3}; -- Buckler
+	aArmorDamageSteps[18] = {4, 3}; -- Small Shield
+	aArmorDamageSteps[19] = {5, 4, 3}; -- Medium Shield
+	aArmorDamageSteps[20] = {6, 5, 4, 3}; -- Body Shield
+		
 end
 
 

@@ -582,6 +582,8 @@
   <string name="item_label_carryingcapacity">Carrying Capacity</string>
   <string name="item_label_strength">Strength</string>
   <string name="item_label_stealth">Stealth</string>
+  <string name="item_label_damage_steps">Damage Step ID</string>
+  <string name="item_label_hp_lost">HP Lost</string>
 
   <!-- Powers -->
   <string name="power_label_useperiod_daily">Daily</string>

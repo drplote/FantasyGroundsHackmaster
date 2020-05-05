@@ -187,6 +187,21 @@
         <displaysign />
         <gmeditonly />
       </number_columnh>
+	  
+	  <label_column name="label_damage_steps">
+        <static textres="item_label_damage_steps" />
+      </label_column>
+	  <number_columnh name="damageStepId" src="damageStepId">
+        <gmeditonly />
+      </number_columnh>
+	  
+	  <label_column name="label_hp_lost">
+        <static textres="item_label_hp_lost" />
+        <tooltip textres="item_label_hp_lost_tooltip" />
+      </label_column>
+      <number_columnh name="hplost" source="hplost">
+        <default>0</default>
+      </number_columnh>
       
       <!-- effects -->
       <subwindow name="advanced_effects_contents">

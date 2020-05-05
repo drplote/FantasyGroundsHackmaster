@@ -490,6 +490,25 @@ function addToArmorDB(nodeItem)
   end
 end
 
+function getAcLossFromItemDamage(vNode)
+	local nDamageStepId = DB.getValue(vNode, "damageStepId", 0);
+	local nBonus = DB.getValue(vNode, "bonus", 0);
+	Debug.console("manager_char.lua", "getAcLossFromItemDamage", "nDamageStepId", nDamageStepId);
+	local nHpLost = DB.getValue(vNode, "hplost", 0);
+	Debug.console("manager_char.lua", "getAcLossFromItemDamage", "nHpLost", nHpLost);
+	local nAcLost = 0;
+	if nHpLost > 0 and nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
+		local aDamageSteps = DataCommonHM4.aArmorDamageSteps[nDamageStepId];
+		for _, nStep in ipairs(aDamageSteps) do 
+			nHpLost = nHpLost - nStep;
+			if nHpLost >= 0 then
+				nAcLost = nAcLost + 1;
+			end
+		end
+	end
+	return nAcLost;
+end
+
 -- calculate armor class and set? -celestian
 function calcItemArmorClass(nodeChar)
   local nMainArmorBase = 10;
@@ -549,6 +568,7 @@ function calcItemArmorClass(nodeChar)
           else
             nMainShieldTotal = nMainShieldTotal + (DB.getValue(vNode, "ac", 0)) + (DB.getValue(vNode, "bonus", 0));
           end
+		  
         -- we only want the "bonus" value for ring/cloaks/robes
         elseif bIsRingOrCloak then 
           if bID then
@@ -568,6 +588,11 @@ function calcItemArmorClass(nodeChar)
           else
             nMainArmorTotal = nMainArmorTotal -(DB.getValue(vNode, "bonus", 0));
           end
+		  Debug.console("manager_char.lua", "calcItemArmorClass", "vNode", vNode);
+		  local nAcLossFromDamage = getAcLossFromItemDamage(vNode);
+		  Debug.console("manager_char.lua", "calcItemArmorClass", "nAcLossFromDamage", nAcLossFromDamage);
+		  nMainArmorTotal = nMainArmorTotal + nAcLossFromDamage;
+		  
           
         end
       end
