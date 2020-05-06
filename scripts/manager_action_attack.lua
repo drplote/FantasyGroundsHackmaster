@@ -552,8 +552,9 @@ function onAttack(rSource, rTarget, rRoll)
   -- insert AC hit
 --Debug.console("manager_action_attack.lua","onAttack","nDefenseVal",nDefenseVal);
   local nACHit = (20 - (rAction.nTotal + rRoll.nBaseAttack));
-  if true or DataCommonADND.coreVersion == "becmi" then
-    local nodeForMatrix = DB.findNode(rSource.sCreatureNode);
+  local nodeForMatrix = DB.findNode(rSource.sCreatureNode);
+  local bisPC = ActorManager.isPC(nodeForMatrix);
+  if not bisPC or DataCommonADND.coreVersion == "becmi" then
     nACHit = CombatManagerADND.getACHitFromMatrix(nodeForMatrix,nAttackMatrixRoll);
 --Debug.console("manager_action_attack.lua","onAttack","Matrix ACHit--------->",nACHit);  
   elseif bOptAscendingAC then   -- you can't have AscendingAC and 1e Matrix (right now)
