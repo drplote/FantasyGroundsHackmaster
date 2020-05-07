@@ -80,11 +80,11 @@ function update()
   if updateControl("cost", bReadOnly, bID) then bSection3 = true; end
   if updateControl("exp", bReadOnly, bID) then bSection3 = true; end
   if updateControl("weight", bReadOnly, bID) then bSection3 = true; end
+  if updateControl("hplost", bReadOnly, bID and bArmor) then bSection3 = true; end
   
   local bSection4 = false;
   if updateControl("bonus", bReadOnly, bID and (bWeapon or bArmor)) then bSection4 = true; end
   if updateControl("ac", bReadOnly, bID and bArmor) then bSection4 = true; end
-  if updateControl("hplost", bReadOnly, bID and bArmor) then bSection4 = true; end
   if updateControl("damageStepId", bReadOnly, bID and bArmor) then bSection4 = true; end
   -- right now this is a host/DM only section (baseAC/bonus)
   header_armor_and_modifier.setVisible(bArmor and bHost and not bReadOnly);
@@ -96,6 +96,8 @@ function update()
   bonus.setVisible(bArmor and bHost and not bReadOnly);
   label_damage_steps.setVisible(bArmor and bHost and not bReadOnly);
   damageStepId.setVisible(bArmor and bHost and not bReadOnly);
+  label_hp_lost.setVisible(bArmor and bHost);
+  hplost.setVisible(bArmor and bHost);
 
   if updateControl("properties", bReadOnly, bID and (bWeapon or bArmor)) then bSection4 = true; end
   
