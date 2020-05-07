@@ -1063,10 +1063,62 @@
         <static textres="hp" />
       </label>
 	  
+	  <label name="fatigue_label">
+        <anchored to="contentanchor" height="30">
+		  <top parent="combatanchor" anchor="bottom" offset="20" />
+		  <left offset="0" />
+		</anchored>
+        <static textres="fatigue" />
+      </label>
+	  
+	  <buttoncontrol name="remove_fatigue_button">
+	    <anchored to="contentanchor" width="20" height="30">
+		  <top parent="combatanchor" anchor="bottom" offset="20" />
+		  <left parent="fatigue_label" anchor="right" relation="relative" offset="10"/>
+	    </anchored>
+        <icon normal="button_page_prev" />
+		<script>
+			function onButtonPress()
+				window.decreaseFatigue();
+			end
+		</script>
+		<tooltip textres="char_tooltip_remove_fatigue" />
+	  </buttoncontrol>
+	  
+	  <number_fatigue_charsheet name="current_fatigue" source="fatigue.score">
+        <anchored to="contentanchor" width="40" height="30">
+          <top parent="combatanchor" anchor="bottom" offset="20" />
+		  <left parent="remove_fatigue_button" anchor="right" relation="relative" />
+        </anchored>
+        <font>bold20</font>
+        <readonly />
+		<description textres="char_tooltip_current_fatigue" />
+      </number_fatigue_charsheet>
+	  <label_combatscores name="current_fatigue_label">
+        <anchored to="current_fatigue" />
+        <static textres="char_label_current_fatigue" />
+		<tooltip textres="char_tooltip_current_fatigue" />
+      </label_combatscores>
+	  
+	  	  
+	  <buttoncontrol name="add_fatigue_button">
+	    <anchored to="contentanchor" width="20" height="30">
+		  <top parent="combatanchor" anchor="bottom" offset="20" />
+		  <left parent="current_fatigue" anchor="right" relation="relative"/>
+		  </anchored>
+        <icon normal="button_page_next" />
+		<script>
+			function onButtonPress()
+				window.increaseFatigue();
+			end
+		</script>
+		<tooltip textres="char_tooltip_add_fatigue" />
+	  </buttoncontrol>
+	  
 	  <number_hptotal_charsheet name="fatigue_factor" source="fatigue.factor">
         <anchored to="contentanchor" width="40" height="30">
-          <top parent="wounds" anchor="bottom"  offset="20" />
-		  <left parent="hp" offset="0" />
+		  <top parent="combatanchor" anchor="bottom"  offset="20" />
+		  <left parent="add_fatigue_button" anchor="right" relation="relative" offset="10" />
         </anchored>
         <font>bold20</font>
 		<readonly/>
@@ -1077,59 +1129,37 @@
         <static textres="char_label_fatigue_factor" />
 		<tooltip textres="char_tooltip_fatigue_factor" />
       </label_combatscores>
-    
-	  <number_fatigue_charsheet name="current_fatigue" source="fatigue.score">
+	  
+	  <number_hptotal_charsheet name="fatigue_strength_penalty" source="abilities.strength.fatiguemod">
         <anchored to="contentanchor" width="40" height="30">
-          <top parent="wounds" anchor="bottom" offset="20" />
-		  <right parent="fatigue_factor" anchor="left" relation="relative" offset="-10" />
+          <top parent="combatanchor" anchor="bottom" offset="20" />
+		  <left parent="fatigue_factor" anchor="right" relation="relative" offset="10"/>
         </anchored>
         <font>bold20</font>
-        <readonly />
-		<description textres="char_tooltip_current_fatigue" />
-      </number_fatigue_charsheet>
-	  
-	  <buttoncontrol name="add_fatigue_button">
-	    <anchored to="contentanchor" width="20" height="30">
-		  <top parent="wounds" anchor="bottom"  offset="20" />
-		  <left parent="temphp" offset="0" />
-		  </anchored>
-        <icon normal="select_up_icon" />
-		<script>
-			function onButtonPress()
-				local lCurrentFatigue = DB.getValue(window.getDatabaseNode(), "fatigue.score", 0);
-				DB.setValue(window.getDatabaseNode(), "fatigue.score", "number", lCurrentFatigue + 1);
-			end
-		</script>
-		<tooltip textres="char_tooltip_add_fatigue" />
-	  </buttoncontrol>
-	  
-	  <buttoncontrol name="remove_fatigue_button">
-	    <anchored to="contentanchor" width="20" height="30">
-		  <top parent="wounds" anchor="bottom"  offset="20" />
-		  <left parent="add_fatigue_button" anchor="right" relation="relative" offset="10" />
-		  </anchored>
-        <icon normal="select_down_icon" />
-		<script>
-			function onButtonPress()
-				local lCurrentFatigue = DB.getValue(window.getDatabaseNode(), "fatigue.score", 0);
-				if lCurrentFatigue > 0 then
-					DB.setValue(window.getDatabaseNode(), "fatigue.score", "number", lCurrentFatigue - 1);
-				end
-			end
-		</script>
-		<tooltip textres="char_tooltip_remove_fatigue" />
-	  </buttoncontrol>
-	  
-      <label_combatscores name="current_fatigue_label">
-        <anchored to="current_fatigue" />
-        <static textres="char_label_current_fatigue" />
-		<tooltip textres="char_tooltip_current_fatigue" />
+		<readonly/>
+        <description textres="char_tooltip_fatigue_strength_penalty" />
+      </number_hptotal_charsheet>
+      <label_combatscores name="fatigue_strength_penalty_label">
+        <anchored to="fatigue_strength_penalty" />
+        <static textres="char_label_fatigue_strength_penalty" />
+		<tooltip textres="char_tooltip_fatigue_strength_penalty" />
       </label_combatscores>
 	  
-      <label>
-        <anchored to="current_fatigue" position="lefthigh" offset="10,5" />
-        <static textres="fatigue" />
-      </label>
+	  <number_hptotal_charsheet name="fatigue_dexterity_penalty" source="abilities.dexterity.fatiguemod">
+        <anchored to="contentanchor" width="40" height="30">
+          <top parent="combatanchor" anchor="bottom" offset="20" />
+		  <left parent="fatigue_strength_penalty" anchor="right" relation="relative" offset="10" />
+        </anchored>
+        <font>bold20</font>
+		<readonly/>
+        <description textres="char_tooltip_fatigue_dexterity_penalty" />
+      </number_hptotal_charsheet>
+      <label_combatscores name="fatigue_dexterity_penalty_label">
+        <anchored to="fatigue_dexterity_penalty" />
+        <static textres="char_label_fatigue_dexterity_penalty" />
+		<tooltip textres="char_tooltip_fatigue_dexterity_penalty" />
+      </label_combatscores>
+
       
     </sheetdata>
   </windowclass>

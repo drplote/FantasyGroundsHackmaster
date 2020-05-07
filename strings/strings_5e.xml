@@ -270,9 +270,13 @@
   <string name="char_label_wounds">WND</string>
   <string name="char_label_fatigue_factor">FF</string>
   <string name="char_label_current_fatigue">Cur</string>
+  <string name="char_label_fatigue_strength_penalty">Str Pen</string>
+  <string name="char_label_fatigue_dexterity_penalty">Dex Pen</string>
   <string name="char_tooltip_wounds">Wounds</string>
   <string name="char_tooltip_fatigue_factor">Fatigue Factor</string>
   <string name="char_tooltip_current_fatigue">Current Fatigue</string>
+  <string name="char_tooltip_fatigue_strength_penalty">Strength Penalty due to Fatigue</string>
+  <string name="char_tooltip_fatigue_dexterity_penalty">Dexterity Penalty due to Fatigue</string>
   <string name="char_label_deathsave">Death Saves</string>
   <string name="char_label_deathsave_succ">S</string>
   <string name="char_label_deathsave_fail">F</string>

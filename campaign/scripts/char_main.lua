@@ -112,6 +112,20 @@ function onHealthChanged()
   wounds.setColor(sColor);
 end
 
+function decreaseFatigue()
+	local nodeChar = getDatabaseNode();
+	local lCurrentFatigue = DB.getValue(nodeChar, "fatigue.score", 0);
+	if lCurrentFatigue > 0 then
+		DB.setValue(nodeChar, "fatigue.score", "number", lCurrentFatigue - 1);
+	end
+end
+
+function increaseFatigue()
+	local nodeChar = getDatabaseNode();
+	local lCurrentFatigue = DB.getValue(nodeChar, "fatigue.score", 0);
+	DB.setValue(nodeChar, "fatigue.score", "number", lCurrentFatigue + 1);
+end
+
 function onFatigueChanged()
 	local node = getDatabaseNode();
 	updateFatigueScore(node);
