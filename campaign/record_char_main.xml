@@ -985,7 +985,7 @@
       <!-- senses/special move/defense string -->
 	  <string_labeled name="sensesspecial" source="senses">
         <anchored to="combatanchor">
-          <top anchor="bottom" relation="relative" offset="0" />
+          <top anchor="bottom" relation="relative" offset="100" />
           <left offset="0" />
           <right offset="200" />
         </anchored>
@@ -1062,19 +1062,11 @@
         <anchored to="wounds" position="lefthigh" offset="10,5" />
         <static textres="hp" />
       </label>
-	  
-	  <label name="fatigue_label">
-        <anchored to="contentanchor" height="30">
-		  <top parent="combatanchor" anchor="bottom" offset="20" />
-		  <left offset="0" />
-		</anchored>
-        <static textres="fatigue" />
-      </label>
-	  
+	    
 	  <buttoncontrol name="remove_fatigue_button">
 	    <anchored to="contentanchor" width="20" height="30">
 		  <top parent="combatanchor" anchor="bottom" offset="20" />
-		  <left parent="fatigue_label" anchor="right" relation="relative" offset="10"/>
+		  <left offset="0"/>
 	    </anchored>
         <icon normal="button_page_prev" />
 		<script>
@@ -1159,7 +1151,72 @@
         <static textres="char_label_fatigue_dexterity_penalty" />
 		<tooltip textres="char_tooltip_fatigue_dexterity_penalty" />
       </label_combatscores>
-
+	  
+	  <buttoncontrol name="repair_armor_button">
+	    <anchored to="contentanchor" width="20" height="30">
+		  <top parent="combatanchor" anchor="bottom" offset="60" />
+		  <left offset="0"/>
+	    </anchored>
+        <icon normal="button_page_prev" />
+		<script>
+			function onButtonPress()
+				window.repairArmor();
+			end
+		</script>
+		<tooltip textres="char_tooltip_repair_armor" />
+	  </buttoncontrol>
+	  
+	  <number_fatigue_charsheet name="current_armor_damage">
+        <anchored to="contentanchor" width="40" height="30">
+          <top parent="combatanchor" anchor="bottom" offset="60" />
+		  <left parent="repair_armor_button" anchor="right" relation="relative" />
+        </anchored>
+        <font>bold20</font>
+        <readonly />
+		<description textres="char_tooltip_current_armor_damage" />
+      </number_fatigue_charsheet>
+	  <label_combatscores name="current_armor_damage_label">
+        <anchored to="current_armor_damage" />
+        <static textres="char_label_current_armor_damage" />
+		<tooltip textres="char_tooltip_current_armor_damage" />
+      </label_combatscores>
+	  
+	  	  
+	  <buttoncontrol name="damage_armor_button">
+	    <anchored to="contentanchor" width="20" height="30">
+		  <top parent="combatanchor" anchor="bottom" offset="60" />
+		  <left parent="current_armor_damage" anchor="right" relation="relative"/>
+		</anchored>
+        <icon normal="button_page_next" />
+		<script>
+			function onButtonPress()
+				window.damageArmor();
+			end
+		</script>
+		<tooltip textres="char_tooltip_damage_armor" />
+	  </buttoncontrol>
+	  	  
+	  <number_fatigue_charsheet name="current_ac_loss">
+        <anchored to="contentanchor" width="40" height="30">
+          <top parent="combatanchor" anchor="bottom" offset="60" />
+		  <left parent="damage_armor_button" anchor="right" relation="relative" offset="10" />
+        </anchored>
+        <font>bold20</font>
+        <readonly />
+		<description textres="char_tooltip_current_ac_loss" />
+      </number_fatigue_charsheet>
+	  <label_combatscores name="current_ac_loss_label">
+        <anchored to="current_ac_loss" />
+        <static textres="char_label_current_ac_loss" />
+		<tooltip textres="char_tooltip_current_ac_loss" />
+      </label_combatscores>
+	  
+	  <label name="armor_description">
+	    <anchored to="contentanchor" width="400" height="30">
+		  <top parent="combatanchor" anchor="bottom" offset="60" />
+		  <left parent="current_ac_loss" anchor="right" relation="relative" offset="10"/>
+		</anchored>    
+      </label>
       
     </sheetdata>
   </windowclass>

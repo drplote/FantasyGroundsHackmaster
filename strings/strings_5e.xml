@@ -264,17 +264,22 @@
 
   <string name="char_label_senses">SENSES</string>
   <string name="char_label_perception">PERC</string>
+  <string name="char_armor_description">ARMOR</string>
 
   <string name="char_label_hpmax">MAX</string>
   <string name="char_label_hptemp">TMP</string>
   <string name="char_label_wounds">WND</string>
   <string name="char_label_fatigue_factor">FF</string>
-  <string name="char_label_current_fatigue">Cur</string>
-  <string name="char_label_fatigue_strength_penalty">Str Pen</string>
-  <string name="char_label_fatigue_dexterity_penalty">Dex Pen</string>
+  <string name="char_label_current_fatigue">FAT</string>
+  <string name="char_label_current_armor_damage">ARM</string>
+  <string name="char_label_current_ac_loss">-AC</string>
+  <string name="char_label_fatigue_strength_penalty">-STR</string>
+  <string name="char_label_fatigue_dexterity_penalty">-DEX</string>
   <string name="char_tooltip_wounds">Wounds</string>
   <string name="char_tooltip_fatigue_factor">Fatigue Factor</string>
   <string name="char_tooltip_current_fatigue">Current Fatigue</string>
+  <string name="char_tooltip_current_armor_Damage">Current Armor Damage</string>
+  <string name="char_tooltip_current_ac_loss">Points of AC lost due to armor damage</string>
   <string name="char_tooltip_fatigue_strength_penalty">Strength Penalty due to Fatigue</string>
   <string name="char_tooltip_fatigue_dexterity_penalty">Dexterity Penalty due to Fatigue</string>
   <string name="char_label_deathsave">Death Saves</string>
@@ -283,6 +288,8 @@
   
   <string name="char_tooltip_add_fatigue">Adds a level of fatigue and rolls appropriate checks if this takes you over you Fatigue Factor</string>
   <string name="char_tooltip_remove_fatigue">Removes a level of fatigue and rolls appropriate checks to remove fatigue penalties if you are at or below your Fatigue Factor. Clears all penalties if fatigue reduced to 0.</string>
+  <string name="char_tooltip_damage_armor">Adds a point of damage to equipped armor</string>
+  <string name="char_tooltip_repair_armor">Removes a point of damage from equipped armor</string>
 
   <string name="char_label_hd">HIT DIE</string>
   <string name="char_label_hdused">USED</string>

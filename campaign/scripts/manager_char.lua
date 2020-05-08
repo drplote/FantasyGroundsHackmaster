@@ -490,15 +490,32 @@ function addToArmorDB(nodeItem)
   end
 end
 
+function getDamageSteps(nDamageStepId, nBonus)
+	if nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
+		local aDamageSteps = {};
+		if nBonus > 0 and table.getn(DataCommonHM4.aArmorDamageSteps[nDamageStepId]) > 0 then
+			for i = 1, nBonus, 1 do
+				table.insert(aDamageSteps, 1, DataCommonHM4.aArmorDamageSteps[nDamageStepId][1]);
+			end
+		end
+		for _, nStep in ipairs(DataCommonHM4.aArmorDamageSteps[nDamageStepId]) do
+			table.insert(aDamageSteps, nStep);
+		end
+		Debug.console("aDamageSteps", aDamageSteps);
+		return aDamageSteps;
+	else
+		return {};
+	end
+end
+
 function getAcLossFromItemDamage(vNode)
 	local nDamageStepId = DB.getValue(vNode, "damageStepId", 0);
 	local nBonus = DB.getValue(vNode, "bonus", 0);
-	Debug.console("manager_char.lua", "getAcLossFromItemDamage", "nDamageStepId", nDamageStepId);
 	local nHpLost = DB.getValue(vNode, "hplost", 0);
-	Debug.console("manager_char.lua", "getAcLossFromItemDamage", "nHpLost", nHpLost);
 	local nAcLost = 0;
+	
 	if nHpLost > 0 and nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
-		local aDamageSteps = DataCommonHM4.aArmorDamageSteps[nDamageStepId];
+		local aDamageSteps = getDamageSteps(nDamageStepId, nBonus);
 		for _, nStep in ipairs(aDamageSteps) do 
 			nHpLost = nHpLost - nStep;
 			if nHpLost >= 0 then
@@ -507,6 +524,46 @@ function getAcLossFromItemDamage(vNode)
 		end
 	end
 	return nAcLost;
+end
+
+function getMaxArmorHp(vNode)
+	local nMaxHp = 0;
+	local nDamageStepId = DB.getValue(vNode, "damageStepId", 0)
+	local nBonus = DB.getValue(vNode, "bonus", 0);
+	local aDamageSteps = getDamageSteps(nDamageStepId, nBonus);
+	if aDamageSteps and table.getn(aDamageSteps) > 0 then
+		for _, nStep in ipairs(aDamageSteps) do
+			nMaxHp = nMaxHp + nStep;
+		end
+	end
+	return nMaxHp;
+end
+
+function addDamageToArmor(nodeChar, vNode)
+	if vNode then
+		local nDamageStepId =  DB.getValue(vNode, "damageStepId", 0)
+		if nDamageStepId then
+			local nHpLost = DB.getValue(vNode, "hplost", 0);
+			local nMaxHp = getMaxArmorHp(vNode);
+			if nHpLost < nMaxHp then 
+				DB.setValue(vNode, "hplost", "number", nHpLost + 1);
+			else
+				Debug.console("manager_char.lua", "addDamageToArmor", "Can't raise armor damage past it's max HP"); 
+			end			
+		end
+	end
+end
+
+function removeDamageFromArmor(nodeChar, vNode)
+	if vNode then
+		local nDamageStepId = DB.getValue(vNode, "damageStepId", 0);
+		if nDamageStepId > 0 then
+			local nHpLost = DB.getValue(vNode, "hplost", 0);
+			if nHpLost > 0 then
+				DB.setValue(vNode, "hplost", "number", nHpLost - 1);
+			end
+		end
+	end
 end
 
 -- calculate armor class and set? -celestian

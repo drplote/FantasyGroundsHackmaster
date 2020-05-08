@@ -19,6 +19,8 @@ function onInit()
   DB.addHandler(DB.getPath(node, "*.isidentified"), "onUpdate", onIDChanged);
   DB.addHandler(DB.getPath(node, "*.bonus"), "onUpdate", onBonusChanged);
   DB.addHandler(DB.getPath(node, "*.ac"), "onUpdate", onArmorChanged);
+  DB.addHandler(DB.getPath(node, "*.hplost"), "onUpdate", onArmorChanged);
+  DB.addHandler(DB.getPath(node, "*.damageStepId"), "onUpdate", onArmorChanged);
   DB.addHandler(DB.getPath(node, "*.dexbonus"), "onUpdate", onArmorChanged);
   DB.addHandler(DB.getPath(node, "*.stealth"), "onUpdate", onArmorChanged);
   DB.addHandler(DB.getPath(node, "*.strength"), "onUpdate", onArmorChanged);
@@ -34,6 +36,8 @@ function onClose()
   DB.removeHandler(DB.getPath(node, "*.isidentified"), "onUpdate", onIDChanged);
   DB.removeHandler(DB.getPath(node, "*.bonus"), "onUpdate", onBonusChanged);
   DB.removeHandler(DB.getPath(node, "*.ac"), "onUpdate", onArmorChanged);
+  DB.removeHandler(DB.getPath(node, "*.hplost"), "onUpdate", onArmorChanged);
+  DB.removeHandler(DB.getPath(node, "*.damageStepId"), "onUpdate", onArmorChanged);
   DB.removeHandler(DB.getPath(node, "*.dexbonus"), "onUpdate", onArmorChanged);
   DB.removeHandler(DB.getPath(node, "*.stealth"), "onUpdate", onArmorChanged);
   DB.removeHandler(DB.getPath(node, "*.strength"), "onUpdate", onArmorChanged);

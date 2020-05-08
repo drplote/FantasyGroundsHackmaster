@@ -250,10 +250,27 @@ end
 function isItemType(sCheckType,sType)
   return (sType == sCheckType);
 end
+
 function isItemSubType(sCheckType,sSubType)
   return (sSubType == sCheckType);
 end
+
 function isItemAnyType(sCheckType,sType,sSubType)
   return (sType == sCheckType or sSubType == sCheckType);
+end
+
+function getItemNameForPlayer(nodeItem)
+	local bIsIdentified = DB.getValue(nodeItem, "isidentified", 1) == 1;
+	local sDisplayName = DB.getValue(nodeItem, "name");
+	Debug.console("manager_item2.lua", "getItemNameForPlayer", "sDisplayName", sDisplayName);
+	Debug.console("manager_item2.lua", "getItemNameForPlayer", "bIsIdentified", bIsIdentified);
+	if not bIsIdentified then
+		local sNonIdName = DB.getValue(nodeItem, "nonid_name");
+		Debug.console("manager_item2.lua", "getItemNameForPlayer", "sNonIdName", sNonIdName);
+		if sNonIdName and sNonIdName ~= "" then
+			sDisplayName = sNonIdName;
+		end
+	end
+	return sDisplayName;
 end
 

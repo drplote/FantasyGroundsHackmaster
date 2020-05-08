@@ -4,6 +4,7 @@
 --
 --
 
+
 function onInit()
   local nodeChar = getDatabaseNode();
   DB.addHandler("options.HouseRule_ASCENDING_AC", "onUpdate", updateAscendingValues);
@@ -21,6 +22,8 @@ function onInit()
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.adjustment"), "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.tempmod"),    "onUpdate", updateAbilityScores);
   DB.addHandler(DB.getPath(nodeChar, "abilities.*.fatiguemod"), "onUpdate", updateAbilityScores);
+  DB.addHandler(DB.getPath(nodeChar, "inventorylist.*.carried"), "onUpdate", updateArmor);
+  DB.addHandler(DB.getPath(nodeChar, "inventorylist.*.hplost"), "onUpdate", updateArmor);
   
   DB.addHandler(DB.getPath(nodeChar, "hp.base"),        "onUpdate", updateHealthScore);
   DB.addHandler(DB.getPath(nodeChar, "hp.basemod"),     "onUpdate", updateHealthScore);
@@ -38,8 +41,6 @@ function onInit()
   
   DB.addHandler(DB.getPath(nodeChar, "initiative.tempmod"),     "onUpdate", updateInitiativeScores);
   DB.addHandler(DB.getPath(nodeChar, "initiative.misc"),     "onUpdate", updateInitiativeScores);
-  
-  DB.addHandler(DB.getPath(node, "classes.*.level"), "onUpdate", updateHonor);
 
   DB.addHandler("combattracker.list", "onChildDeleted", updatesBulk);
   
@@ -47,6 +48,7 @@ function onInit()
   updateAscendingValues();
   updateSurpriseScores();
   updateInitiativeScores();
+  updateArmor();
 end
 
 function onClose()
@@ -58,6 +60,7 @@ function onClose()
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.percenttempmod"),    "onUpdate", updateAbilityScores);
   
   DB.removeHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateAbilityScores);
+  DB.removeHandler(DB.getPath(nodeChar, "classes.*.level"), "onUpdate", updateHonor);
 
   DB.removeHandler(DB.getPath(nodeChar, "hp.base"),       "onUpdate", updateHealthScore);
   DB.removeHandler(DB.getPath(nodeChar, "hp.basemod"),    "onUpdate", updateHealthScore);
@@ -69,6 +72,9 @@ function onClose()
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.basemod"),    "onUpdate", updateAbilityScores);
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.adjustment"), "onUpdate", updateAbilityScores);
   DB.removeHandler(DB.getPath(nodeChar, "abilities.*.tempmod"),    "onUpdate", updateAbilityScores);
+  DB.removeHandler(DB.getPath(nodeChar, "abilities.*.fatiguemod"), "onUpdate", updateAbilityScores);
+  DB.removeHandler(DB.getPath(nodeChar, "inventorylist.*.carried"), "onUpdate", updateArmor);
+  DB.removeHandler(DB.getPath(nodeChar, "inventorylist.*.hplost"), "onUpdate", updateArmor);
   
   DB.removeHandler(DB.getPath(nodeChar, "inventorylist"),  "onChildDeleted", updateEncumbranceForDelete);
 
@@ -78,6 +84,7 @@ function onClose()
 
   DB.removeHandler(DB.getPath(nodeChar, "initiative.tempmod"),     "onUpdate", updateInitiativeScores);
   DB.removeHandler(DB.getPath(nodeChar, "initiative.misc"),     "onUpdate", updateInitiativeScores);
+  
   
   DB.removeHandler("combattracker.list", "onChildDeleted", updatesBulk);
   
@@ -129,6 +136,70 @@ end
 function onFatigueChanged()
 	local node = getDatabaseNode();
 	updateFatigueScore(node);
+end
+
+function updateArmor()
+	CharManager.calcItemArmorClass(getDatabaseNode());
+	updateArmorDamageDisplay();
+	updateShieldDamageDisplay()
+end
+
+function updateShieldDamageDisplay()
+	local vNode = getWornShield();
+	if vNode then
+		local nHpLost = DB.getValue(vNode, "hplost", 0);
+		--current_armor_damage.setValue(nHpLost);
+	else
+		--current_armor_damage.setValue(0);
+	end
+end
+
+function updateArmorDamageDisplay()
+	local vNode = getWornArmor();
+	if vNode then
+		local nHpLost = DB.getValue(vNode, "hplost", 0);
+		current_armor_damage.setValue(nHpLost);
+		current_ac_loss.setValue(CharManager.getAcLossFromItemDamage(vNode));
+		armor_description.setValue(ItemManager2.getItemNameForPlayer(vNode));
+	else
+		current_armor_damage.setValue(0);
+		current_ac_loss.setValue(0);
+		armor_description.setValue("No armor worn");
+	end
+end
+
+function getWornShield()
+	-- Possible problem: If the character has more than one shield worn, this is only going to return the first it finds
+	for _,vNode in pairs(DB.getChildren(getDatabaseNode(), "inventorylist")) do
+		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isShield(vNode) then
+			return vNode;
+		end
+	end
+end
+
+function getWornArmor()
+	-- Possible problem: If the character has more than one armor worn, this is only going to return the first it finds
+	for _,vNode in pairs(DB.getChildren(getDatabaseNode(), "inventorylist")) do
+		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isArmor(vNode) and not ItemManager2.isShield(vNode) then
+			return vNode;
+		end
+	end
+end
+
+function damageShield()
+	CharManager.addDamageToArmor(getDatabaseNode(), getWornShield());
+end
+
+function repairShield()
+    CharManager.removeDamageFromArmor(getDatabaseNode(), getWornShield());
+end
+
+function damageArmor()
+	CharManager.addDamageToArmor(getDatabaseNode(), getWornArmor());
+end
+
+function repairArmor()
+	CharManager.removeDamageFromArmor(getDatabaseNode(), getWornArmor());
 end
 
 ---
