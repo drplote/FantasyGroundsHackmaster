@@ -145,22 +145,26 @@ function updateArmor()
 end
 
 function updateShieldDamageDisplay()
-	local vNode = getWornShield();
-	if vNode then
-		local nHpLost = DB.getValue(vNode, "hplost", 0);
-		--current_armor_damage.setValue(nHpLost);
+	local nodeItem = getWornShield();
+	if nodeItem then
+		local nHpLost = DB.getValue(nodeItem, "hplost", 0);
+		current_shield_damage.setValue(nHpLost);
+		current_shield_loss.setValue(CharManager.getAcLossFromItemDamage(nodeItem));
+		shield_description.setValue(ItemManager2.getItemNameForPlayer(nodeItem));
 	else
-		--current_armor_damage.setValue(0);
+		current_shield_damage.setValue(0);
+		current_shield_loss.setValue(0);
+		shield_description.setValue("No Shield Worn");
 	end
 end
 
 function updateArmorDamageDisplay()
-	local vNode = getWornArmor();
-	if vNode then
-		local nHpLost = DB.getValue(vNode, "hplost", 0);
+	local nodeItem = getWornArmor();
+	if nodeItem then
+		local nHpLost = DB.getValue(nodeItem, "hplost", 0);
 		current_armor_damage.setValue(nHpLost);
-		current_ac_loss.setValue(CharManager.getAcLossFromItemDamage(vNode));
-		armor_description.setValue(ItemManager2.getItemNameForPlayer(vNode));
+		current_ac_loss.setValue(CharManager.getAcLossFromItemDamage(nodeItem));
+		armor_description.setValue(ItemManager2.getItemNameForPlayer(nodeItem));
 	else
 		current_armor_damage.setValue(0);
 		current_ac_loss.setValue(0);

@@ -12,7 +12,7 @@
       <size width="530" height="1000" />
     </placement>
     <sizelimits>
-      <minimum width="530" height="650" />
+      <minimum width="600" height="650" />
       <!-- <maximum width="510" /> -->
       <dynamic />
     </sizelimits>
