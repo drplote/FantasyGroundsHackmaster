@@ -532,8 +532,7 @@ function onAttack(rSource, rTarget, rRoll)
     
   rAction.aMessages = {};
   
-  local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus = ActorManager2.getDefenseValue(rSource, rTarget, rRoll);
-  
+  local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, bDontCare, bDontCare2, nACShield = ActorManager2.getDefenseValue(rSource, rTarget, rRoll);
   --table.insert(rAction.aMessages, string.format(sFormat, nAtkEffectsBonus));
   
   if nAtkEffectsBonus ~= 0 then
@@ -646,7 +645,7 @@ function onAttack(rSource, rTarget, rRoll)
     local bHit = ((rAction.nTotal + rRoll.nBaseAttack) >= nDefenseVal or rAction.nFirstDie == 20);
     if (rTarget == nil and rRoll.Psionic_DisciplineType:match("attack")) then
       -- psionic attacks only work with a target, powers however have target MACs so... this lovely confusing mess.
-    else if (is2e and bHit) or (not is2e and not bOptAscendingAC and bMatrixHit) then
+    else if bMatrixHit then
     --Debug.console("manager_action_attack.lua","onAttack","nDefenseVal",nDefenseVal);
     -- nFirstDie = natural roll, nat 20 == auto-hit, if you can't crit you can still hit on a 20
     -- if rAction.nTotal >= nDefenseVal or rAction.nFirstDie == 20 then
@@ -676,7 +675,14 @@ function onAttack(rSource, rTarget, rRoll)
         local sAdjustPSPText = adjustPSPs(rSource,tonumber(rRoll.Psionic_PSPOnFail));
         rMessage.icon = "roll_psionic_miss";
         rMessage.text = rMessage.text .. sAdjustPSPText;
-      end
+      end  
+
+	  if nACShield < 0 and (nTargetDecendingAC - nACShield) >= nACHit then
+		rMessage.font = "shieldhitfont";
+		sExtendedText = sExtendedText .. "[SHIELD]";
+		table.insert(rAction.aMessages, "[SHIELD]");
+	  end
+	  
       sExtendedText = sExtendedText .. "[MISS]";
       table.insert(rAction.aMessages, "[MISS]");
     end
@@ -850,7 +856,12 @@ function applyAttack(rSource, rTarget, msgOOB)
       msgLong.icon = "roll_attack_hit";
     end
   elseif string.match(sDMResults, "MISS%]") then
-    msgLong.font = "missfont";
+
+	if string.match(sDMResults, "%[SHIELD%]") then
+		msgLong.font = "shieldhitfont";
+	else
+		msgLong.font = "missfont";		
+	end
     if bPsionicPower then
       msgLong.icon = "roll_psionic_miss";
     else
@@ -917,6 +928,7 @@ function getBaseAttack(rActor)
   local nBaseAttack = 20 - getTHACO(rActor);
   return nBaseAttack;
 end
+
 function getTHACO(rActor)
   local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
   
@@ -930,12 +942,13 @@ function getTHACO(rActor)
     nTHACO = DB.getValue(nodeActor, "combat.thaco.score", 20);
   else
   -- npc thaco calcs
-	local sHitDice = CombatManagerADND.getNPCHitDice(node);
+	local sHitDice = CombatManagerADND.getNPCHitDice(nodeActor);
 	nTHACO = DataCommonADND.aMatrix[sHitDice][11];
     -- nTHACO = DB.getValue(nodeActor, "thaco", 20);
   end
-  return nTHACO
+  return nTHACO;
 end
+
 -- get the base attach bonus using MTHACO value
 function getBaseAttackPsionic(rActor)
   local nBaseAttack = 20 - getMTHACO(rActor);

@@ -394,6 +394,7 @@ end
 function getDefenseValue(rAttacker, rDefender, rRoll)
   local nDefense = 10;
   local bPsionic = false;
+  local nACShield = 0;
   
   if (rRoll) then -- need to get defense value from psionic power
     bPsionic = rRoll.bPsionic == "true";
@@ -404,9 +405,9 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
   end
 
   if not rDefender and rRoll and bPsionic then -- no defender but psionic power target
-    return nDefense, 0, 0, false, false;
+    return nDefense, 0, 0, false, false, nACShield;
   elseif not rDefender or not rRoll then
-    return nil, 0, 0, false, false;
+    return nil, 0, 0, false, false, nACShield;
   end
   
   -- Base calculations
@@ -468,7 +469,6 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     local nACTemp = 0;
     local nACBase = 10;
     local nACArmor = 0;
-    local nACShield = 0;
     local nACMisc = 0;
     
   --Debug.console("manager_actor2.lua","getDefenseValue","rRoll.range",rRoll.range);  
@@ -569,10 +569,9 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
         EffectManager5E.hasEffect(rDefender, "NOSHIELD", nil) or 
         EffectManager5E.hasEffect(rDefender, "SHIELDLESS", nil) or 
         EffectManager5E.hasEffect(rDefender, "Charged", nil) then
-        nDefense = nDefense + nACTemp + nACArmor + nACMisc;
-      else
-        nDefense = nDefense + nACTemp + nACArmor + nACShield + nACMisc;
+		nACShield = 0;
       end
+	  nDefense = nDefense + nACTemp + nACArmor + nACShield + nACMisc;
     else -- npc
       nDefense = nDefense + nACTemp; -- nACTemp are "modifiders"
     end
@@ -656,13 +655,9 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     end
     
   end -- end if bPsionic
-  
-Debug.console("manager_actor2.lua","getDefenseValue","nDefense",nDefense);
-Debug.console("manager_actor2.lua","getDefenseValue","nAttackEffectMod",nAttackEffectMod);
-Debug.console("manager_actor2.lua","getDefenseValue","nDefenseEffectMod",nDefenseEffectMod);
 
   -- Results
-  return nDefense, nAttackEffectMod, nDefenseEffectMod;
+  return nDefense, nAttackEffectMod, nDefenseEffectMod, nil, nil, nACShield;
 end
 
 function isAlignment(rActor, sAlignCheck)

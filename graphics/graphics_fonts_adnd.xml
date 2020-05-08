@@ -43,7 +43,11 @@
     <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
     <color value="#1d97cc" />
   </font>
-
+  <font name="shieldhitfont">
+    <fgffile name="graphics/fonts/regular-10.fgf" />
+    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+    <color value="#DF7401" />
+  </font>
 	<!-- font used in grouplist headers in shortcut buttons on npc/item/etc -->
   
   <font name="grouplist-white">
