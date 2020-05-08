@@ -1175,7 +1175,7 @@
 	  <buttoncontrol name="add_fatigue_button">
 	    <anchored to="contentanchor" width="20" height="30">
 		  <top parent="combatanchor" anchor="bottom" offset="10" />
-		  <right parent="fatigue_factor" anchor="left" relation="relative"/>
+		  <right parent="fatigue_factor" anchor="left" relation="relative" offset="-5"/>
 		  </anchored>
         <icon normal="button_page_next" />
 		<script>

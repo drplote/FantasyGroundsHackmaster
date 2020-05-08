@@ -628,6 +628,8 @@ function calcItemArmorClass(nodeChar)
           else
             nMainShieldTotal = nMainShieldTotal + (DB.getValue(vNode, "ac", 0)) + (DB.getValue(vNode, "bonus", 0));
           end
+		  local nAcLossFromDamage = getAcLossFromItemDamage(vNode);
+		  nMainShieldTotal = nMainShieldTotal - nAcLossFromDamage;
 		  
         -- we only want the "bonus" value for ring/cloaks/robes
         elseif bIsRingOrCloak then 
