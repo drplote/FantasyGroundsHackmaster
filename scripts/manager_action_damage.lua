@@ -1503,6 +1503,11 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       
       -- Apply wounds
       nWounds = math.max(nWounds + nAdjustedDamage, 0);
+	  
+	  Debug.console("manager_action_damage.lua", "applyDamage", "nTotalHP", nTotalHP);
+	  if nAdjustedDamage > (nTotalHP / 2) then
+		table.insert(aNotifications, "[THRESHOLD OF PAIN]");
+	  end
       
       -- Calculate wounds above HP
       if nWounds > nTotalHP then
