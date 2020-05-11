@@ -105,7 +105,9 @@ function rollEntryInit(nodeEntry)
         nInitResult = PC_LASTINIT;
       end
     else
-      nInitResult = rollRandomInit(nInitPC + nInitMOD, bADV);
+      --nInitResult = rollRandomInit(nInitPC + nInitMOD, bADV);
+	  -- I don't like it autorolling, then just having people roll manually anyway. Set to 99 to make it clearer who hasn't rolled for themselves yet
+	  nInitResult = 99;
     end
     
 		DB.setValue(nodeEntry, "initresult", "number", nInitResult);
@@ -122,11 +124,13 @@ function rollEntryInit(nodeEntry)
         nSpeedFactor = nSpeed;
       end
     end
+	
     if nSpeedFactor ~= 0 then
       nInit = nSpeedFactor + nInitMOD ;
     elseif (nTotal ~= 0) then 
       nInit = nTotal + nInitMOD ;
     end
+
 
     -- For NPCs, if NPC init option is not group, then roll unique initiative
     local sOptINIT = OptionsManager.getOption("INIT");
@@ -626,6 +630,7 @@ UtilityManagerADND.logDebug("manager_combat_adnd.lua","addNPC\START/");
   -- base modifier for initiative
   -- we set modifiers based on size per DMG for AD&D -celestian
   DB.setValue(nodeEntry, "init", "number", 0);
+  Debug.console("wtf mate");
   
   -- Determine size
   local sSize = StringManager.trim(DB.getValue(nodeEntry, "size", ""):lower());
@@ -635,23 +640,23 @@ UtilityManagerADND.logDebug("manager_combat_adnd.lua","addNPC\START/");
     -- the token is actually dropped on the map
     -- need to figure out a work around -celestian
     DB.setValue(nodeEntry, "tokenscale", "number", 0.5);
-    DB.setValue(nodeEntry, "init", "number", 0);
+    DB.setValue(nodeEntry, "init", "number", -5);
   elseif sSize == "small" or string.find(sSizeNoLower,"S") then
     -- tokenscale doesn't work, guessing it's "reset" when
     -- the token is actually dropped on the map
     DB.setValue(nodeEntry, "tokenscale", "number", 0.75);
-    DB.setValue(nodeEntry, "init", "number", 3);
+    DB.setValue(nodeEntry, "init", "number", -2);
   elseif sSize == "medium" or string.find(sSizeNoLower,"M") then
-    DB.setValue(nodeEntry, "init", "number", 3);
+    DB.setValue(nodeEntry, "init", "number", 0);
   elseif sSize == "large" or string.find(sSizeNoLower,"L") then
     DB.setValue(nodeEntry, "space", "number", 10);
-    DB.setValue(nodeEntry, "init", "number", 6);
+    DB.setValue(nodeEntry, "init", "number", 1);
   elseif sSize == "huge" or string.find(sSizeNoLower,"H") then
     DB.setValue(nodeEntry, "space", "number", 15);
-    DB.setValue(nodeEntry, "init", "number", 9);
+    DB.setValue(nodeEntry, "init", "number", 4);
   elseif sSize == "gargantuan" or string.find(sSizeNoLower,"G") then
     DB.setValue(nodeEntry, "space", "number", 20);
-    DB.setValue(nodeEntry, "init", "number", 12);
+    DB.setValue(nodeEntry, "init", "number", 7);
   end
   -- if the combat window initiative is set to something, use it instead --celestian
   local nInitMod = DB.getValue(nodeNPC, "initiative.total", 0);
@@ -1600,33 +1605,36 @@ function addCTANPC(sClass, nodeNPC, sNamedInBattle)
   -- base modifier for initiative
   -- we set modifiers based on size per DMG for AD&D -celestian
   DB.setValue(nodeEntry, "init", "number", 0);
+  Debug.console("wtf mate");
   
-  -- Determine size
-  DB.setValue(nodeEntry,"size","string",DB.getValue(nodeNPC,"size",""));
-  local sSize = StringManager.trim(DB.getValue(nodeEntry, "size", ""):lower());
-  local sSizeNoLower = StringManager.trim(DB.getValue(nodeEntry, "size", ""));
-  if sSize == "tiny" or string.find(sSizeNoLower,"T") then
-    -- tokenscale doesn't work, guessing it's "reset" when
-    -- the token is actually dropped on the map
-    -- need to figure out a work around -celestian
-    DB.setValue(nodeEntry, "tokenscale", "number", 0.5);
-    DB.setValue(nodeEntry, "init", "number", 0);
-  elseif sSize == "small" or string.find(sSizeNoLower,"S") then
-    -- tokenscale doesn't work, guessing it's "reset" when
-    -- the token is actually dropped on the map
-    DB.setValue(nodeEntry, "tokenscale", "number", 0.75);
-    DB.setValue(nodeEntry, "init", "number", 3);
-  elseif sSize == "medium" or string.find(sSizeNoLower,"M") then
-    DB.setValue(nodeEntry, "init", "number", 3);
-  elseif sSize == "large" or string.find(sSizeNoLower,"L") then
-    DB.setValue(nodeEntry, "space", "number", 10);
-    DB.setValue(nodeEntry, "init", "number", 6);
-  elseif sSize == "huge" or string.find(sSizeNoLower,"H") then
-    DB.setValue(nodeEntry, "space", "number", 15);
-    DB.setValue(nodeEntry, "init", "number", 9);
-  elseif sSize == "gargantuan" or string.find(sSizeNoLower,"G") then
-    DB.setValue(nodeEntry, "space", "number", 20);
-    DB.setValue(nodeEntry, "init", "number", 12);
+  if false then -- We don't do this for Hackmaster
+	  -- Determine size
+	  DB.setValue(nodeEntry,"size","string",DB.getValue(nodeNPC,"size",""));
+	  local sSize = StringManager.trim(DB.getValue(nodeEntry, "size", ""):lower());
+	  local sSizeNoLower = StringManager.trim(DB.getValue(nodeEntry, "size", ""));
+	  if sSize == "tiny" or string.find(sSizeNoLower,"T") then
+		-- tokenscale doesn't work, guessing it's "reset" when
+		-- the token is actually dropped on the map
+		-- need to figure out a work around -celestian
+		DB.setValue(nodeEntry, "tokenscale", "number", 0.5);
+		DB.setValue(nodeEntry, "init", "number", 0);
+	  elseif sSize == "small" or string.find(sSizeNoLower,"S") then
+		-- tokenscale doesn't work, guessing it's "reset" when
+		-- the token is actually dropped on the map
+		DB.setValue(nodeEntry, "tokenscale", "number", 0.75);
+		DB.setValue(nodeEntry, "init", "number", 3);
+	  elseif sSize == "medium" or string.find(sSizeNoLower,"M") then
+		DB.setValue(nodeEntry, "init", "number", 3);
+	  elseif sSize == "large" or string.find(sSizeNoLower,"L") then
+		DB.setValue(nodeEntry, "space", "number", 10);
+		DB.setValue(nodeEntry, "init", "number", 6);
+	  elseif sSize == "huge" or string.find(sSizeNoLower,"H") then
+		DB.setValue(nodeEntry, "space", "number", 15);
+		DB.setValue(nodeEntry, "init", "number", 9);
+	  elseif sSize == "gargantuan" or string.find(sSizeNoLower,"G") then
+		DB.setValue(nodeEntry, "space", "number", 20);
+		DB.setValue(nodeEntry, "init", "number", 12);
+	  end
   end
 
 --Debug.console("manager_combat_adnd","addCTANPC","DB.getValue(nodeEntry, init,0)",DB.getValue(nodeEntry, "init", 0));       

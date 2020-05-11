@@ -186,7 +186,7 @@ function modRoll(rSource, rTarget, rRoll)
     -- Determine ability used
     local sActionStat = nil;
     local sModStat = string.match(rRoll.sDesc, "%[MOD:(%w+)%]");
-    if sModStat then
+    if sModStat then	  
       sActionStat = DataCommon.ability_stol[sModStat];
     end
     if not sActionStat then
@@ -208,6 +208,14 @@ function modRoll(rSource, rTarget, rRoll)
       end
       rRoll.nMod = rRoll.nMod + nAddMod;
     end
+	
+	if rSource.itemPath then
+	  -- If this roll is coming from an item, we need to factor in reaction adjustment
+		local sActorType, nodeActor = ActorManager.getTypeAndNode(rSource);
+		local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
+		rRoll.sDesc = rRoll.sDesc .. "[Reaction Adj: " .. nReactionAdj .. "]";
+		rRoll.nMod = rRoll.nMod + nReactionAdj;
+	end
     
     -- -- Get ability effect modifiers
     -- local nBonusStat, nBonusEffects = ActorManager2.getAbilityEffectsBonus(rSource, sActionStat);

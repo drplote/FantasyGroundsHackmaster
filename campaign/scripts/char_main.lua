@@ -225,7 +225,8 @@ function updateInitiativeScores()
   local nodeChar = getDatabaseNode();
   local nMod = DB.getValue(nodeChar,"initiative.misc",0);
   local nTmpMod = DB.getValue(nodeChar,"initiative.tempmod",0);
-  local nTotal = nMod + nTmpMod;
+  local nReactionAdj = DB.getValue(nodeChar, "abilities.dexterity.reactionadj", 0);
+  local nTotal = nMod + nTmpMod - nReactionAdj;
   DB.setValue(nodeChar,"initiative.total","number",nTotal);
 end
 ---
@@ -278,6 +279,7 @@ function updateAbilityScores(node)
   -- this makes sure if con changes hp con adjustments are managed
   updateHealthScore();
   CharManager.updateFatigueSave(nodeChar);
+  updateInitiativeScores();
 end
 
 function updateAscendingValues()
