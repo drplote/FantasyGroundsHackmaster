@@ -489,63 +489,20 @@ function addToArmorDB(nodeItem)
   end
 end
 
-function getDamageSteps(nDamageStepId, nBonus)
-	if nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
-		local aDamageSteps = {};
-		if nBonus > 0 and table.getn(DataCommonHM4.aArmorDamageSteps[nDamageStepId]) > 0 then
-			for i = 1, nBonus, 1 do
-				table.insert(aDamageSteps, 1, DataCommonHM4.aArmorDamageSteps[nDamageStepId][1]);
-			end
-		end
-		for _, nStep in ipairs(DataCommonHM4.aArmorDamageSteps[nDamageStepId]) do
-			table.insert(aDamageSteps, nStep);
-		end
-		return aDamageSteps;
-	else
-		return {};
-	end
-end
-
-function getAcLossFromItemDamage(nodeItem)
-	local nDamageStepId = DB.getValue(nodeItem, "damageStepId", 0);
-	local nBonus = DB.getValue(nodeItem, "bonus", 0);
-	local nHpLost = DB.getValue(nodeItem, "hplost", 0);
-	local nAcLost = 0;
-	
-	if nHpLost > 0 and nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
-		local aDamageSteps = getDamageSteps(nDamageStepId, nBonus);
-		for _, nStep in ipairs(aDamageSteps) do 
-			nHpLost = nHpLost - nStep;
-			if nHpLost >= 0 then
-				nAcLost = nAcLost + 1;
-			end
-		end
-	end
-	return nAcLost;
-end
-
-function getMaxArmorHp(nodeItem)
-	local nMaxHp = 0;
-	local nDamageStepId = DB.getValue(nodeItem, "damageStepId", 0)
-	local nBonus = DB.getValue(nodeItem, "bonus", 0);
-	local aDamageSteps = getDamageSteps(nDamageStepId, nBonus);
-	if aDamageSteps and table.getn(aDamageSteps) > 0 then
-		for _, nStep in ipairs(aDamageSteps) do
-			nMaxHp = nMaxHp + nStep;
-		end
-	end
-	return nMaxHp;
-end
-
-function addDamageToArmor(nodeChar, nodeItem)
+function addDamageToArmor(nodeChar, nodeItem, nAmount)
 	if nodeItem then
 		local nDamageStepId =  DB.getValue(nodeItem, "damageStepId", 0)
 		if nDamageStepId then
 			local nHpLost = DB.getValue(nodeItem, "hplost", 0);
-			local nMaxHp = getMaxArmorHp(nodeItem);
-			if nHpLost < nMaxHp then 
-				DB.setValue(nodeItem, "hplost", "number", nHpLost + 1);
-				if nHpLost +1 == nMaxHp then
+			local nMaxHp = ItemManager2.getMaxArmorHp(nodeItem);
+			local nNewHpLost = math.min(nMaxHp, nHpLost + nAmount);
+			Debug.console("yo", "nHpLost", nHpLost);
+			Debug.console("yo", "nMaxHp", nMaxHp);
+			Debug.console("yo", "nAmount", nAmount);
+			Debug.console("yo", "nNewHpLost", nNewHpLost);
+			if nHpLost < nNewHpLost then 
+				DB.setValue(nodeItem, "hplost", "number", nNewHpLost);
+				if nNewHpLost >= nMaxHp then
 					local sCharName = DB.getValue(nodeChar, "name");
 					local sItemName = ItemManager2.getItemNameForPlayer(nodeItem);
 					ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " breaks!");
@@ -628,7 +585,7 @@ function calcItemArmorClass(nodeChar)
           else
             nMainShieldTotal = nMainShieldTotal + (DB.getValue(vNode, "ac", 0)) + (DB.getValue(vNode, "bonus", 0));
           end
-		  local nAcLossFromDamage = getAcLossFromItemDamage(vNode);
+		  local nAcLossFromDamage = ItemManager2.getAcLossFromItemDamage(vNode);
 		  nMainShieldTotal = nMainShieldTotal - nAcLossFromDamage;
 		  
         -- we only want the "bonus" value for ring/cloaks/robes
@@ -650,7 +607,7 @@ function calcItemArmorClass(nodeChar)
           else
             nMainArmorTotal = nMainArmorTotal -(DB.getValue(vNode, "bonus", 0));
           end
-		  local nAcLossFromDamage = getAcLossFromItemDamage(vNode);
+		  local nAcLossFromDamage = ItemManager2.getAcLossFromItemDamage(vNode);
 		  nMainArmorTotal = nMainArmorTotal + nAcLossFromDamage;
 		  
           

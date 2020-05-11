@@ -163,7 +163,7 @@ function updateArmorDamageDisplay()
 	if nodeItem then
 		local nHpLost = DB.getValue(nodeItem, "hplost", 0);
 		current_armor_damage.setValue(nHpLost);
-		current_ac_loss.setValue(CharManager.getAcLossFromItemDamage(nodeItem));
+		current_ac_loss.setValue(ItemManager2.getAcLossFromItemDamage(nodeItem));
 		armor_description.setValue(ItemManager2.getItemNameForPlayer(nodeItem));
 	else
 		current_armor_damage.setValue(0);
@@ -173,25 +173,15 @@ function updateArmorDamageDisplay()
 end
 
 function getWornShield()
-	-- Possible problem: If the character has more than one shield worn, this is only going to return the first it finds
-	for _,vNode in pairs(DB.getChildren(getDatabaseNode(), "inventorylist")) do
-		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isShield(vNode) then
-			return vNode;
-		end
-	end
+	return ItemManager2.getPcShieldWorn(getDatabaseNode());
 end
 
 function getWornArmor()
-	-- Possible problem: If the character has more than one armor worn, this is only going to return the first it finds
-	for _,vNode in pairs(DB.getChildren(getDatabaseNode(), "inventorylist")) do
-		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isArmor(vNode) and not ItemManager2.isShield(vNode) then
-			return vNode;
-		end
-	end
+	return ItemManager2.getPcArmorWorn(getDatabaseNode());
 end
 
 function damageShield()
-	CharManager.addDamageToArmor(getDatabaseNode(), getWornShield());
+	CharManager.addDamageToArmor(getDatabaseNode(), getWornShield(), 1);
 end
 
 function repairShield()
@@ -199,7 +189,7 @@ function repairShield()
 end
 
 function damageArmor()
-	CharManager.addDamageToArmor(getDatabaseNode(), getWornArmor());
+	CharManager.addDamageToArmor(getDatabaseNode(), getWornArmor(), 1);
 end
 
 function repairArmor()

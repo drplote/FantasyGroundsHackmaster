@@ -183,6 +183,16 @@ function processPenetratingDicePlus(draginfo)
 	return processPenetration(draginfo, true)
 end
 
+function getNumOriginalDice(aDice)
+	local nNumDice = #aDice;
+	for _, vDie in ipairs(aDice) do
+		if vDie.penetrationRolls then
+			nNumDice = nNumDice - 1;
+		end
+	end
+	return nNumDice;
+end
+
 -- penetration means if you roll max on the die (or also max -1 for penPlus), you roll again and subtract 1
 function processPenetration(draginfo, penPlus)
 

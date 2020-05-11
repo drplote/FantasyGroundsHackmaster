@@ -549,7 +549,6 @@ function onDamage(rSource, rTarget, rRoll)
 
   -- Apply damage to the PC or CT entry referenced
   local nTotal = ActionsManager.total(rRoll);
-  Debug.console("manager_action_damage.lua", "onDamage", "nTotal", nTotal);
   
   
     -- -- Apply damage MATH -- TESTING
@@ -1165,9 +1164,33 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
         end
       end
     end
+	
+	local nAbsorbed = 0;	
+	-- if rTarget is PC and armor worn (not shield) then reduce damage by number of dice up to max armor hp and do armor damage
+	if ActorManager.isPC(rTarget) then
+		Debug.console("we in the code");
+		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
+		local nodePcArmor = ItemManager2.getPcArmorWorn(nodeTarget);
+		local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodePcArmor) - DB.getValue(nodePcArmor, "hplost", 0), 0);
+		local nPointsThatCanBeSoaked = DiceMechanicsManager.getNumOriginalDice(aDice);
+		local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
+		Debug.console("hp remaining", nArmorHpRemaining);
+		Debug.console("hp can be soaked", nPointsThatCanBeSoaked);
+		Debug.console("hp actually soaked", nDamageSoaked);
+		nAbsorbed = nAbsorbed + nDamageSoaked;
+		if nDamageSoaked > 0 then
+			local sCharName = DB.getValue(nodeTarget, "name");
+			local sItemName = ItemManager2.getItemNameForPlayer(nodePcArmor);
+			ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " damage.");
+			CharManager.addDamageToArmor(nodeTarget, nodePcArmor, nDamageSoaked);
+		end
+	end
+	
+	
+	
 
     -- add support for "DA: # type" where damage # is absorbed from type damage and then that value is reduced the amount absorbed. --celestian
-    local nAbsorbed = getAbsorbedByType(rTarget,aSrcDmgClauseTypes,sRangeType,(nDamage-nLocalDamageAdjust));
+    nAbsorbed = nAbsorbed + getAbsorbedByType(rTarget,aSrcDmgClauseTypes,sRangeType,(nDamage-nLocalDamageAdjust));
     if nAbsorbed > 0 then
       nLocalDamageAdjust = nLocalDamageAdjust - nAbsorbed;
       bAbsorb = true;
