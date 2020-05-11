@@ -11,7 +11,6 @@ end
 
 function onFumbleSlashCommand(sCmd, sParam)
 	local nRollValue = math.random(1, 1000);
-	Debug.console("manager_fumble.lua", "onFumbleSlashCommand", "sParam", sParam);
 	local sUpperParam = string.upper(sParam);
 	local isUnarmed = sUpperParam == "UNARMED" or sUpperParam == "U" ;
 		
