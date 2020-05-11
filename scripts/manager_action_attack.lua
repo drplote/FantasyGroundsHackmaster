@@ -241,8 +241,19 @@ function modAttack(rSource, rTarget, rRoll)
     table.insert(aAddDesc, "[CONCEAL 90%]");
   end
 
-  -- attack modifiers (shieldless, no-dex, attacking from rear)
+ -- attack modifiers (shieldless, no-dex, attacking from rear, honor, etc)
   local nAtkModifier = 0;
+
+  local sSourceType, nodeSource = ActorManager.getTypeAndNode(rSource);
+  local nHonorState = DB.getValue(nodeSource, "abilities.honor.honorState", 0);
+  if nHonorState == 1 then
+	table.insert(aAddDesc, "[Great Honor]");
+	nAtkModifier = nAtkModifier + 1;
+  elseif nHonorState == -1 then
+	table.insert(aAddDesc, "[Dishonor]");
+	nAtkModifier = nAtkModifier - 1;
+  end 
+
   if ModifierStack.getModifierKey("ATK_FROMREAR") then
     nAtkModifier = nAtkModifier + 2;
     table.insert(aAddDesc, "[REAR]");

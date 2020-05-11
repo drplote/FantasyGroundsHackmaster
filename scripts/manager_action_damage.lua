@@ -529,9 +529,7 @@ end
 
 function handleHonor(rSource, rRoll)
 	local sSourceType, nodeSource = ActorManager.getTypeAndNode(rSource);
-	Debug.console("sSourceType", sSourceType, "nodeSource", nodeSource);
 	local nHonorState = DB.getValue(nodeSource, "abilities.honor.honorState", 0);
-	Debug.console("nHonorState", nHonorState);
 	DiceMechanicsManager.modifyRollForHonor(rRoll, nHonorState);
 end
 
