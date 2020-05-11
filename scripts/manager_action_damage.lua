@@ -1168,15 +1168,11 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 	local nAbsorbed = 0;	
 	-- if rTarget is PC and armor worn (not shield) then reduce damage by number of dice up to max armor hp and do armor damage
 	if ActorManager.isPC(rTarget) then
-		Debug.console("we in the code");
 		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
 		local nodePcArmor = ItemManager2.getPcArmorWorn(nodeTarget);
 		local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodePcArmor) - DB.getValue(nodePcArmor, "hplost", 0), 0);
 		local nPointsThatCanBeSoaked = DiceMechanicsManager.getNumOriginalDice(aDice);
 		local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
-		Debug.console("hp remaining", nArmorHpRemaining);
-		Debug.console("hp can be soaked", nPointsThatCanBeSoaked);
-		Debug.console("hp actually soaked", nDamageSoaked);
 		nAbsorbed = nAbsorbed + nDamageSoaked;
 		if nDamageSoaked > 0 then
 			local sCharName = DB.getValue(nodeTarget, "name");

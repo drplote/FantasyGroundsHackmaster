@@ -187,7 +187,7 @@ function getNumOriginalDice(aDice)
 	local nNumDice = #aDice;
 	for _, vDie in ipairs(aDice) do
 		if vDie.penetrationRolls then
-			nNumDice = nNumDice - 1;
+			nNumDice = nNumDice - #vDie.penetrationRolls;
 		end
 	end
 	return nNumDice;
