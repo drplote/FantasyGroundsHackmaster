@@ -45,18 +45,22 @@ function getHonorProperties(nodeChar)
 	local nScore = DB.getValue(nodeChar, "abilities.honor.score", 0);
 	local nSaneLevel = levelSanityCheck(CharManager.getActiveClassMaxLevel(nodeChar));
 	local nChartIndex = math.ceil(honorSanityCheck(nScore) / 5);
+	local nHonorState = 0;
 	
 	local sHonorWindow = "Normal";
 	if nScore < DataCommonHM4.aHonorThresholdsByLevel[nSaneLevel][1] then
 		sHonorWindow = "Dishonor";
+		nHonorState = -1;
 	elseif nScore >= DataCommonHM4.aHonorThresholdsByLevel[nSaneLevel][2] and nScore <= DataCommonHM4.aHonorThresholdsByLevel[nSaneLevel][3] then	
 		sHonorWindow = "Great Honor";
+		nHonorState = 1;
 	end
 			
 	local dbAbility = {};
     dbAbility.score = nScore;
     dbAbility.honorDice = DataCommonHM4.aHonorDice[nChartIndex][nSaneLevel];
 	dbAbility.honorWindow = sHonorWindow;
+	dbAbility.honorState = nHonorState;
 	return dbAbility;
 end
 
@@ -337,6 +341,8 @@ function updateHonor(nodeChar)
 	DB.setValue(nodeChar, "abilities.honor.honorDice", "string", dbAbility.honorDice);
 	DB.setValue(nodeChar, "abilities.honor.score", "number", dbAbility.score);
 	DB.setValue(nodeChar, "abilities.honor.honorWindow", "string", dbAbility.honorWindow);
+	Debug.console("Setting honor state", "dbAbility.honorState", dbAbility.honorState);
+	DB.setValue(nodeChar, "abilities.honor.honorState", "number", dbAbility.honorState);
 end
 
 function removeFatigue(nodeChar, nAmount)

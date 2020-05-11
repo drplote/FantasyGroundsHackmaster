@@ -196,3 +196,23 @@ function processPenetration(draginfo, penPlus)
 	end
 end
 
+function modifyRollForHonor(rRoll, nHonorState)
+	Debug.console("Modifying for honor", "nHonorState", nHonorState);
+	if nHonorState == 1 then
+	Debug.console("Great honor");
+		-- Great honor. Add 1 to every die
+		rRoll.sDesc = rRoll.sDesc .. "[Great Honor]";
+		for _, vDie in ipairs(rRoll.aDice) do
+			vDie.result = vDie.result + 1;
+		end
+	elseif nHonorState == -1 then
+	Debug.console("Dishonor");
+		-- Dishonor. Subtract 1 from every die. Minimum 0 on a die
+		rRoll.sDesc = rRoll.sDesc .. "[Dishonor]";
+		for _, vDie in ipairs(rRoll.aDice) do
+			if vDie.result > 0 then
+				vDie.result = vDie.result - 1;
+			end
+		end
+	end
+end

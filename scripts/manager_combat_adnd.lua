@@ -630,7 +630,6 @@ UtilityManagerADND.logDebug("manager_combat_adnd.lua","addNPC\START/");
   -- base modifier for initiative
   -- we set modifiers based on size per DMG for AD&D -celestian
   DB.setValue(nodeEntry, "init", "number", 0);
-  Debug.console("wtf mate");
   
   -- Determine size
   local sSize = StringManager.trim(DB.getValue(nodeEntry, "size", ""):lower());
@@ -1605,8 +1604,7 @@ function addCTANPC(sClass, nodeNPC, sNamedInBattle)
   -- base modifier for initiative
   -- we set modifiers based on size per DMG for AD&D -celestian
   DB.setValue(nodeEntry, "init", "number", 0);
-  Debug.console("wtf mate");
-  
+    
   if false then -- We don't do this for Hackmaster
 	  -- Determine size
 	  DB.setValue(nodeEntry,"size","string",DB.getValue(nodeNPC,"size",""));

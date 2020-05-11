@@ -521,9 +521,18 @@ function onDamageRoll(rSource, rRoll)
   end
   
   DiceMechanicsManager.handlePenetration(rRoll, false);
-  
-  --Debug.console("manager_action_damage.lua","onDamageRoll","rRoll.aDice",rRoll.aDice);
+  handleHonor(rSource, rRoll);
+ 
   decodeDamageTypes(rRoll, true);
+end
+
+
+function handleHonor(rSource, rRoll)
+	local sSourceType, nodeSource = ActorManager.getTypeAndNode(rSource);
+	Debug.console("sSourceType", sSourceType, "nodeSource", nodeSource);
+	local nHonorState = DB.getValue(nodeSource, "abilities.honor.honorState", 0);
+	Debug.console("nHonorState", nHonorState);
+	DiceMechanicsManager.modifyRollForHonor(rRoll, nHonorState);
 end
 
 function onDamage(rSource, rTarget, rRoll)
