@@ -149,7 +149,7 @@ function updateShieldDamageDisplay()
 	if nodeItem then
 		local nHpLost = DB.getValue(nodeItem, "hplost", 0);
 		current_shield_damage.setValue(nHpLost);
-		current_shield_loss.setValue(CharManager.getAcLossFromItemDamage(nodeItem));
+		current_shield_loss.setValue(ItemManager2.getAcLossFromItemDamage(nodeItem));
 		shield_description.setValue(ItemManager2.getItemNameForPlayer(nodeItem));
 	else
 		current_shield_damage.setValue(0);

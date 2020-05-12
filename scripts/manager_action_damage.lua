@@ -128,7 +128,7 @@ function modDamage(rSource, rTarget, rRoll)
   
   -- Track how many damage clauses before effects applied
   local nPreEffectClauses = #(rRoll.clauses);
-  
+    
   -- Determine critical
   rRoll.sCriticalType = "";
   local bCritical = ModifierStack.getModifierKey("DMG_CRIT") or Input.isShiftPressed();
@@ -1171,7 +1171,7 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
 		local nodePcArmor = ItemManager2.getPcArmorWorn(nodeTarget);
 		local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodePcArmor) - DB.getValue(nodePcArmor, "hplost", 0), 0);
-		local nPointsThatCanBeSoaked = DiceMechanicsManager.getNumOriginalDice(aDice);
+		local nPointsThatCanBeSoaked = math.min(DiceMechanicsManager.getNumOriginalDice(aDice), nDamage);
 		local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
 		nAbsorbed = nAbsorbed + nDamageSoaked;
 		if nDamageSoaked > 0 then
@@ -1470,6 +1470,24 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       end
       nTotal = math.max(math.floor(nTotal / 2), 1);
     end
+	
+	if Input.isAltPressed() or ModifierStack.getModifierKey("DMG_SHIELD") then
+		local nShieldAbsorb = 0;	
+		-- if rTarget is PC and shield equipped then reduce damage by up to shield hp
+		if ActorManager.isPC(rTarget) then
+			local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
+			local nodeShield = ItemManager2.getPcShieldWorn(nodeTarget);
+			local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodeShield) - DB.getValue(nodeShield, "hplost", 0), 0);
+			local nDamageSoaked = math.min(nTotal, nArmorHpRemaining);
+			nTotal = nTotal - nDamageSoaked;
+			if nDamageSoaked > 0 then
+				local sCharName = DB.getValue(nodeTarget, "name");
+				local sItemName = ItemManager2.getItemNameForPlayer(nodeShield);
+				ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " takes " .. nDamageSoaked .. " damage.");
+				CharManager.addDamageToArmor(nodeTarget, nodeShield, nDamageSoaked);
+			end
+		end
+	end
     
     -- Apply damage type adjustments
     local nDamageAdjust, bVulnerable, bResist, bAbsorb, nDamageDice = getDamageAdjust(rSource, rTarget, nTotal, rDamageOutput, aDice);

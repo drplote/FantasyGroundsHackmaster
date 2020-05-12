@@ -496,10 +496,6 @@ function addDamageToArmor(nodeChar, nodeItem, nAmount)
 			local nHpLost = DB.getValue(nodeItem, "hplost", 0);
 			local nMaxHp = ItemManager2.getMaxArmorHp(nodeItem);
 			local nNewHpLost = math.min(nMaxHp, nHpLost + nAmount);
-			Debug.console("yo", "nHpLost", nHpLost);
-			Debug.console("yo", "nMaxHp", nMaxHp);
-			Debug.console("yo", "nAmount", nAmount);
-			Debug.console("yo", "nNewHpLost", nNewHpLost);
 			if nHpLost < nNewHpLost then 
 				DB.setValue(nodeItem, "hplost", "number", nNewHpLost);
 				if nNewHpLost >= nMaxHp then
