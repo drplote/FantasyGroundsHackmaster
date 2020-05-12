@@ -813,6 +813,7 @@
           local rItem = {};
           rItem.sName = sName;
           rItem.nInit = nSpeedFactor;
+		  rItem.nType = window.type.getValue();
 
           local rActor = ActorManager.getActor("pc", nodeChar);
           local _, sRecord = DB.getValue(nodeWeapon.getChild(".."), "shortcut", "", "");

@@ -87,20 +87,40 @@ end
 function getRoll(rActor, bSecretRoll, rItem)
   local rRoll = {};
   rRoll.sType = "init";
-  rRoll.aDice = { "d" .. DataCommonADND.nDefaultInitiativeDice };
   rRoll.nMod = 0;
   
   rRoll.sDesc = "[INIT]";
   
   rRoll.bSecret = bSecretRoll;
 
+  local bIsFixedInitiative = (rItem.nType and rItem.nType ~= 0) or Input.isAltPressed();
+  local bIsSpell = false;
+  if bIsFixedInitiative then -- ranged weapons go on a fixed initiative
+	rRoll.aDice = { "d0" }; 
+  elseif rItem.spellPath then
+	bIsSpell = true;
+	if DB.getValue(DB.findNode(rItem.spellPath), "components", ""):match("M") then -- Does it have material componenets?
+		rRoll.aDice = { "d4" };
+	else
+		rRoll.aDice = { "d0" };
+		bIsFixedInitiative = true;
+	end
+  else
+    rRoll.aDice = { "d" .. DataCommonADND.nDefaultInitiativeDice };    
+  end  
+  
   -- Determine the modifier and ability to use for this roll
   local sAbility = nil;
   local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
 --Debug.console("manager_action_init.lua","getRoll","sActorType",sActorType);
     if nodeActor then
         if rItem then
-            rRoll.nMod =  rItem.nInit;
+			if not bIsFixedInitiative and not bIsSpell then
+				local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
+				rRoll.sDesc = rRoll.sDesc .. "[Reaction Adj: " .. nReactionAdj .. "]";
+				rRoll.nMod = rRoll.nMod + nReactionAdj;
+			end
+			rRoll.nMod = rRoll.nMod + rItem.nInit;
             rRoll.sDesc = rRoll.sDesc .. " [MOD:" .. rItem.sName .. "]";
             -- if (rItem.spellPath) then
                 -- applySpellCastingConcentration(nodeActor,rItem.spellPath);
@@ -208,15 +228,7 @@ function modRoll(rSource, rTarget, rRoll)
       end
       rRoll.nMod = rRoll.nMod + nAddMod;
     end
-	
-	if rSource.itemPath then
-	  -- If this roll is coming from an item, we need to factor in reaction adjustment
-		local sActorType, nodeActor = ActorManager.getTypeAndNode(rSource);
-		local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
-		rRoll.sDesc = rRoll.sDesc .. "[Reaction Adj: " .. nReactionAdj .. "]";
-		rRoll.nMod = rRoll.nMod + nReactionAdj;
-	end
-    
+	   
     -- -- Get ability effect modifiers
     -- local nBonusStat, nBonusEffects = ActorManager2.getAbilityEffectsBonus(rSource, sActionStat);
     -- if nBonusEffects > 0 and nBonusStat ~= 0 then
