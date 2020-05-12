@@ -274,7 +274,8 @@ end
 function getPcShieldWorn(nodeChar)
 	-- Possible problem: If the character has more than one shield worn, this is only going to return the first it finds
 	for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
-		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isShield(vNode) and DB.getValue(vNode, "damageStepId", 0) > 0 then
+		local sDamageSteps = DB.getValue(vNode, "damageSteps", "");
+		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isShield(vNode) and sDamageSteps and sDamageSteps ~= "" then
 			return vNode;
 		end
 	end
@@ -284,7 +285,8 @@ end
 function getPcArmorWorn(nodeChar)
 	-- Possible problem: If the character has more than one armor worn, this is only going to return the first it finds
 	for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
-		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isArmor(vNode) and not ItemManager2.isShield(vNode) and DB.getValue(vNode, "damageStepId", 0) > 0 then
+		local sDamageSteps = DB.getValue(vNode, "damageSteps", "");
+		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isArmor(vNode) and not ItemManager2.isShield(vNode) and sDamageSteps and sDamageSteps ~= "" then
 			return vNode;
 		end
 	end
@@ -292,13 +294,11 @@ function getPcArmorWorn(nodeChar)
 end
 
 function getAcLossFromItemDamage(nodeItem)
-	local nDamageStepId = DB.getValue(nodeItem, "damageStepId", 0);
-	local nBonus = DB.getValue(nodeItem, "bonus", 0);
 	local nHpLost = DB.getValue(nodeItem, "hplost", 0);
 	local nAcLost = 0;
+	local aDamageSteps = getDamageStepsArray(nodeItem);
 	
-	if nHpLost > 0 and nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
-		local aDamageSteps = getDamageSteps(nDamageStepId, nBonus);
+	if nHpLost > 0 and #aDamageSteps > 0 then
 		for _, nStep in ipairs(aDamageSteps) do 
 			nHpLost = nHpLost - nStep;
 			if nHpLost >= 0 then
@@ -309,29 +309,32 @@ function getAcLossFromItemDamage(nodeItem)
 	return nAcLost;
 end
 
-function getDamageSteps(nDamageStepId, nBonus)
-	if nDamageStepId > 0 and nDamageStepId <= table.getn(DataCommonHM4.aArmorDamageSteps) then
-		local aDamageSteps = {};
-		if nBonus > 0 and table.getn(DataCommonHM4.aArmorDamageSteps[nDamageStepId]) > 0 then
+function getDamageStepsArray(nodeItem)
+	local aDamageSteps = {};
+	local sDamageSteps = DB.getValue(nodeItem, "damageSteps", "");
+	Debug.console("sDamageSteps", sDamageSteps);
+	
+	if sDamageSteps and sDamageSteps ~= "" then	
+		for sStep in sDamageSteps:gmatch("([^,]+)") do
+			table.insert(aDamageSteps, tonumber(sStep))
+		end
+		local nBonus = DB.getValue(nodeItem, "bonus", 0);
+		if nBonus > 0 then
+			local nFirstStep = aDamageSteps[1];
 			for i = 1, nBonus, 1 do
-				table.insert(aDamageSteps, 1, DataCommonHM4.aArmorDamageSteps[nDamageStepId][1]);
+				table.insert(aDamageSteps, 1, nFirstStep);
 			end
 		end
-		for _, nStep in ipairs(DataCommonHM4.aArmorDamageSteps[nDamageStepId]) do
-			table.insert(aDamageSteps, nStep);
-		end
-		return aDamageSteps;
-	else
-		return {};
 	end
+	Debug.console("aDamageSteps", aDamageSteps);
+	return aDamageSteps;
 end
+
 
 function getMaxArmorHp(nodeItem)
 	local nMaxHp = 0;
-	local nDamageStepId = DB.getValue(nodeItem, "damageStepId", 0)
-	local nBonus = DB.getValue(nodeItem, "bonus", 0);
-	local aDamageSteps = getDamageSteps(nDamageStepId, nBonus);
-	if aDamageSteps and table.getn(aDamageSteps) > 0 then
+	local aDamageSteps = getDamageStepsArray(nodeItem);
+	if aDamageSteps and #aDamageSteps > 0 then
 		for _, nStep in ipairs(aDamageSteps) do
 			nMaxHp = nMaxHp + nStep;
 		end

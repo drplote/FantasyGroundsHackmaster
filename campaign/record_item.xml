@@ -199,9 +199,9 @@
 	  <label_column name="label_damage_steps">
         <static textres="item_label_damage_steps" />
       </label_column>
-	  <number_columnh name="damageStepId" src="damageStepId">
+	  <string_columnh name="damageSteps" src="damageSteps">
         <gmeditonly />
-      </number_columnh>
+      </string_columnh>
 	  
       
       <!-- effects -->

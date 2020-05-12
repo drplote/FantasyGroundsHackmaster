@@ -491,10 +491,9 @@ end
 
 function addDamageToArmor(nodeChar, nodeItem, nAmount)
 	if nodeItem then
-		local nDamageStepId =  DB.getValue(nodeItem, "damageStepId", 0)
-		if nDamageStepId then
+		local nMaxHp = ItemManager2.getMaxArmorHp(nodeItem);
+		if nMaxHp > 0 then
 			local nHpLost = DB.getValue(nodeItem, "hplost", 0);
-			local nMaxHp = ItemManager2.getMaxArmorHp(nodeItem);
 			local nNewHpLost = math.min(nMaxHp, nHpLost + nAmount);
 			if nHpLost < nNewHpLost then 
 				DB.setValue(nodeItem, "hplost", "number", nNewHpLost);
@@ -512,12 +511,9 @@ end
 
 function removeDamageFromArmor(nodeChar, nodeItem)
 	if nodeItem then
-		local nDamageStepId = DB.getValue(nodeItem, "damageStepId", 0);
-		if nDamageStepId > 0 then
-			local nHpLost = DB.getValue(nodeItem, "hplost", 0);
-			if nHpLost > 0 then
-				DB.setValue(nodeItem, "hplost", "number", nHpLost - 1);
-			end
+		local nHpLost = DB.getValue(nodeItem, "hplost", 0);
+		if nHpLost > 0 then
+			DB.setValue(nodeItem, "hplost", "number", nHpLost - 1);		
 		end
 	end
 end
