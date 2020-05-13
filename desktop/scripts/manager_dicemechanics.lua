@@ -39,8 +39,34 @@ function checkForPenetration(rRoll, penPlus)
   end
 end
 
+function getDamageRoll(rNumDice, rNumSides, nBonus) -- Rolls with penetration, minimum of 1
+	local nTotal = getDiceResult(rNumDice, rNumSides, 1);
+	if nBonus then
+		nTotal = nTotal + nBonus;
+	end
+	return math.max(nTotal, 1);
+end
+
+function getDiceResult(rNumDice, rNumSides, rPenetration) -- nPenetration 0 = normal roll, 1 = penetration, 2 = penetration plus
+	local nTotal = 0;
+	for i = 1, nNumDice, 1 do
+		nTotal = nTotal + getDieResult(rNumSides, nPenetration);
+	end
+	return nTotal;
+end
+
+function getDieResult(rNumSides, nPenetration) -- nPenetration 0 = normal roll, 1 = penetration, 2 = penetration plus
+	if not nPenetration or rNumSides <=3 then nPenetration = 0; end
+	
+	local nDieResult = math.random(1, rNumSides);
+	if (nPenetration ~= 0 and nDieResult == rNumSides) or (nPenetration == 2 and nDieResult == rNumSides - 1) then
+		nDieResult = nDieResult + getDiceResult(rNumSides, nPenetration) - 1;
+	end
+	return nDieResult;
+end
+
 function needsPenetrationRoll(rSides, rResult, penPlus)
-	if rSides <= 2 then
+	if rSides <= 3 then
 		return false
 	elseif rResult == rSides  then
 		return true
