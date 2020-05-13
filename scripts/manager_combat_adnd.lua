@@ -225,7 +225,15 @@ function createHasInitiativeWidget(tokenCT,nodeCT)
   --widgetInitIndicator.setTooltipText(sName .. " has initiative.");
   --widgetInitIndicator.setPosition("top", 0, 0);
   widgetInitIndicator.setPosition("center", 0, 0);
-  widgetInitIndicator.setSize(nWidth*3, nHeight*3);
+
+  if UtilityManagerADND.isFGU() then
+    widgetInitIndicator.setSize(110, 110);
+  else
+    widgetInitIndicator.setSize(nWidth*3, nHeight*3);
+    -- this also needs to be set in FGU when they add it... if they do
+    widgetInitIndicator.setEnabled(false);
+  end
+  --widgetInitIndicator.setSize(nWidth*3, nHeight*3);
   return widgetInitIndicator;
 end
 
@@ -375,7 +383,6 @@ function getNodeFromCT(nodeCT)
   end
   return nodeChar;
 end
-
 
 ---
 -- NPC functions
