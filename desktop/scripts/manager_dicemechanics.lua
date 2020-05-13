@@ -39,28 +39,29 @@ function checkForPenetration(rRoll, penPlus)
   end
 end
 
-function getDamageRoll(rNumDice, rNumSides, nBonus) -- Rolls with penetration, minimum of 1
-	local nTotal = getDiceResult(rNumDice, rNumSides, 1);
-	if nBonus then
-		nTotal = nTotal + nBonus;
-	end
+function getDamageRoll(nNumDice, nNumSides, nBonus) -- Rolls with penetration, minimum of 1
+	local nTotal = getDiceResult(nNumDice, nNumSides, 1, nBonus);
 	return math.max(nTotal, 1);
 end
 
-function getDiceResult(rNumDice, rNumSides, rPenetration) -- nPenetration 0 = normal roll, 1 = penetration, 2 = penetration plus
+function getDiceResult(nNumDice, nNumSides, nPenetration, nBonus) -- nPenetration 0 = normal roll, 1 = penetration, 2 = penetration plus
+	if not nBonus then nBonus = 0; end
 	local nTotal = 0;
 	for i = 1, nNumDice, 1 do
-		nTotal = nTotal + getDieResult(rNumSides, nPenetration);
+		nTotal = nTotal + getDieResult(nNumDice, nPenetration);
+	end
+	if nBonus then
+		nTotal = nTotal + nBonus;
 	end
 	return nTotal;
 end
 
-function getDieResult(rNumSides, nPenetration) -- nPenetration 0 = normal roll, 1 = penetration, 2 = penetration plus
-	if not nPenetration or rNumSides <=3 then nPenetration = 0; end
+function getDieResult(nNumSides, nPenetration) -- nPenetration 0 = normal roll, 1 = penetration, 2 = penetration plus
+	if not nPenetration or nNumSides <= 3 then nPenetration = 0; end
 	
-	local nDieResult = math.random(1, rNumSides);
-	if (nPenetration ~= 0 and nDieResult == rNumSides) or (nPenetration == 2 and nDieResult == rNumSides - 1) then
-		nDieResult = nDieResult + getDiceResult(rNumSides, nPenetration) - 1;
+	local nDieResult = math.random(1, nNumSides);
+	if (nPenetration ~= 0 and nDieResult == nNumSides) or (nPenetration == 2 and nDieResult == nNumSides - 1) then
+		nDieResult = nDieResult + getDiceResult(nNumSides, nPenetration) - 1;
 	end
 	return nDieResult;
 end

@@ -14,22 +14,31 @@ function onRollQuickFlawSlashCommand(sCmd)
 	deliverChatMessage(sText);
 end
 
-function getRandomClass(nRollValue)
-	local aClasses = {"Barbarian", "Bard", "Battle Mage", "Assassin", "Dark Knight", "Berserker", "Cavalier", "Cleric", "Druid", "Fighter", "Knight Errant", "Magic-User", "Monk", "Paladin", "Ranger", "Thief"};
-	if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(#aClasses); end
-	return aClasses[nRollValue];
-end
-
-function getRandomRace(nRollValue)
-	local aRaces = {"Dwarf", "Elf", "Gnome", "Halfling", "Half-Elf", "Human", "Half-Ogre", "Half-Orc", "Pixie Fairy"};
-	if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(#aRaces); end
-	return aRaces[nRollValue];
+function getGender(nRollValue)
+if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(2); end
+	if nRollValue == 1 then	return "Male";
+	else return "Female";
+	end
 end
 
 function getBodySide(nRollValue)
 	if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(2); end
 	if nRollValue == 1 then	return "left";
 	else return "right";
+	end
+end
+
+function getLawChaos(nRollValue)
+	if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(2); end
+	if nRollValue == 1 then	return "Lawful";
+	else return "Chaotic";
+	end
+end
+
+function getGoodEvil(nRollValue)
+	if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(2); end
+	if nRollValue == 1 then	return "Good";
+	else return "Evil";
 	end
 end
 
@@ -47,7 +56,7 @@ function getQuirkOrFlaw()
 	end
 end
 
-function getClassEnmity(nRollValue)
+function getRandomClass(nRollValue)
 	if not nRollValue then nRollValue = DiceMechanicsManager.getDieResult(20); end
 	
 	if nRollValue == 1 then return "Barbarian";
@@ -69,11 +78,24 @@ function getClassEnmity(nRollValue)
 	elseif nRollValue == 17 then return "Berserker";
 	elseif nRollValue == 18 then return "Knight Errant";
 	elseif nRollValue == 19 then return "Blood Mage";
-	else return getClassEnmity(DiceMechanicsManager.getDieResult(19)) .. " and " .. getClassEnmity(DiceMechanicsManager.getDieResult(19));
+	else return getRandomClass(DiceMechanicsManager.getDieResult(19)) .. " and " .. getRandomClass(DiceMechanicsManager.getDieResult(19));
 	end
 end
 
-function getRacialEnmity()
+function getAbilityScore(nRollValue)
+	local nRollValue = DiceMechanicsManager.getDieResult(7);
+	
+	if nRollValue == 1 then return "Strength";
+	elseif nRollValue == 2 then return "Dexterity";
+	elseif nRollValue == 3 then return "Constitution";
+	elseif nRollValue == 4 then return "Intelligence";
+	elseif nRollValue == 5 then return "Wisdom";
+	elseif nRollValue == 6 then return "Charisma";
+	else return "Comeliness";
+	end
+end
+
+function getRandomRace()
 	local nRollValue = DiceMechanicsManager.getDieResult(10);
 	
 	if nRollValue == 1 then return "Dwarf";
@@ -339,14 +361,14 @@ function getMajorMentalQuirk() -- PHB Table 6G
 	
 	if nRollValue < 5 then return sCategory .. getDelusion(true);
 	elseif nRollValue < 8 then return sCategory .. "Depression (Major)";
-	elseif nRollValue < 14 then return sCategory .. "Enmity towards Class( " .. getClassEnmity() .. ")"; 
+	elseif nRollValue < 14 then return sCategory .. "Enmity towards Class( " .. getRandomClass() .. ")"; 
 	elseif nRollValue < 20 then return sCategory .. "Enmity towards Monster"; 
-	elseif nRollValue < 26 then return sCategory .. "Enmity towards Race( " .. getRacialEnmity() .. ")";
+	elseif nRollValue < 26 then return sCategory .. "Enmity towards Race( " .. getRandomRace() .. ")";
 	elseif nRollValue < 30 then return sCategory .. "HackFrenzy";
 	elseif nRollValue < 34 then return sCategory .. "HackLust";
-	elseif nRollValue < 42 then return sCategory .. "Psychotic Aversion to Class( " .. getClassEnmity() .. ")";
+	elseif nRollValue < 42 then return sCategory .. "Psychotic Aversion to Class( " .. getRandomClass() .. ")";
 	elseif nRollValue < 51 then return sCategory .. "Psychotic Aversion to Monster"; 
-	elseif nRollValue < 59 then return sCategory .. "Psychotic Aversion to Race( " .. getRacialEnmity() .. ")";
+	elseif nRollValue < 59 then return sCategory .. "Psychotic Aversion to Race( " .. getRandomRace() .. ")";
 	elseif nRollValue < 66 then return sCategory .. "Pyromaniac";
 	elseif nRollValue < 73 then return sCategory .. "Sadistic";
 	elseif nRollValue < 81 then return sCategory .. "Wuss-of-Heart"; 
