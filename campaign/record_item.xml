@@ -196,14 +196,25 @@
         <gmeditonly />
       </number_columnh>
 	  
+	  <label_column name="label_damage_soak">
+        <static textres="item_label_damage_soak" />
+      </label_column>
+      
+      <!-- damage soak (per die of damage) -->
+      <number_columnh name="damageSoak" src="damageSoak">
+        <default>1</default>
+        <displaysign />
+        <gmeditonly />
+      </number_columnh>
+	  
 	  <label_column name="label_damage_steps">
         <static textres="item_label_damage_steps" />
       </label_column>
+	  
 	  <string_columnh name="damageSteps" src="damageSteps">
         <gmeditonly />
       </string_columnh>
-	  
-      
+	        
       <!-- effects -->
       <subwindow name="advanced_effects_contents">
         <anchored>

@@ -584,7 +584,6 @@
   <string name="item_label_type">Type</string>
   <string name="item_label_subtype">Subtype</string>
   <string name="item_label_rarity">Rarity</string>
-  <string name="item_label_bonus">Bonus</string>
   <string name="item_label_damage">Damage</string>
   <string name="item_label_critical">Critical</string>
   <string name="item_label_ac">AC Base</string>
@@ -597,6 +596,7 @@
   <string name="item_label_strength">Strength</string>
   <string name="item_label_stealth">Stealth</string>
   <string name="item_label_damage_steps">AC Regression</string>
+  <string name="item_label_damage_soak">Damage Soak</string>
   <string name="item_label_hp_lost">HP Lost</string>
 
   <!-- Powers -->

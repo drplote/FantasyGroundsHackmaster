@@ -86,6 +86,7 @@ function update()
   if updateControl("bonus", bReadOnly, bID and (bWeapon or bArmor)) then bSection4 = true; end
   if updateControl("ac", bReadOnly, bID and bArmor) then bSection4 = true; end
   if updateControl("damageSteps", bReadOnly, bID and bArmor) then bSection4 = true; end
+  if updateControl("damageSoak", bReadOnly, bID and bArmor) then bSection4 = true; end
   -- right now this is a host/DM only section (baseAC/bonus)
   header_armor_and_modifier.setVisible(bArmor and bHost and not bReadOnly);
   --armor_base_label.setVisible(bHost and not bReadOnly);
@@ -93,9 +94,12 @@ function update()
   label_armor_base.setVisible(bArmor and bHost and not bReadOnly);
   acbase.setVisible(bArmor and bHost and not bReadOnly);
   label_bonus.setVisible(bArmor and bHost and not bReadOnly);
+  label_damage_soak.setVisible(bArmor and bHost and not bReadOnly);
   bonus.setVisible(bArmor and bHost and not bReadOnly);
+  damageSoak.setVisible(bArmor and bHost and not bReadOnly);
   label_damage_steps.setVisible(bArmor and bHost and not bReadOnly);
   damageSteps.setVisible(bArmor and bHost and not bReadOnly);
+  
   label_hp_lost.setVisible(bArmor and bHost);
   hplost.setVisible(bArmor and bHost);
 

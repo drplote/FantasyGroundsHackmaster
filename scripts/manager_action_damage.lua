@@ -1171,7 +1171,8 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
 		local nodePcArmor = ItemManager2.getPcArmorWorn(nodeTarget);
 		local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodePcArmor) - DB.getValue(nodePcArmor, "hplost", 0), 0);
-		local nPointsThatCanBeSoaked = math.min(DiceMechanicsManager.getNumOriginalDice(aDice), nDamage);
+		local nDamageSoak = DB.getValue(nodePcArmor, "damageSoak", 1);
+		local nPointsThatCanBeSoaked = math.min(DiceMechanicsManager.getNumOriginalDice(aDice) * nDamageSoak, nDamage);
 		local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
 		nAbsorbed = nAbsorbed + nDamageSoaked;
 		if nDamageSoaked > 0 then
