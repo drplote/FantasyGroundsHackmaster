@@ -571,27 +571,27 @@ function onInit()
   -- since they use the warrior table
   -- Death, Rod, Poly, Breath, Spell
   aWarriorSaves[0]  = {16,18,17,20,19};
-  aWarriorSaves[1]  = {14,16,15,17,17};
-  aWarriorSaves[2]  = {14,16,15,17,17};
-  aWarriorSaves[3]  = {13,15,14,16,16};
+  aWarriorSaves[1]  = {15,17,16,19,18};
+  aWarriorSaves[2]  = {14,16,15,18,17};
+  aWarriorSaves[3]  = {13,15,15,17,16};
   aWarriorSaves[4]  = {13,15,14,16,16};
-  aWarriorSaves[5]  = {11,13,12,13,14};
-  aWarriorSaves[6]  = {11,13,12,13,14};
-  aWarriorSaves[7]  = {10,12,11,12,13};
+  aWarriorSaves[5]  = {12,14,13,15,15};
+  aWarriorSaves[6]  = {11,13,12,14,14};
+  aWarriorSaves[7]  = {10,12,11,13,13};
   aWarriorSaves[8]  = {10,12,11,12,13};
-  aWarriorSaves[9]  = {8,10,9,9,11};
-  aWarriorSaves[10] = {8,10,9,9,11};
-  aWarriorSaves[11] = {7,9,8,8,10};
+  aWarriorSaves[9]  = {9,11,10,11,12};
+  aWarriorSaves[10] = {8,10,9,10,11};
+  aWarriorSaves[11] = {7,9,8,9,10};
   aWarriorSaves[12] = {7,9,8,8,10};
-  aWarriorSaves[13] = {5,7,6,5,8};
-  aWarriorSaves[14] = {5,7,6,5,8};
-  aWarriorSaves[15] = {4,6,5,4,7};
+  aWarriorSaves[13] = {6,8,7,7,9};
+  aWarriorSaves[14] = {5,7,6,6,8};
+  aWarriorSaves[15] = {4,6,5,5,7};
   aWarriorSaves[16] = {4,6,5,4,7};
-  aWarriorSaves[17] = {3,5,4,4,6};
-  aWarriorSaves[18] = {3,5,4,4,6};
-  aWarriorSaves[19] = {3,5,4,4,6};
-  aWarriorSaves[20] = {3,5,4,4,6};
-  aWarriorSaves[21] = {3,5,4,4,6};
+  aWarriorSaves[17] = {3,5,4,3,6};
+  aWarriorSaves[18] = {3,5,4,2,6};
+  aWarriorSaves[19] = {2,4,3,2,5};
+  aWarriorSaves[20] = {2,4,3,2,5};
+  aWarriorSaves[21] = {2,4,3,2,5};
     
   --psionic attack/defense adjustments
   --           psionic_attack_index = psionic_defense_index
