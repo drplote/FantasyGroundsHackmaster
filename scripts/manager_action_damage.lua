@@ -1167,25 +1167,24 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 	
 	local nAbsorbed = 0;	
 	-- if rTarget is PC and armor worn (not shield) then reduce damage by number of dice up to max armor hp and do armor damage
-	if ActorManager.isPC(rTarget) then
-		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
-		local nodePcArmor = ItemManager2.getPcArmorWorn(nodeTarget);
-		local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodePcArmor) - DB.getValue(nodePcArmor, "hplost", 0), 0);
-		local nDamageSoak = DB.getValue(nodePcArmor, "damageSoak", 1);
-		local nPointsThatCanBeSoaked = math.min(DiceMechanicsManager.getNumOriginalDice(aDice) * nDamageSoak, nDamage);
-		local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
-		nAbsorbed = nAbsorbed + nDamageSoaked;
-		if nDamageSoaked > 0 then
-			local sCharName = DB.getValue(nodeTarget, "name");
-			local sItemName = ItemManager2.getItemNameForPlayer(nodePcArmor);
-			ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " damage.");
-			CharManager.addDamageToArmor(nodeTarget, nodePcArmor, nDamageSoaked);
-		end
+	
+	local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
+	local nodePcArmor = ItemManager2.getDamageableArmorWorn(nodeTarget);
+	local nArmorHpRemaining = 0;
+	if nodePcArmor then 
+		nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodePcArmor) - DB.getValue(nodePcArmor, "hplost", 0), 0);
+	end
+	local nDamageSoak = DB.getValue(nodePcArmor, "damageSoak", 1);
+	local nPointsThatCanBeSoaked = math.min(DiceMechanicsManager.getNumOriginalDice(aDice) * nDamageSoak, nDamage);
+	local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
+	nAbsorbed = nAbsorbed + nDamageSoaked;
+	if nDamageSoaked > 0 then
+		local sCharName = DB.getValue(nodeTarget, "name");
+		local sItemName = ItemManager2.getItemNameForPlayer(nodePcArmor);
+		ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " damage.");
+		CharManager.addDamageToArmor(nodeTarget, nodePcArmor, nDamageSoaked);
 	end
 	
-	
-	
-
     -- add support for "DA: # type" where damage # is absorbed from type damage and then that value is reduced the amount absorbed. --celestian
     nAbsorbed = nAbsorbed + getAbsorbedByType(rTarget,aSrcDmgClauseTypes,sRangeType,(nDamage-nLocalDamageAdjust));
     if nAbsorbed > 0 then
@@ -1474,19 +1473,20 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
 	
 	if Input.isAltPressed() or ModifierStack.getModifierKey("DMG_SHIELD") then
 		local nShieldAbsorb = 0;	
-		-- if rTarget is PC and shield equipped then reduce damage by up to shield hp
-		if ActorManager.isPC(rTarget) then
-			local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
-			local nodeShield = ItemManager2.getPcShieldWorn(nodeTarget);
-			local nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodeShield) - DB.getValue(nodeShield, "hplost", 0), 0);
-			local nDamageSoaked = math.min(nTotal, nArmorHpRemaining);
-			nTotal = nTotal - nDamageSoaked;
-			if nDamageSoaked > 0 then
-				local sCharName = DB.getValue(nodeTarget, "name");
-				local sItemName = ItemManager2.getItemNameForPlayer(nodeShield);
-				ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " takes " .. nDamageSoaked .. " damage.");
-				CharManager.addDamageToArmor(nodeTarget, nodeShield, nDamageSoaked);
-			end
+		-- if shield equipped then reduce damage by up to shield hp
+		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
+		local nodeShield = ItemManager2.getDamageableShieldWorn(nodeTarget);
+		local nArmorHpRemaining = 0;
+		if nodeShield then
+			nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodeShield) - DB.getValue(nodeShield, "hplost", 0), 0);
+		end
+		local nDamageSoaked = math.min(nTotal, nArmorHpRemaining);
+		nTotal = nTotal - nDamageSoaked;
+		if nDamageSoaked > 0 then
+			local sCharName = DB.getValue(nodeTarget, "name");
+			local sItemName = ItemManager2.getItemNameForPlayer(nodeShield);
+			ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " takes " .. nDamageSoaked .. " damage.");
+			CharManager.addDamageToArmor(nodeTarget, nodeShield, nDamageSoaked);
 		end
 	end
     

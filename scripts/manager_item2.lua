@@ -271,7 +271,7 @@ function getItemNameForPlayer(nodeItem)
 	return sDisplayName;
 end
 
-function getPcShieldWorn(nodeChar)
+function getDamageableShieldWorn(nodeChar)
 	-- Possible problem: If the character has more than one shield worn, this is only going to return the first it finds
 	for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
 		local sDamageSteps = DB.getValue(vNode, "damageSteps", "");
@@ -282,7 +282,7 @@ function getPcShieldWorn(nodeChar)
 	return nil;
 end
 
-function getPcArmorWorn(nodeChar)
+function getDamageableArmorWorn(nodeChar)
 	-- Possible problem: If the character has more than one armor worn, this is only going to return the first it finds
 	for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
 		local sDamageSteps = DB.getValue(vNode, "damageSteps", "");
@@ -326,7 +326,6 @@ function getDamageStepsArray(nodeItem)
 			end
 		end
 	end
-	Debug.console("aDamageSteps", aDamageSteps);
 	return aDamageSteps;
 end
 

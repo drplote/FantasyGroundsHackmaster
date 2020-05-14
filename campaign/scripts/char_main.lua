@@ -173,11 +173,11 @@ function updateArmorDamageDisplay()
 end
 
 function getWornShield()
-	return ItemManager2.getPcShieldWorn(getDatabaseNode());
+	return ItemManager2.getDamageableShieldWorn(getDatabaseNode());
 end
 
 function getWornArmor()
-	return ItemManager2.getPcArmorWorn(getDatabaseNode());
+	return ItemManager2.getDamageableArmorWorn(getDatabaseNode());
 end
 
 function damageShield()
