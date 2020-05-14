@@ -312,7 +312,6 @@ end
 function getDamageStepsArray(nodeItem)
 	local aDamageSteps = {};
 	local sDamageSteps = DB.getValue(nodeItem, "damageSteps", "");
-	Debug.console("sDamageSteps", sDamageSteps);
 	
 	if sDamageSteps and sDamageSteps ~= "" then	
 		for sStep in sDamageSteps:gmatch("([^,]+)") do
