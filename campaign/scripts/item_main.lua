@@ -100,8 +100,8 @@ function update()
   label_damage_steps.setVisible(bArmor and bHost and not bReadOnly);
   damageSteps.setVisible(bArmor and bHost and not bReadOnly);
   
-  label_hp_lost.setVisible(bArmor and bHost);
-  hplost.setVisible(bArmor and bHost);
+  label_hp_lost.setVisible(bArmor);
+  hplost.setVisible(bArmor);
 
   if updateControl("properties", bReadOnly, bID and (bWeapon or bArmor)) then bSection4 = true; end
   

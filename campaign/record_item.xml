@@ -203,7 +203,6 @@
       <!-- damage soak (per die of damage) -->
       <number_columnh name="damageSoak" src="damageSoak">
         <default>1</default>
-        <displaysign />
         <gmeditonly />
       </number_columnh>
 	  
