@@ -14,24 +14,28 @@ function onMishapSlashCommand(sCmd)
 	local nRollValue = DiceMechanicsManager.getDieResult(10000);
 	local sRollName = "Spell Mishap";
 	
-	sResult = getMishapResult(nRollValue);
+	local sResult = getMishapResult(nRollValue);
 	local sText = "[" .. sRollName .. "(d10000=" .. nRollValue .. ")] " .. sResult;
 	deliverChatMessage(sText);
 end
 
 function onFumbleSlashCommand(sCmd, sParam)
-	local nRollValue = DiceMechanicsManager.getDieResult(1000);
 	local sUpperParam = string.upper(sParam);
 	local isUnarmed = sUpperParam == "UNARMED" or sUpperParam == "U" ;
-		
+	handleFumble(isUnarmed);	
+end
+
+function handleFumble(bIsUnarmed)
+	local nRollValue = DiceMechanicsManager.getDieResult(1000);
 	local sRollName = "Fumble";
 	if isUnarmed then
 		sRollName = "Unarmed" .. sRollName;
 	end
-	
-	sResult = getFumbleResult(nRollValue, isUnarmed);
+
+	local sResult = getFumbleResult(nRollValue, bIsUnarmed);
 	local sText = "[" .. sRollName .. "(d1000=" .. nRollValue .. ")] " .. sResult;
 	deliverChatMessage(sText);
+	
 end
 
 function getFumbleResult(nRollValue, isUnarmed)

@@ -12,6 +12,16 @@ function handlePenetration(rRoll, penPlus)
   DiceMechanicsManager.createPenetrationDice(rRoll);
 end
 
+function rollPenetrateInBothDirection(nNumSides)
+	local nValue = math.random(1, nNumSides);
+	if nValue == nNumSides then	
+		nValue = nValue + (rollPenetrateInBothDirection(nNumSides) - 1);
+	elseif nValue == 1 then
+		nValue = nValue - (rollPenetrateInBothDirection(nNumSides) - 1);
+	end
+	return nValue;
+end
+
 function createPenetrationDice(rRoll)
   for _,vDie in ipairs(rRoll.aDice) do
 	local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");

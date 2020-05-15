@@ -734,11 +734,14 @@ function onAttack(rSource, rTarget, rRoll)
   
   -- HANDLE FUMBLE/CRIT HOUSE RULES
   local sOptionHRFC = OptionsManager.getOption("HRFC");
-  if rAction.sResult == "fumble" and ((sOptionHRFC == "both") or (sOptionHRFC == "fumble")) then
-    notifyApplyHRFC("Fumble");
+  if rAction.sResult == "fumble" then
+    --notifyApplyHRFC("Fumble");
+	FumbleManager.handleFumble();
   end
-  if rAction.sResult == "crit" and ((sOptionHRFC == "both") or (sOptionHRFC == "criticalhit")) then
-    notifyApplyHRFC("Critical Hit");
+  if rAction.sResult == "crit" then
+    --notifyApplyHRFC("Critical Hit");
+	Debug.console("rRoll", rRoll);
+	CritManager.handleCrit(20 - rRoll.nBaseAttack, (20 - nDefenseVal), rAction.nTotal - 20, rSource, rRoll.sAttackLabel); -- Need to put weapon type in roll
   end
   
   -- check for MIRRORIMAGE and STONESKIN /etc...
