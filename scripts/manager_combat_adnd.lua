@@ -143,7 +143,6 @@ function rollEntryInit(nodeEntry)
 		  end
 		else
 		  local nPreviousInitResult = DB.getValue(nodeEntry, "previnitresult", 0);
-		  Debug.console("nPreviousInitResult", nPreviousInitResult);
 		  if nPreviousInitResult > 10 then
 			-- If their init was > 10 last round then we subtract 10 to give them their new init.
 			nInitResult = nPreviousInitResult - 10;
