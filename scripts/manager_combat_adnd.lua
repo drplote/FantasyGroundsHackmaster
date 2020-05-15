@@ -29,12 +29,49 @@ function onInit()
   CombatManager.setCustomRoundStart(onRoundStart);
   
   CombatManager.setCustomTurnStart(onTurnStart);
+  
+  CombatManager.rollTypeInit = rollTypeInit;
 
   --if User.isHost() then
   DB.addHandler("combattracker.list.*.active", "onUpdate", updateInititiativeIndicator);
   OptionsManager.registerCallback("TOKEN_OPTION_INIT", initiativeTokenChanged);
   updateAllInititiativeIndicators();
   --end
+end
+
+function rollTypeInit(sType, fRollCombatantEntryInit, ...)
+	for _,v in pairs(CombatManager.getCombatantNodes()) do
+		local bRoll = true;
+		if sType then
+			local sClass,_ = DB.getValue(v, "link", "", "");
+			if sType == "npc" and sClass == "charsheet" then
+				bRoll = false;
+			elseif sType == "pc" and sClass ~= "charsheet" then
+				bRoll = false;
+			end
+		end
+		
+		if bRoll then
+			DB.setValue(v, "previnitresult", "number", DB.getValue(v, "initresult", 0));
+			DB.setValue(v, "initresult", "number", -10000);
+		end
+	end
+
+	for _,v in pairs(CombatManager.getCombatantNodes()) do
+		local bRoll = true;
+		if sType then
+			local sClass,_ = DB.getValue(v, "link", "", "");
+			if sType == "npc" and sClass == "charsheet" then
+				bRoll = false;
+			elseif sType == "pc" and sClass ~= "charsheet" then
+				bRoll = false;
+			end
+		end
+		
+		if bRoll then
+			fRollCombatantEntryInit(v, ...);
+		end
+	end
 end
 
 -- In AD&D we don't remove effects unless shorter than 10 rounds (Turn) 
@@ -93,23 +130,30 @@ function rollEntryInit(nodeEntry)
 	-- For PCs, we always roll unique initiative
 	local sClass, sRecord = DB.getValue(nodeEntry, "link", "", "");
 	if sClass == "charsheet" then
-    local nodeChar = DB.findNode(sRecord);
-    local nInitPC = DB.getValue(nodeChar,"initiative.total",0);
-    local nInitResult = 0;
-    local sOptPCINIT = OptionsManager.getOption("PCINIT");
-    if sOptPCINIT == "group" then
-      if PC_LASTINIT == 0 then
-        nInitResult = rollRandomInit(0, bADV);
-        PC_LASTINIT = nInitResult;
-      else
-        nInitResult = PC_LASTINIT;
-      end
-    else
-      --nInitResult = rollRandomInit(nInitPC + nInitMOD, bADV);
-	  -- I don't like it autorolling, then just having people roll manually anyway. Set to 99 to make it clearer who hasn't rolled for themselves yet
-	  nInitResult = 99;
-    end
-    
+		local nodeChar = DB.findNode(sRecord);
+		local nInitPC = DB.getValue(nodeChar,"initiative.total",0);
+		local nInitResult = 0;
+		local sOptPCINIT = OptionsManager.getOption("PCINIT");
+		if sOptPCINIT == "group" then
+		  if PC_LASTINIT == 0 then
+			nInitResult = rollRandomInit(0, bADV);
+			PC_LASTINIT = nInitResult;
+		  else
+			nInitResult = PC_LASTINIT;
+		  end
+		else
+		  local nPreviousInitResult = DB.getValue(nodeEntry, "previnitresult", 0);
+		  Debug.console("nPreviousInitResult", nPreviousInitResult);
+		  if nPreviousInitResult > 10 then
+			-- If their init was > 10 last round then we subtract 10 to give them their new init.
+			nInitResult = nPreviousInitResult - 10;
+		  else
+			-- I don't like it autorolling, then just having people roll manually anyway. Set to 99 to make it clearer who hasn't rolled for themselves yet
+			nInitResult = 99; 
+		  --nInitResult = rollRandomInit(nInitPC + nInitMOD, bADV);
+		  end
+		end
+		
 		DB.setValue(nodeEntry, "initresult", "number", nInitResult);
 		return;
 	else -- it's an npc
@@ -136,8 +180,13 @@ function rollEntryInit(nodeEntry)
     local sOptINIT = OptionsManager.getOption("INIT");
     if sOptINIT ~= "group" then
       -- if they have custom init then we use it.
-      local nInitResult = rollRandomInit(nInit, bADV);
-      DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+	  local nPreviousInit = DB.getValue(nodeEntry, "previnitresult", 0);
+	  if nPreviousInit > 10 then -- If > 10, they didn't go last round and subtract 10 this round to get a new init
+		DB.setValue(nodeEntry, "initresult", "number", nPreviousInit - 10);
+	  else
+		local nInitResult = rollRandomInit(nInit, bADV);
+		DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+	  end
       return;
     end
 
