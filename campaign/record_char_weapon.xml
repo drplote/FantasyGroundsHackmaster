@@ -171,6 +171,11 @@
         <static textres="weapon_labelr_speedfactor" />
       </label_column>
       <number_column name="speedfactor" />
+	  
+	  <label_column name="damage_type_label">
+		<static textres="weapon_damage_type" />
+	  </label_column>
+	  <string_column name="damagetype" />
 
       <!-- prof entries -->
       <header_column name="header_prof">

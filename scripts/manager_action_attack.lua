@@ -122,6 +122,7 @@ function getRoll(rActor, rAction)
     -----
     rRoll.nMod = rAction.modifier or 0;
     rRoll.bWeapon = rAction.bWeapon;
+	rRoll.sDamageType = rAction.sDamageType
     if (rActor.itemPath and rActor.itemPath ~= "") then
       rRoll.itemPath = rActor.itemPath;
     end
@@ -738,10 +739,10 @@ function onAttack(rSource, rTarget, rRoll)
     --notifyApplyHRFC("Fumble");
 	FumbleManager.handleFumble();
   end
-  if rAction.sResult == "crit" then
+  if rAction.sResult == "crit" and nDefenseVal then
     --notifyApplyHRFC("Critical Hit");
-	Debug.console("rRoll", rRoll);
-	CritManager.handleCrit(20 - rRoll.nBaseAttack, (20 - nDefenseVal), rAction.nTotal - 20, rSource, rRoll.sAttackLabel); -- Need to put weapon type in roll
+
+	CritManager.handleCrit(20 - rRoll.nBaseAttack, (20 - nDefenseVal), rAction.nTotal - 20, rSource, rRoll.sDamageType);
   end
   
   -- check for MIRRORIMAGE and STONESKIN /etc...

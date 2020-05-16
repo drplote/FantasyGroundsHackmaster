@@ -211,6 +211,7 @@ function onAttackAction(draginfo)
   rAction.modifier = rAction.modifier + getToHitProfs(nodeWeapon);
     
   rAction.bWeapon = true;
+  rAction.sDamageType = DB.getValue(nodeWeapon, "damagetype", "");
   
   -- Decrement ammo
   local nMaxAmmo = DB.getValue(nodeWeapon, "maxammo", 0);

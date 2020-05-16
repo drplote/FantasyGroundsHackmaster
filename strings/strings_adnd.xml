@@ -605,6 +605,7 @@
   <!-- Weapon Editors -->
   <string name="weapon_header_initiative">INITIATIVE</string>
   <string name="weapon_labelr_speedfactor">Weapon Speed</string>
+  <string name="weapon_damage_type">Damage Type</string>
   <string name="weapon_header_prof">Proficiencies Applied</string>
   <string name="weapon_label_profdefault">Not-Proficient</string>
   <string name="weapon_label_profname">PROF</string>
