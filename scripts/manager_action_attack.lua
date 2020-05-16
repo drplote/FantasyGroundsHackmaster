@@ -742,7 +742,7 @@ function onAttack(rSource, rTarget, rRoll)
   if rAction.sResult == "crit" and nDefenseVal then
     --notifyApplyHRFC("Critical Hit");
 
-	CritManager.handleCrit(20 - rRoll.nBaseAttack, (20 - nDefenseVal), rAction.nTotal - 20, rSource, rRoll.sDamageType);
+	CritManager.handleCrit(20 - rRoll.nBaseAttack, (20 - nDefenseVal), rAction.nTotal - 20, rTarget, rRoll.sDamageType);
   end
   
   -- check for MIRRORIMAGE and STONESKIN /etc...
