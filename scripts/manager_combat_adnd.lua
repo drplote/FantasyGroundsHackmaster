@@ -95,6 +95,7 @@ function resetInit()
   function resetCombatantInit(nodeCT)
     DB.setValue(nodeCT, "initresult", "number", 0);
     DB.setValue(nodeCT, "reaction", "number", 0);
+	DB.setValue(nodeCT, "extrainitresult", "string", "");
     
     --set not rolled initiative portrait icon to active on new round
     CharlistManagerADND.turnOffInitRolled(nodeCT);
@@ -110,6 +111,41 @@ function rollRandomInit(nMod, bADV)
   nInitResult = nInitResult + nMod;
   return nInitResult;
 end
+
+-- TODO: move this to a util file
+function toCsv(tt)
+	local s = "";
+	for _, p in ipairs(tt) do
+		s = s .. "," .. p;
+	end
+	return string.sub(s, 2);
+end
+
+-- TODO: move this to a util file
+function fromCsv(s)
+	local tt = {};
+	for m in s:gmatch("([^,]+)") do
+		table.insert(tt, tonumber(m))
+	end
+	return tt;
+end
+
+function getExtraInits(node)
+	local sExtraInits = DB.getValue(node, "extrainitresult", "");
+	return fromCsv(sExtraInits);	
+end
+
+function addExtraInit(node, nInit)
+	local aExtraInits = getExtraInits(node);
+	table.insert(aExtraInits, nInit);
+	table.sort(aExtraInits);
+	DB.setValue(node, "extrainitresult", "string", toCsv(aExtraInits));
+end
+
+function addAnotherInit(node, nInit)
+	
+end
+
 
 function rollEntryInit(nodeEntry)
 	if not nodeEntry then
@@ -146,9 +182,18 @@ function rollEntryInit(nodeEntry)
 		  if nPreviousInitResult > 10 then
 			-- If their init was > 10 last round then we subtract 10 to give them their new init.
 			nInitResult = nPreviousInitResult - 10;
+			
+			-- Also need to update any "extra" inits as well, such as from multiple attacks
+			local aExtraInits = getExtraInits(nodeEntry);
+			if aExtraInits and #aExtraInits > 0 then
+				for _,nExtraInit in aExtraInits do
+					addExtraInit(nodeEntry, nExtraInit - 10);
+				end
+			end
 		  else
 			-- I don't like it autorolling, then just having people roll manually anyway. Set to 99 to make it clearer who hasn't rolled for themselves yet
 			nInitResult = 99; 
+			DB.setValue(nodeChar, "extrainitresult", "string", ""); -- probably unnecessary but clearing it anyway
 		  --nInitResult = rollRandomInit(nInitPC + nInitMOD, bADV);
 		  end
 		end
@@ -182,6 +227,8 @@ function rollEntryInit(nodeEntry)
 	  local nPreviousInit = DB.getValue(nodeEntry, "previnitresult", 0);
 	  if nPreviousInit > 10 then -- If > 10, they didn't go last round and subtract 10 this round to get a new init
 		DB.setValue(nodeEntry, "initresult", "number", nPreviousInit - 10);
+		local aExtraInit = DB.getValue(nodeEntry, "extrainitresults", "");
+		for _,nExtraInit in 
 	  else
 		local nInitResult = rollRandomInit(nInit, bADV);
 		DB.setValue(nodeEntry, "initresult", "number", nInitResult);
