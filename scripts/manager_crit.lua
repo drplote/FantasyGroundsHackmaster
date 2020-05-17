@@ -1843,7 +1843,7 @@ function buildHackingCritMatrix()
 	aHackingCritMatrix["Head, top"][21] = {cm=4,a=9,d=9,bs=1,v=1,u=true,s=true};
 	aHackingCritMatrix["Head, top"][22] = {dead="skull caved-in"};
 	aHackingCritMatrix["Head, top"][23] = {dead="brain goo"};
-	aHackingCritMatrix["Head, top"][24] = {dead="brian goo"};
+	aHackingCritMatrix["Head, top"][24] = {dead="brain goo"};
 end
 
 function buildPuncturingCritMatrix()
@@ -3145,7 +3145,7 @@ function buildPuncturingCritMatrix()
 	aPuncturingCritMatrix["Head, top"][21] = {cm=4,a=9,d=9,bf=1,ib=true,v=1,u=true,s=true};
 	aPuncturingCritMatrix["Head, top"][22] = {dead="skull caved-in"};
 	aPuncturingCritMatrix["Head, top"][23] = {dead="brain goo"};
-	aPuncturingCritMatrix["Head, top"][24] = {dead="brian goo"};
+	aPuncturingCritMatrix["Head, top"][24] = {dead="brain goo"};
 	
 end
 
