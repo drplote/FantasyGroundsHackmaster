@@ -1481,15 +1481,12 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
 			nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodeShield) - DB.getValue(nodeShield, "hplost", 0), 0);
 		end
 		
-		local nShieldProfMod, nShieldProfCount = EffectManager5E.getEffectsBonus(rTarget, {"SHIELDPROF"}, true);
-		Debug.console("nShieldProfMod", nShieldProfMod);
-		Debug.console("nShieldProfCount", nShieldProfCount);
-		local bHasShieldProficiency = nShieldProfCount > 0;	
+		local nShieldSpecializationMod, nShieldSpecializationCount = EffectManager5E.getEffectsBonus(rTarget, {"SHIELDSPEC"}, true);
+		local bHasShieldSpecialization = nShieldSpecializationCount > 0;	
 		local nShieldSoakPerDie = 1;
-		if bHasShieldProficiency then
-			nShieldSoakPerDie = nShieldProfMod;
+		if bHasShieldSpecialization then
+			nShieldSoakPerDie = nShieldSpecializationMod;
 		end
-		Debug.console("nShieldSoakPerDie", nShieldSoakPerDie);
 		
 		nArmorHpRemaining = nArmorHpRemaining * nShieldSoakPerDie;
 		
