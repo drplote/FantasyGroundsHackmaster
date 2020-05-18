@@ -1477,16 +1477,33 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
 		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
 		local nodeShield = ItemManager2.getDamageableShieldWorn(nodeTarget);
 		local nArmorHpRemaining = 0;
-		if nodeShield then
+		if nodeShield then			
 			nArmorHpRemaining = math.max(ItemManager2.getMaxArmorHp(nodeShield) - DB.getValue(nodeShield, "hplost", 0), 0);
 		end
+		
+		local nShieldProfMod, nShieldProfCount = EffectManager5E.getEffectsBonus(rTarget, {"SHIELDPROF"}, true);
+		Debug.console("nShieldProfMod", nShieldProfMod);
+		Debug.console("nShieldProfCount", nShieldProfCount);
+		local bHasShieldProficiency = nShieldProfCount > 0;	
+		local nShieldSoakPerDie = 1;
+		if bHasShieldProficiency then
+			nShieldSoakPerDie = nShieldProfMod;
+		end
+		Debug.console("nShieldSoakPerDie", nShieldSoakPerDie);
+		
+		nArmorHpRemaining = nArmorHpRemaining * nShieldSoakPerDie;
+		
 		local nDamageSoaked = math.min(nTotal, nArmorHpRemaining);
 		nTotal = nTotal - nDamageSoaked;
 		if nDamageSoaked > 0 then
 			local sCharName = DB.getValue(nodeTarget, "name");
 			local sItemName = ItemManager2.getItemNameForPlayer(nodeShield);
-			ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " takes " .. nDamageSoaked .. " damage.");
-			CharManager.addDamageToArmor(nodeTarget, nodeShield, nDamageSoaked);
+			
+			local nShieldDamageTaken = math.floor(nDamageSoaked/nShieldSoakPerDie);
+			local sDamageMsg = sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " and takes " .. nShieldDamageTaken .. " damage.";
+			ChatManager.SystemMessage(sDamageMsg);
+			
+			CharManager.addDamageToArmor(nodeTarget, nodeShield, nShieldDamageTaken);
 		end
 	end
     
