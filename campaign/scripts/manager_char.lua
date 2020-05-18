@@ -142,6 +142,8 @@ function updateFatigueFactor(nodeChar)
 	local sEncRank, nBaseEnc, nBaseMove = getEncumbranceRank2e(nodeChar);
 	local lEncMultiplier = lEnumbranceMultipliersByRank[sEncRank] or 0;
 	local nFatigueFactor = math.floor(nCon / 2 * lEncMultiplier);
+	local nMultiplier = DB.getValue(nodeChar, "fatigue.multiplier", 1);
+	nFatigueFactor = nFatigueFactor * nMultiplier;
 	
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end

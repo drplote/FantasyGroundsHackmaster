@@ -1639,10 +1639,10 @@
   <windowclass name="charsheet_combatcalc">
     <frame>charsheethelper</frame>
     <placement>
-      <size width="365" height="440" />
+      <size width="365" height="500" />
     </placement>
     <sizelimits>
-      <minimum width="365" height="440" />
+      <minimum width="365" height="500" />
       <dynamic />
     </sizelimits>
     <nodelete />
@@ -1699,6 +1699,9 @@
     <combat_section_subwindow name="subwindow_turnundead_section">
       <class>window_turnundead_section</class>
     </combat_section_subwindow>
+	<combat_section_subwindow name="subwindow_fatigue_section">
+		<class>window_fatigue_section</class>
+	</combat_section_subwindow>
 
     <!-- attack matrix (for 1e style to hit AC values) -->
    <subwindow name="combat_matrix_1e">
@@ -1833,9 +1836,28 @@
           <right parent="rightanchor" anchor="left" offset="-8" />
         </anchored>
         <tooltip textres="char_label_turndetail_tooltip" />
-      </basicnumber>
+      </basicnumber> 
  
     </sheetdata>
+  </windowclass>
+  
+  <windowclass name="window_fatigue_section">
+	<sheetdata>
+	  <anchor_left />
+      <anchor_right />
+	  <combat_section_label name="label_fatiguemultiplier">
+		<static textres="char_label_fatiguemultiplier" />
+		<tooltip textres="char_label_fatiguemultiplier_tooltip" />
+	  </combat_section_label>
+	  <basicnumber name="fatigue_multiplier" source="fatigue.multiplier">
+		<anchored height="18" width="30" >
+		  <top parent="leftanchor" />
+		  <right parent="rightanchor" anchor="left" offset="-8" />
+		</anchored>
+		<tooltip textres="char_label_fatiguemultiplier_tooltip" />
+		<default>1</default>
+	  </basicnumber>
+	</sheetdata>
   </windowclass>
 
   <!-- section for armor class -->

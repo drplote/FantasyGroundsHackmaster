@@ -161,6 +161,8 @@
   <string name="char_label_initdetail_tooltip">Initiative modifier applied when using base initiative roll.</string>
   <string name="char_label_turndetail">Turn Undead Level</string>
   <string name="char_label_turndetail_tooltip">Effective level of priest to turn undead.</string>
+  <string name="char_label_fatiguemultiplier">Fatigue Factor Multiplier</string>
+  <string name="char_label_fatiguemultiplier_tooltip">A multiplier to apply to fatigue factor (such as from the Endurance talent)</string>
   <string name="char_label_speeddetail">Move:</string>
   <string name="char_label_speeddetail_tooltip">Movement values. How fast the character can move.</string>
   <string name="char_label_speedbase_base">Base</string>

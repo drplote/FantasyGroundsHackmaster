@@ -39,8 +39,12 @@ function onInit()
   DB.addHandler(DB.getPath(nodeChar, "surprise.tempmod"),     "onUpdate", updateSurpriseScores);
   DB.addHandler(DB.getPath(nodeChar, "surprise.mod"),     "onUpdate", updateSurpriseScores);
   
+  
+  
   DB.addHandler(DB.getPath(nodeChar, "initiative.tempmod"),     "onUpdate", updateInitiativeScores);
   DB.addHandler(DB.getPath(nodeChar, "initiative.misc"),     "onUpdate", updateInitiativeScores);
+  
+  DB.addHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
 
   DB.addHandler("combattracker.list", "onChildDeleted", updatesBulk);
   
@@ -48,6 +52,7 @@ function onInit()
   updateAscendingValues();
   updateSurpriseScores();
   updateInitiativeScores();
+  updateFatigueFactor();
   updateArmor();
 end
 
@@ -84,10 +89,16 @@ function onClose()
 
   DB.removeHandler(DB.getPath(nodeChar, "initiative.tempmod"),     "onUpdate", updateInitiativeScores);
   DB.removeHandler(DB.getPath(nodeChar, "initiative.misc"),     "onUpdate", updateInitiativeScores);
+  DB.removeHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
   
   
   DB.removeHandler("combattracker.list", "onChildDeleted", updatesBulk);
   
+end
+
+function updateFatigueFactor()
+	local nodeChar = getDatabaseNode();
+	CharManager.updateFatigueFactor(nodeChar);
 end
 
 function updatesBulk(nodeCT)
@@ -97,6 +108,8 @@ function updatesBulk(nodeCT)
   updateAscendingValues();
   updateSurpriseScores();
   updateInitiativeScores();
+  updateFatigueFactor();
+  updateArmor();
 end
 
 -- allow drag/drop of class/race/backgrounds onto main sheet
@@ -335,6 +348,7 @@ function updateHealthScore()
 end
 
 function updateFatigueScore(node)
+  if not node then node = getDatabaseNode(); end
   local nodeChar = node.getChild("....");
   if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
     nodeChar = node;
