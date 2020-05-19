@@ -20,7 +20,7 @@ I'm probably forgetting some things, but:
 - "/fumble u" or "/fumble unarmed" to generate an unarmed fumble result
 - /qf to roll on the quirks/flaws table. Not super useful but I had to add all this code for spell mishaps anyway so figured I might as well expose this as a command
 - Added fatigue saves (as per the book, based on stats, but reversed so it looks like a saving throw instead of an attribute check) and apology saves
-- Added manual fatigue tracking and automatic strength/dex penalties. Works a little different than HM in that reducing fatigue to zero immediately clears all remaining penalties, and each time you reduce it below your fatigue factor (but not down to 0), it makes a check to see if either penalty has cleared by a point. 
+- Added manual fatigue tracking and automatic strength/dex penalties. Works a little different than HM in that reducing fatigue to zero immediately clears all remaining penalties, and each time you reduce it below your fatigue factor (but not down to 0), it makes a check to see if either penalty has cleared by a point. I hope to automate fatigue in the future, but haven't yet determined a safe way to decide if it should increment or decrement in a round, so until I figure that out it remains a manual process.
 - Changed minimum damage on damage rolls to be 1 instead of 0 (2e ruleset bug... they don't have as many weapon damages with built in minuses as Hackmaster does, so it didn't really come up)
  - Changed stat bonuses/penalties (to-hit, damage, reaction adj, etc) to match what's in the Hackmaster books. 
  - Changed encumbrance calculations to match what Hackmaster does
