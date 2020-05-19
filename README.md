@@ -7,7 +7,7 @@ A backlog of desired/completed/in-progress changes can be viewed here: https://t
 
 Unfortunately, I don't think it's legal for me to share my work with regards to Player's Handbook, Gamemaster's Guide, and Hacklopedia of Beasts data, so if you use this you're going to have to enter the data for weapons, armor, races, classes, spells, etc yourself. Using the 2E PHB, DMG, and MM on Fantasy Grounds as a basis and copying and modifying records is probably the easiest way to do that. 
 
-####Things you need to do on the data side of things to fully use this (not a complete list):
+#### Things you need to do on the data side of things to fully use this (not a complete list):
 
 If you've already got a data source (such as the 2E DMG) for your weapons/armor, you're going to need to go into those records and update some fields:
 
