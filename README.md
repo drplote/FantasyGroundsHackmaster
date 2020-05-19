@@ -17,4 +17,4 @@ For weapons, when you're setting up the "Action" part of a weapon (where you def
 
 Note that crits just spit out a lot of text... they don't actually roll extra damage or apply extra effects (for now, anyway). You'll have to handle that yourself.
 
-For characters, you'll have to give them their 20 hp kicker manually. For NPCS, it should be adding it automatically for any that didn't have a specific HP value set. So, for instance, if they're just set as 2HD creatures, when you pull one to the combat tracker he'll have 20 + 2d8 hit points. But if his NPC record had hit points set specifically to 17, he'll still just have 17 hit points.
+For characters, you'll have to give them their 20 hp kicker manually. For NPCS, it should be adding it automatically for any that didn't have a specific HP value set. So, for instance, if they're just set as 2HD creatures, when you pull one to the combat tracker he'll have 20 + 2d8 hit points. But if an NPC record you created had hit points set specifically to 17, he'll still just have 17 hit points.
