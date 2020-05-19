@@ -17,19 +17,19 @@ I'm probably forgetting some things, but:
 - Adds the /penp command to roll dice with penetration "plus", (i.e., penetrate on max and max -1, like a crossbow)
 - /mishap to generate a spell mishap result
 - /fumble to generate a fumble
-- "/fumble u" or "/fumble unarmed" to generate an unnarmed fumble result
+- "/fumble u" or "/fumble unarmed" to generate an unarmed fumble result
 - /qf to roll on the quirks/flaws table. Not super useful but I had to add all this code for spell mishaps anyway so figured I might as well expose this as a command
-- Added fatigue saves (as per the book, based on stats, not something that progresses with your class) and apology saves
-- Added manual fatigue tracking and automatic stat penalties. Works a little different than HM in that reducing fatigue to zero immediately clears all remaining penalties.
-- Changed minimum damage on attacks to be 1 instead of 0 (2e ruleset bug... they don't have as many weapon damages with build in minuses as Hackmaster does)
- - Changed stat bonuses/penalties to match what's in the Hackmaster books. 
+- Added fatigue saves (as per the book, based on stats, but reversed so it looks like a saving throw instead of an attribute check) and apology saves
+- Added manual fatigue tracking and automatic strength/dex penalties. Works a little different than HM in that reducing fatigue to zero immediately clears all remaining penalties, and each time you reduce it below your fatigue factor (but not down to 0), it makes a check to see if either penalty has cleared by a point. 
+- Changed minimum damage on damage rolls to be 1 instead of 0 (2e ruleset bug... they don't have as many weapon damages with built in minuses as Hackmaster does, so it didn't really come up)
+ - Changed stat bonuses/penalties (to-hit, damage, reaction adj, etc) to match what's in the Hackmaster books. 
  - Changed encumbrance calculations to match what Hackmaster does
  - Players still use Thac0 (plan to change this eventually), but monsters use the attack matrix from the DMG, based on their Hit Dice.
  - Monsters use HM saving throws based on the DMG.
- - Changed the character control for experience points to allow 15% or 20% bonuses. It's fiddly though... the 2e control really isn't meant for bonuses that change over your career (such as changes due to honor/dishonor). Be careful with it.
- - Detect when a monster misses but would have hit a player's shield. Text shows in blue for a miss, red for a hit, and orange for a shield hit (with some text to indicate it too).
+ - Changed the character control for experience points to allow 15% or 20% bonuses. It's fiddly though... the 2e control really isn't meant for bonuses that change over your career (such as changes due to honor/dishonor). Be careful with it. I have plans to rework this eventually.
+ - Detects when a monster misses but would have hit a player's shield. Text shows in blue for a miss, red for a hit, and orange for a shield hit (with some text to indicate it too).
  - Hold alt while rolling damage to apply it first against the target's shield. Make sure you keep alt held down the whole time... you can't let it up while you see the dice rolling. This will follow normal shield rules and apply damage first to the shield, then to the target if the shield breaks.
- - Added a new effect type, "SHIELDSPEC", that alters how much damage a shield can soak per point of damage it tanks. So, for instance, if a character has the "Shield Specialization" proficiency that makes shields only take 1 damage for every 2 received, add a "SHIELDSPEC:2" effect to the character to reflect this.
+ - Added a new effect type, "SHIELDSPEC", that alters how much damage a shield can soak per point of damage it takes. So, for instance, if a character has the "Shield Specialization" proficiency that makes shields only take 1 damage for every 2 received, add a "SHIELDSPEC:2" effect to the character to reflect this.
  - Added text to indicate when a Threshold of Pain check is needed (i.e., when a target takes half their max health in a single hit). Does not actually roll the check or anything for you.
  - Added a "HP Lost" property to armor and shields that shows how much damage they've taken
  - Added a "AC Regression" field to armor and shields that lets you set how many hit points of damage every level could take. For instance, for a Medium Shield, you'd want to put "5,4,3" in there. If this is empty, the armor is treated like 2E armor rather than Hackmaster armor.
@@ -37,16 +37,17 @@ I'm probably forgetting some things, but:
  - 2e was giving NPCs initiative bonuses and penalties (mostly penalties) for size. Removed those.
  - Changed initiative handling in the combat tracker to work more like Hackmaster. If a combatant's initiative is >10, when you hit the "next round" button, rather than rolling a new initiative for them it will just subtract 10 from their initiative. This should help keep track of people who were too slow go to in a round because they had an initiative higher than 10.
  - Changed the "Default" PC inititive rolling when you start a new combat round to just set them to 99 rather than rolling a d10. I found it annoying that it would roll something for them, and then I'd just tell them to roll again anyway with their correct modifiers for weapon speed, etc. Setting it to 99 made it clearer to me who had rolled and who hadn't.
- - Changed ranged and thrown weapons to go on a fixed initiative. So if you set a longbow to weapon speed of 1 and roll initiative for it, you'll always get 1. This is to help match the HM rule where ranged weapons go on fixed segments, not on what was rolled. You can mimic this effect for any initiative roll if you hold alt while rolling. 
-- Changed spell initiative to be fixed at whatever their casting time is, unless they have a material component, in which case it's 1d4+casting time.
+ - Changed ranged and thrown weapons to go on a fixed initiative. So if you set a longbow to weapon speed of 1 and roll initiative for it, you'll always get 1. This is to help match the HM rule where ranged weapons go on fixed segments, not on what was rolled. You can mimic this effect for any weapon initiative roll if you hold alt while rolling. 
+- Changed spell initiative to be fixed at whatever their casting time is, unless they have a material component, in which case it's 1d4+casting time. If, for instance, the spellcaster already had declared they had the material components ready, you could hold alt while clicking on the initiative for the spell to ignore the "roll" part and just go on a fixed initiative of whatever the casting time is.
 - Changed the d10 initiative rolls to factor in reaction adjustment from Dex. 2E didn't do this.
 - I don't have a good way of handling multiple attacks yet (bows with a high ROF... fighters with specialization, etc). Working on something but not sure how best to deal with it yet. Sorry!
-- When a character recieves damage, it soaks some and damage the armor per die rolled as in the HM rules, assuming you've set their worn armor up with "AC Regression" as described above.
-- As armor takes damage, the AC value it provides diminishes, as in Hackmaster. However, this only seems to work for PCs, not NPCs (so far).
+- When a character recieves damage, it soaks some and damages the armor per die rolled as in the HM rules, assuming you've set their worn armor up with "AC Regression" as described above.
+- As armor takes damage, the AC value it provides diminishes, as in Hackmaster. However, this only seems to work for PCs, not NPCs (so far), because NPC code is for determining AC is different and I haven't gotten to it yet.
 - Added a "Fatigue Factor Multiplier". Click the gear icon near where you see Fatigue on the main character sheet, and you can edit this if the character has something like the Endurance talent which doubles their fatigue. Defaulted to 1.
 - Added "Damage Type" to the "Action" part of a weapon. Fill it in with "hacking", "puncturing", "bludgeoning", or some comma-separated combination of those. This gets used for crit type if an attack with that action crits. If it's unset, the crit defaults to hacking. If more than one is set, it selects one randomly for each crit.
 - When a natural 1 is rolled on an attack, it generates fumble text. You have to apply any of the effects of this manually.
 - When a natural 20 is rolled on an attack, it generates critical hit text. You have to apply any of the effects of this (including bonus damage) manually.
+- Added an "armor damage tracker" to the character's main tab that shows them their armor & shield status in terms of how much AC they've lost and how much damage they've taken, along with buttons to increment/decrement the damage. This is to make it easier to handle corner cases where the automatic armor damage code didn't work how you wanted it to. Maybe you didn't want the flaming arrow spell to be affected by armor, or alternately maybe they just got hit with and acid arrow and you decided you want that to do extra armor damage beyond the norma. It's just meant as a convenient control for the players to see the current status without clicking through inventory to their armor and opening it up, and to help the players and GM tweak what's happening for special situations. Plus, I wrote that first before I got the automation working and it's easier to leave it in then strip it out!
  
 
 #### Things you need to do on the data side of things to fully use this (not a complete list):
