@@ -15,4 +15,6 @@ For armor, you need to add data to the "AC Regression" column. This should be a 
 
 For weapons, when you're setting up the "Action" part of a weapon (where you define it's damage), there's a new property called "Damage Type". This is used for determining what kind of crit the weapon performed. This will accept the values "hacking", "slashing", "bludgeoning", "crushing", "piercing", or "puncturing". Those are 3 different types, not 6... I just wanted it to accept the 2e names for things too. If a weapon is multiple types, just enter them comma-separated, such as "bludgeoning,piercing". When a crit occurs, if there is more than one type, it'll just choose one at random as the crit type. If this is left blank or is an unrecognizable string, it will default to hacking.
 
-Note that crits just spit out a lot of text... they don't actually roll extra damage or apply extra effects (for now, anyway). You'll have to handle that yourself
+Note that crits just spit out a lot of text... they don't actually roll extra damage or apply extra effects (for now, anyway). You'll have to handle that yourself.
+
+For characters, you'll have to give them their 20 hp kicker manually. For NPCS, it should be adding it automatically for any that didn't have a specific HP value set. So, for instance, if they're just set as 2HD creatures, when you pull one to the combat tracker he'll have 20 + 2d8 hit points. But if his NPC record had hit points set specifically to 17, he'll still just have 17 hit points.
