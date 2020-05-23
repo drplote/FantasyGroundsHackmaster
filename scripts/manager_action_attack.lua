@@ -958,8 +958,11 @@ function getTHACO(rActor)
   else
   -- npc thaco calcs
 	local sHitDice = CombatManagerADND.getNPCHitDice(nodeActor);
-	nTHACO = DataCommonADND.aMatrix[sHitDice][11];
-    -- nTHACO = DB.getValue(nodeActor, "thaco", 20);
+	if sHitDice and sHitDice ~= "" then
+		nTHACO = DataCommonADND.aMatrix[sHitDice][11];
+	else
+		nTHACO = DB.getValue(nodeActor, "thaco", 20);
+	end
   end
   return nTHACO;
 end

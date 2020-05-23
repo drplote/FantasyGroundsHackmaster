@@ -532,8 +532,11 @@ end
 function getACHitFromMatrixForNPC(nodeNPC,nRoll)
   local nACHit = 20;
   local sHitDice = getNPCHitDice(nodeNPC);
---Debug.console("manager_combat_adnd","getACHitFromMatrixForNPC","DataCommonADND.aMatrix",DataCommonADND.aMatrix);         
-  if DataCommonADND.aMatrix[sHitDice] then
+--Debug.console("manager_combat_adnd","getACHitFromMatrixForNPC","DataCommonADND.aMatrix",DataCommonADND.aMatrix);  
+  if not sHitDice or sHitDice == "" then
+	local nThaco = DB.getValue(nodeNPC, "thaco", 20);
+	nACHit = nThaco - nRoll;
+  elseif DataCommonADND.aMatrix[sHitDice] then
     local aMatrixRolls = DataCommonADND.aMatrix[sHitDice];
 -- Debug.console("manager_combat_adnd","getACHitFromMatrixForNPC","DataCommonADND.aMatrix[sHitDice]",DataCommonADND.aMatrix[sHitDice]);         
 -- Debug.console("manager_combat_adnd","getACHitFromMatrixForNPC","aMatrixRolls",aMatrixRolls);         
