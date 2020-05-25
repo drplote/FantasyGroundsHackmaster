@@ -1166,7 +1166,6 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
     end
 	
 	local nAbsorbed = 0;	
-	-- if rTarget is PC and armor worn (not shield) then reduce damage by number of dice up to max armor hp and do armor damage
 	
 	local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
 	local nodePcArmor = ItemManager2.getDamageableArmorWorn(nodeTarget);
@@ -1505,7 +1504,7 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
 			
 			local nShieldDamageTaken = math.floor(nDamageSoaked/nShieldSoakPerDie);
 			local sDamageMsg = sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " and takes " .. nShieldDamageTaken .. " damage.";
-			ChatManager.SystemMessage(sDamageMsg);
+			deliverChatMessage(sDamageMsg);
 			
 			CharManager.addDamageToArmor(nodeTarget, nodeShield, nShieldDamageTaken);
 		end

@@ -651,6 +651,15 @@ function getHiddenNameText(sStr)
   return nil;
 end
 
+function tryCopySourceToNodeCT(nodeSource, nodeCT)
+	if nodeSource and nodeCT then
+		local nSourceLoaded = DB.getValue(nodeCT,"sourceloaded", 0);
+		if nSourceLoaded ~= 1 then
+			copySourceToNodeCT(nodeSource, nodeCT);
+		end
+	end
+end
+
 function addNPC(sClass, nodeNPC, sName)
 UtilityManagerADND.logDebug("manager_combat_adnd.lua","addNPC\START/");
 --Debug.console("manager_combat2.lua","addNPC","sClass",sClass);
@@ -687,33 +696,35 @@ UtilityManagerADND.logDebug("manager_combat_adnd.lua","addNPC\START/");
 
   -- base modifier for initiative
   -- we set modifiers based on size per DMG for AD&D -celestian
-  DB.setValue(nodeEntry, "init", "number", 0);
   
-  -- Determine size
-  local sSize = StringManager.trim(DB.getValue(nodeEntry, "size", ""):lower());
-  local sSizeNoLower = StringManager.trim(DB.getValue(nodeEntry, "size", ""));
-  if sSize == "tiny" or string.find(sSizeNoLower,"T") then
-    -- tokenscale doesn't work, guessing it's "reset" when
-    -- the token is actually dropped on the map
-    -- need to figure out a work around -celestian
-    DB.setValue(nodeEntry, "tokenscale", "number", 0.5);
-    DB.setValue(nodeEntry, "init", "number", -5);
-  elseif sSize == "small" or string.find(sSizeNoLower,"S") then
-    -- tokenscale doesn't work, guessing it's "reset" when
-    -- the token is actually dropped on the map
-    DB.setValue(nodeEntry, "tokenscale", "number", 0.75);
-    DB.setValue(nodeEntry, "init", "number", -2);
-  elseif sSize == "medium" or string.find(sSizeNoLower,"M") then
-    DB.setValue(nodeEntry, "init", "number", 0);
-  elseif sSize == "large" or string.find(sSizeNoLower,"L") then
-    DB.setValue(nodeEntry, "space", "number", 10);
-    DB.setValue(nodeEntry, "init", "number", 1);
-  elseif sSize == "huge" or string.find(sSizeNoLower,"H") then
-    DB.setValue(nodeEntry, "space", "number", 15);
-    DB.setValue(nodeEntry, "init", "number", 4);
-  elseif sSize == "gargantuan" or string.find(sSizeNoLower,"G") then
-    DB.setValue(nodeEntry, "space", "number", 20);
-    DB.setValue(nodeEntry, "init", "number", 7);
+  DB.setValue(nodeEntry, "init", "number", 0);
+  if false then -- we don't do this for Hackmaster
+	  -- Determine size
+	  local sSize = StringManager.trim(DB.getValue(nodeEntry, "size", ""):lower());
+	  local sSizeNoLower = StringManager.trim(DB.getValue(nodeEntry, "size", ""));
+	  if sSize == "tiny" or string.find(sSizeNoLower,"T") then
+		-- tokenscale doesn't work, guessing it's "reset" when
+		-- the token is actually dropped on the map
+		-- need to figure out a work around -celestian
+		DB.setValue(nodeEntry, "tokenscale", "number", 0.5);
+		DB.setValue(nodeEntry, "init", "number", -5);
+	  elseif sSize == "small" or string.find(sSizeNoLower,"S") then
+		-- tokenscale doesn't work, guessing it's "reset" when
+		-- the token is actually dropped on the map
+		DB.setValue(nodeEntry, "tokenscale", "number", 0.75);
+		DB.setValue(nodeEntry, "init", "number", -2);
+	  elseif sSize == "medium" or string.find(sSizeNoLower,"M") then
+		DB.setValue(nodeEntry, "init", "number", 0);
+	  elseif sSize == "large" or string.find(sSizeNoLower,"L") then
+		DB.setValue(nodeEntry, "space", "number", 10);
+		DB.setValue(nodeEntry, "init", "number", 1);
+	  elseif sSize == "huge" or string.find(sSizeNoLower,"H") then
+		DB.setValue(nodeEntry, "space", "number", 15);
+		DB.setValue(nodeEntry, "init", "number", 4);
+	  elseif sSize == "gargantuan" or string.find(sSizeNoLower,"G") then
+		DB.setValue(nodeEntry, "space", "number", 20);
+		DB.setValue(nodeEntry, "init", "number", 7);
+	  end
   end
   -- if the combat window initiative is set to something, use it instead --celestian
   local nInitMod = DB.getValue(nodeNPC, "initiative.total", 0);
@@ -1754,6 +1765,9 @@ function addCTANPC(sClass, nodeNPC, sNamedInBattle)
   for _,nodeItem in pairs(DB.getChildren(nodeNPC, "inventorylist")) do
     EffectManagerADND.updateItemEffects(nodeItem,nodeEntry);
   end
+  
+  
+  tryCopySourceToNodeCT(nodeNPC, nodeEntry);
 
   return nodeEntry;
 end
