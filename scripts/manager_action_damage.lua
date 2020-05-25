@@ -1181,7 +1181,8 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 	if nDamageSoaked > 0 then
 		local sCharName = DB.getValue(nodeTarget, "name");
 		local sItemName = ItemManager2.getItemNameForPlayer(nodePcArmor);
-		ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " damage.");
+		
+		deliverChatMessage(sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " damage.");
 		CharManager.addDamageToArmor(nodeTarget, nodePcArmor, nDamageSoaked);
 	end
 	
@@ -1207,6 +1208,12 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 
   -- Results
   return nDamageAdjust, bVulnerable, bResist, bAbsorb, nDamageDice;
+end
+
+function deliverChatMessage(sText)
+	local rMessage = ChatManager.createBaseMessage();
+	rMessage.text = sText;
+	Comm.deliverChatMessage(rMessage);
 end
 
 function decodeDamageText(nDamage, sDamageDesc)

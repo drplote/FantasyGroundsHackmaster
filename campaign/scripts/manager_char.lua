@@ -502,7 +502,7 @@ function addDamageToArmor(nodeChar, nodeItem, nAmount)
 				if nNewHpLost >= nMaxHp then
 					local sCharName = DB.getValue(nodeChar, "name");
 					local sItemName = ItemManager2.getItemNameForPlayer(nodeItem);
-					ChatManager.SystemMessage(sCharName .. "'s " .. sItemName .. " breaks!");
+					ActionDamage.deliverChatMessage(sCharName .. "'s " .. sItemName .. " breaks!");
 				end
 			else
 				Debug.console("manager_char.lua", "addDamageToArmor", "Can't raise armor damage past it's max HP"); 
