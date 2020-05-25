@@ -957,13 +957,15 @@ function checkReductionTypeHelper(rMatch, aDmgType)
 end
 
 function checkReductionType(aReduction, aDmgType)
-  for _,sDmgType in pairs(aDmgType) do
-    if checkReductionTypeHelper(aReduction[sDmgType], aDmgType) or checkReductionTypeHelper(aReduction["all"], aDmgType) then
-      return true;
-    end
+  if not aDmgType or #aDmgType == 0 then	
+	return false;
   end
   
-  return false;
+  local bReduced = true;
+  for _,sDmgType in pairs(aDmgType) do
+	bReduced = bReduced and (checkReductionTypeHelper(aReduction[sDmgType], aDmgType) or checkReductionTypeHelper(aReduction["all"], aDmgType));
+  end
+  return bReduced;
 end
 
 function checkNumericalReductionTypeHelper(rMatch, aDmgType, nLimit)
