@@ -93,11 +93,11 @@ function getRoll(rActor, bSecretRoll, rItem)
   
   rRoll.bSecret = bSecretRoll;
 
-  local bIsFixedInitiative = (rItem.nType and rItem.nType ~= 0) or Input.isAltPressed();
+  local bIsFixedInitiative = (rItem and (rItem.nType and rItem.nType ~= 0)) or Input.isAltPressed();
   local bIsSpell = false;
   if bIsFixedInitiative then -- ranged weapons go on a fixed initiative
 	rRoll.aDice = { "d0" }; 
-  elseif rItem.spellPath then
+  elseif rItem and rItem.spellPath then
 	bIsSpell = true;
 	if DB.getValue(DB.findNode(rItem.spellPath), "components", ""):match("M") then -- Does it have material componenets?
 		rRoll.aDice = { "d4" };
