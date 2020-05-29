@@ -340,3 +340,17 @@ function getMaxArmorHp(nodeItem)
 	return nMaxHp;
 end
 
+function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
+	local nBonus = DB.getValue(nodeArmor, "bonus", 0);
+	Debug.console("canDamageTypeHurtArmor", "nBonus", nBonus);
+	Debug.console("canDamageTypeHurtArmor", "aDmgTypes", aDmgTypes);
+	if nBonus <= 0 then
+		return true;
+	elseif not aDmgTypes or #aDmgTypes == 0 then
+		return false;
+	else
+		local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","poison","psychic","radiant","thunder","magic","magic +1","magic +2","magic +3","magic +4","magic +5","magic +6"};
+		return UtilityManagerADND.intersects(aDamagingTypes, aDmgTypes);
+	end
+end
+

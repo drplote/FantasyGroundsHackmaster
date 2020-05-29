@@ -1216,8 +1216,14 @@ function getDamageAdjust(rSource, rTarget, nDamage, rDamageOutput, aDice)
 		local sCharName = DB.getValue(nodeTarget, "name");
 		local sItemName = ItemManager2.getItemNameForPlayer(nodePcArmor);
 		
-		deliverChatMessage(sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " damage.");
-		CharManager.addDamageToArmor(nodeTarget, nodePcArmor, nDamageSoaked);
+		local nArmorDamageTaken = nDamageSoaked;
+		if ItemManager2.canDamageTypeHurtArmor(aSrcDmgClauseTypes,nodePcArmor) then
+			CharManager.addDamageToArmor(nodeTarget, nodePcArmor, nDamageSoaked);
+		else	
+			nArmorDamageTaken = 0;
+		end
+		local sDamageMsg = sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " and takes " .. nArmorDamageTaken .. " damage.";
+		deliverChatMessage(sDamageMsg);
 	end
 	
     -- add support for "DA: # type" where damage # is absorbed from type damage and then that value is reduced the amount absorbed. --celestian
@@ -1538,10 +1544,24 @@ function applyDamage(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
 			local sItemName = ItemManager2.getItemNameForPlayer(nodeShield);
 			
 			local nShieldDamageTaken = math.floor(nDamageSoaked/nShieldSoakPerDie);
+			
+			local aSrcDmgClauseTypes = {};
+			for k, v in pairs(rDamageOutput.aDamageTypes) do
+				local aTemp = StringManager.split(k, ",", true);
+				for _,vType in ipairs(aTemp) do
+					if vType ~= "untyped" and vType ~= "" then
+						table.insert(aSrcDmgClauseTypes, vType);
+					end
+				end
+			end
+			
+			if ItemManager2.canDamageTypeHurtArmor(aSrcDmgClauseTypes, nodeShield) then
+				CharManager.addDamageToArmor(nodeTarget, nodeShield, nShieldDamageTaken);
+			else	
+				nShieldDamageTaken = 0;
+			end
 			local sDamageMsg = sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " and takes " .. nShieldDamageTaken .. " damage.";
 			deliverChatMessage(sDamageMsg);
-			
-			CharManager.addDamageToArmor(nodeTarget, nodeShield, nShieldDamageTaken);
 		end
 	end
     

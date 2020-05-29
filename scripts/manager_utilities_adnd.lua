@@ -385,6 +385,15 @@ function containsAny(set, item)
 	return false;
 end
 
+function intersects(compareSet, actualSet)
+	for i = 1, #actualSet do
+		if containsAny(compareSet, actualSet[i]) then
+			return true;
+		end
+	end
+	return false
+end
+
 -- Are we running under FGU?
 function isFGU()
   return (Interface.getVersion() >= 4);
