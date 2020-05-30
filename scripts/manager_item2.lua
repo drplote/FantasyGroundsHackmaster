@@ -342,14 +342,22 @@ end
 
 function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
 	local nBonus = DB.getValue(nodeArmor, "bonus", 0);
-	Debug.console("canDamageTypeHurtArmor", "nBonus", nBonus);
-	Debug.console("canDamageTypeHurtArmor", "aDmgTypes", aDmgTypes);
 	if nBonus <= 0 then
 		return true;
 	elseif not aDmgTypes or #aDmgTypes == 0 then
 		return false;
 	else
-		local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","poison","psychic","radiant","thunder","magic","magic +1","magic +2","magic +3","magic +4","magic +5","magic +6"};
+		
+		Debug.console("aDmgTypes", aDmgTypes);
+		local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","poison","psychic","radiant","thunder"};
+		if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end
+		if nBonus <= 5 then table.insert(aDamagingTypes, "magic +5"); end
+		if nBonus <= 4 then table.insert(aDamagingTypes, "magic +4"); end
+		if nBonus <= 3 then table.insert(aDamagingTypes, "magic +3"); end
+		if nBonus <= 2 then table.insert(aDamagingTypes, "magic +2"); end
+		if nBonus <= 1 then table.insert(aDamagingTypes, "magic +1"); table.insert(aDamagingTypes, "magic"); end
+		Debug.console("aDamagingTypes", aDamagingTypes);
+		
 		return UtilityManagerADND.intersects(aDamagingTypes, aDmgTypes);
 	end
 end

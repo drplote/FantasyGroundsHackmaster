@@ -385,9 +385,18 @@ function containsAny(set, item)
 	return false;
 end
 
+function containsExact(set, item)
+	for i = 1, #set do
+		if set[i] == item then
+			return true;
+		end
+	end
+	return false;
+end
+
 function intersects(compareSet, actualSet)
 	for i = 1, #actualSet do
-		if containsAny(compareSet, actualSet[i]) then
+		if containsExact(compareSet, actualSet[i]) then
 			return true;
 		end
 	end
