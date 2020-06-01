@@ -150,14 +150,18 @@ function onRoll(rSource, rTarget, rRoll)
       if nTurnValue ~= 0 and nTotal >= nTurnValue then
         rTurn.nTurnValue = nTurnValue; -- save turn value for this HD.
         rTurn.bTurn = true;
+		rTurn.bAutoTurn = false;
         local sTurnedResult = "(TURN)";
         if (nTurnValue == -1) then
+		  rTurn.bAutoTurn = true;
           sTurnedResult = "(TURN!)";
         elseif (nTurnValue == -2) then
           sTurnedResult = "(DESTROY)";
+		  rTurn.bAutoTurn = true;
           rTurn.bDestroy = true
         elseif (nTurnValue == -3) then
           sTurnedResult = "(DESTROY!)";
+		  rTurn.bAutoTurn = true;
           rTurn.bDestroyPlus = true
         end
         
@@ -189,8 +193,14 @@ function onRoll(rSource, rTarget, rRoll)
     -- if we have a dice count we turned something so roll it
     if (bTurnedSome) then
       table.insert(aTurnDice,'d4');
-      local aExtraTurn = {}
-      table.insert(aExtraTurn,'d4');
+	  if rTurn.bAutoTurn then
+		table.insert(aTurnDice,'d4');
+	  end
+	  local aExtraTurn = {}
+	  if rTurn.bDestroyPlus then
+		table.insert(aExtraTurn,'d4');
+		table.insert(aExtraTurn,'d4');
+	  end
       
       local nodeTargets = ActorManagerADND.getTargetNodes(rSource);
       local aTargets = nil;
@@ -211,9 +221,9 @@ function onRoll(rSource, rTarget, rRoll)
             local bDestroy = aHDTurn[i].bDestroy;
             local bDestroyPlus = aHDTurn[i].bDestroyPlus;
             if bDestroyPlus then
-            -- destroy+ turn (add 1d4)
+            -- destroy+ turn (add 2d4)
               nTurnExtra = StringManager.evalDice(aExtraTurn, 0);
-              Debug.console("manager_action_turnundead.lua","onRoll","Gained extra turn, 1d4, nTurnExtra=",nTurnExtra," For HD=",aHDTurn[i].nHD);
+              Debug.console("manager_action_turnundead.lua","onRoll","Gained extra turn, 2d4, nTurnExtra=",nTurnExtra," For HD=",aHDTurn[i].nHD);
               ChatManager.SystemMessage("TURNED EXTRA SLOTS [" .. nTurnExtra .. "] for HD [" .. aHDTurn[i].nHD .. "]");
             end
             -- flip through sorted Targets
