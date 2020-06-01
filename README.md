@@ -12,7 +12,7 @@ I'm probably forgetting some things, but:
 
 - Adds the Comeliness stat
 - Adds Honor and temporary honor, as well as giving +1/-1 to attack and damage dice for great honor and dishonor. Doesn't factor in to any other rolls yet.
-- Automatically rolls weapon and spell damage as penetrating dice
+- Automatically rolls weapon damage, spell damage, and heals as penetrating dice
 - Adds the /pen to roll dice manually with penetration.
 - Adds the /penp command to roll dice with penetration "plus", (i.e., penetrate on max and max -1, like a crossbow)
 - /mishap to generate a spell mishap result
@@ -41,13 +41,16 @@ I'm probably forgetting some things, but:
 - Changed spell initiative to be fixed at whatever their casting time is, unless they have a material component, in which case it's 1d4+casting time. If, for instance, the spellcaster already had declared they had the material components ready, you could hold alt while clicking on the initiative for the spell to ignore the "roll" part and just go on a fixed initiative of whatever the casting time is.
 - Changed the d10 initiative rolls to factor in reaction adjustment from Dex. 2E didn't do this.
 - I don't have a good way of handling multiple attacks yet (bows with a high ROF... fighters with specialization, etc). Working on something but not sure how best to deal with it yet. Sorry!
-- When a character recieves damage, it soaks some and damages the armor per die rolled as in the HM rules, assuming you've set their worn armor up with "AC Regression" as described above.
+- When a character receives damage, it soaks some and damages the armor per die rolled as in the HM rules, assuming you've set their worn armor up with "AC Regression" as described above.
 - As armor takes damage, the AC value it provides diminishes, as in Hackmaster. However, this only seems to work for PCs, not NPCs (so far), because NPC code is for determining AC is different and I haven't gotten to it yet.
 - Added a "Fatigue Factor Multiplier". Click the gear icon near where you see Fatigue on the main character sheet, and you can edit this if the character has something like the Endurance talent which doubles their fatigue. Defaulted to 1.
 - Added "Damage Type" to the "Action" part of a weapon. Fill it in with "hacking", "puncturing", "bludgeoning", or some comma-separated combination of those. This gets used for crit type if an attack with that action crits. If it's unset, the crit defaults to hacking. If more than one is set, it selects one randomly for each crit.
 - When a natural 1 is rolled on an attack, it generates fumble text. You have to apply any of the effects of this manually.
 - When a natural 20 is rolled on an attack, it generates critical hit text. You have to apply any of the effects of this (including bonus damage) manually.
 - Added an "armor damage tracker" to the character's main tab that shows them their armor & shield status in terms of how much AC they've lost and how much damage they've taken, along with buttons to increment/decrement the damage. This is to make it easier to handle corner cases where the automatic armor damage code didn't work how you wanted it to. Maybe you didn't want the flaming arrow spell to be affected by armor, or alternately maybe they just got hit with and acid arrow and you decided you want that to do extra armor damage beyond the norma. It's just meant as a convenient control for the players to see the current status without clicking through inventory to their armor and opening it up, and to help the players and GM tweak what's happening for special situations. Plus, I wrote that first before I got the automation working and it's easier to leave it in then strip it out!
+- House Rule: When magic armor is hit a by a weapon, it only takes damage if the weapon has an atypical damage type (such as fire or acid) or if the magic bonus of the weapon is at least equal to the magic bonus of the armor. Spells still affect armor normally. I didn't want to deal with the complicated official magic armor damage rules from the errata, and I never liked them much anyway.
+- Turn undead now works like HM4 instead of 2e: # of hit dice affected when turning undead matches HM rules (1d4, +1d4 if T or D, +another 2d4 if D*), turn table is harder
+
  
 
 #### Things you need to do on the data side of things to fully use this (not a complete list):
