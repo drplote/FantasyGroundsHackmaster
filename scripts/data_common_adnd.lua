@@ -45,7 +45,7 @@ aWarriorSaves = {};
 aMatrix = {};
 
 -- distance per unit grid, this is for reach? --celestian
-nDefaultDistancePerUnitGrid = 10;
+nDefaultDistancePerUnitGrid = 5;
 
 -- used in effects to denote that these types of modifiers are not added up
 -- and to use the "best" (highest) one.
@@ -197,24 +197,20 @@ divineSpellClasses = {
 -- coin type followed by XP value
 expForCoinRate = {
   {'PP',5},
+  {'HSP', 2},
   {'GP',1},
   {'EP',.5},
   {'SP',.1},
   {'CP',.01},
 }
 function onInit()
-  local sRulesetName = User.getRulesetName();
   
   -- default initiative dice size 
   nDefaultInitiativeDice = 10;
   -- default coin weight, 50 coins = 1 pound
   nDefaultCoinWeight = 0.02;
   -- default surprise dice
-  if (sRulesetName == "2E") then
-    aDefaultSurpriseDice = {"d10"};
-  else
-    aDefaultSurpriseDice = {"d6"};
-  end
+  aDefaultSurpriseDice = {"d10"};
   
   -- HM4 mod: different strength spread
   -- aStrength[abilityScore]={hit adj, dam adj, weight allow, max press, open doors, bend bars, light enc, moderate enc, heavy enc, severe enc, max enc}
