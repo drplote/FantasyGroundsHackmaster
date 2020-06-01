@@ -232,6 +232,14 @@ function onHealPostRoll(rSource, rRoll)
       rRoll.aDice.expr = nil;
     end
   end
+  DiceMechanicsManager.handlePenetration(rRoll, false);
+  handleHonor(rSource, rRoll);
  -- end heal multiplier
+end
+
+function handleHonor(rSource, rRoll)
+	local sSourceType, nodeSource = ActorManager.getTypeAndNode(rSource);
+	local nHonorState = DB.getValue(nodeSource, "abilities.honor.honorState", 0);
+	DiceMechanicsManager.modifyRollForHonor(rRoll, nHonorState);
 end
 

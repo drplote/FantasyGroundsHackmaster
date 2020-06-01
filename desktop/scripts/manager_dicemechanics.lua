@@ -221,6 +221,9 @@ function processPenetratingDicePlus(draginfo)
 end
 
 function getNumOriginalDice(aDice)
+	if not aDice then
+		return 0;
+	end
 	local nNumDice = #aDice;
 	for _, vDie in ipairs(aDice) do
 		if vDie.penetrationRolls then

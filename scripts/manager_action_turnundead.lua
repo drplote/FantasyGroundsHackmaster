@@ -193,14 +193,11 @@ function onRoll(rSource, rTarget, rRoll)
     -- if we have a dice count we turned something so roll it
     if (bTurnedSome) then
       table.insert(aTurnDice,'d4');
-	  if rTurn.bAutoTurn then
-		table.insert(aTurnDice,'d4');
-	  end
 	  local aExtraTurn = {}
-	  if rTurn.bDestroyPlus then
-		table.insert(aExtraTurn,'d4');
-		table.insert(aExtraTurn,'d4');
-	  end
+	  table.insert(aExtraTurn, 'd4');
+	  local aExtraDestroy = {}
+      table.insert(aExtraDestroy,'d4');
+	  table.insert(aExtraDestroy,'d4');
       
       local nodeTargets = ActorManagerADND.getTargetNodes(rSource);
       local aTargets = nil;
@@ -212,20 +209,25 @@ function onRoll(rSource, rTarget, rRoll)
         if (#aTargets > 0) then 
           local aTurnedList = {};
           local nTurnBase = StringManager.evalDice(aTurnDice, 0);
-          Debug.console("manager_action_turnundead.lua","onRoll","Turned Slots, 1d4, nTurnBase=",nTurnBase);
           ChatManager.SystemMessage("TURNED SLOTS [" .. nTurnBase .. "]");
           -- flip through #aHDTurn
           for i=1, #aHDTurn do
             local nTurnExtra = 0;
             -- check if turn/destroy/destroy+
+			local bAutoTurn = aHDTurn[i].bAutoTurn;
+			if bAutoTurn then
+				-- autoTurn (add 1d4)
+				nTurnExtra = nTurnExtra + StringManager.evalDice(aExtraTurn, 0);
+			end
             local bDestroy = aHDTurn[i].bDestroy;
             local bDestroyPlus = aHDTurn[i].bDestroyPlus;
             if bDestroyPlus then
             -- destroy+ turn (add 2d4)
-              nTurnExtra = StringManager.evalDice(aExtraTurn, 0);
-              Debug.console("manager_action_turnundead.lua","onRoll","Gained extra turn, 2d4, nTurnExtra=",nTurnExtra," For HD=",aHDTurn[i].nHD);
-              ChatManager.SystemMessage("TURNED EXTRA SLOTS [" .. nTurnExtra .. "] for HD [" .. aHDTurn[i].nHD .. "]");
+              nTurnExtra = nTurnExtra + StringManager.evalDice(aExtraDestroy, 0);
             end
+			if nTurnExtra > 0 then
+				ChatManager.SystemMessage("TURNED EXTRA SLOTS [" .. nTurnExtra .. "] for HD [" .. aHDTurn[i].nHD .. "]");
+			end
             -- flip through sorted Targets
             local aTurnIDs = {};
             for nID=1,#aTargets do
