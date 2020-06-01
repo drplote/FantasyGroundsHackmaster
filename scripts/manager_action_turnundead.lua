@@ -146,7 +146,7 @@ function onRoll(rSource, rTarget, rRoll)
       --  0 = Cannot turn
       -- -1 = Turn
       -- -2 = Destroy
-      -- -3 = Additional 2d4 creatures effected.
+      -- -3 = Additional 1d4 creatures effected.
       if nTurnValue ~= 0 and nTotal >= nTurnValue then
         rTurn.nTurnValue = nTurnValue; -- save turn value for this HD.
         rTurn.bTurn = true;
@@ -188,10 +188,8 @@ function onRoll(rSource, rTarget, rRoll)
     
     -- if we have a dice count we turned something so roll it
     if (bTurnedSome) then
-      table.insert(aTurnDice,'d6');
-      table.insert(aTurnDice,'d6');
+      table.insert(aTurnDice,'d4');
       local aExtraTurn = {}
-      table.insert(aExtraTurn,'d4');
       table.insert(aExtraTurn,'d4');
       
       local nodeTargets = ActorManagerADND.getTargetNodes(rSource);
@@ -204,7 +202,7 @@ function onRoll(rSource, rTarget, rRoll)
         if (#aTargets > 0) then 
           local aTurnedList = {};
           local nTurnBase = StringManager.evalDice(aTurnDice, 0);
-          Debug.console("manager_action_turnundead.lua","onRoll","Turned Slots, 2d6, nTurnBase=",nTurnBase);
+          Debug.console("manager_action_turnundead.lua","onRoll","Turned Slots, 1d4, nTurnBase=",nTurnBase);
           ChatManager.SystemMessage("TURNED SLOTS [" .. nTurnBase .. "]");
           -- flip through #aHDTurn
           for i=1, #aHDTurn do
@@ -213,9 +211,9 @@ function onRoll(rSource, rTarget, rRoll)
             local bDestroy = aHDTurn[i].bDestroy;
             local bDestroyPlus = aHDTurn[i].bDestroyPlus;
             if bDestroyPlus then
-            -- destroy+ turn (add 2d4)
+            -- destroy+ turn (add 1d4)
               nTurnExtra = StringManager.evalDice(aExtraTurn, 0);
-              Debug.console("manager_action_turnundead.lua","onRoll","Gained extra turn, 2d4, nTurnExtra=",nTurnExtra," For HD=",aHDTurn[i].nHD);
+              Debug.console("manager_action_turnundead.lua","onRoll","Gained extra turn, 1d4, nTurnExtra=",nTurnExtra," For HD=",aHDTurn[i].nHD);
               ChatManager.SystemMessage("TURNED EXTRA SLOTS [" .. nTurnExtra .. "] for HD [" .. aHDTurn[i].nHD .. "]");
             end
             -- flip through sorted Targets
