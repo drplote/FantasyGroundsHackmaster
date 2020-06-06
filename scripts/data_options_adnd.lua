@@ -76,6 +76,8 @@ function registerOptions()
   OptionsManager.registerOption2("HouseRule_DeathsDoor", false, "option_header_houserule", "option_label_ADND_DEATHSDOOR", "option_entry_cycler", 
       { labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
 
+  OptionsManager.registerOption2("HouseRule_SizeBasedKickers", false, "option_header_houserule", "option_label_HM_KICKER", "option_entry_cycler",
+	  { labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
 
   -- this is not a option in AD&D 2e?
   -- OptionsManager.registerOption2("HouseRule_ASCENDING_AC", false, "option_header_houserule", "option_label_HR_ASENDING_AC", "option_entry_cycler", 

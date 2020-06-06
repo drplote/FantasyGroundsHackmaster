@@ -928,6 +928,7 @@
   <string name="option_label_ADND_AE_disabled">Disabled</string>
 
   <string name="option_label_ADND_DEATHSDOOR">Damage: Death's Door</string>
+  <string name="option_label_HM_KICKER">Use Sized-based Kickers</string>
   
   <!-- Skip dead npcs during initiative cycle -->
   <string name="option_label_CT_SKIP_DEAD_NPC">Turn: Skip dead NPC</string>

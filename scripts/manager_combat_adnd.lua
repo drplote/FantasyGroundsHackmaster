@@ -1045,26 +1045,37 @@ function rollNPCHitPoints(nodeNPC)
 end
 
 function getKickerFromSize(nodeNpc)
-  local sSizeRaw = StringManager.trim(DB.getValue(nodeNPC, "size", "M"));
+  if DB.getValue(nodeNpc, "hd", 0) == 0 then 
+	return 0; -- If it has 0 HD, don't give it a kicker.
+  end
+  
+  local sSizeRaw = StringManager.trim(DB.getValue(nodeNpc, "size", "M"));
   local sSize = sSizeRaw:lower();
   
   local nKicker = 20;
-  if sSize == "tiny" or string.find(sSizeRaw,"T") then
-    nKicker = 10;
+  
+  local bUseOptionalKickerAdjustment = OptionsManager.isOption("HouseRule_SizeBasedKickers", "on");
+  Debug.console("bUseOptionalKickerAdjustment", bUseOptionalKickerAdjustment);
+  Debug.console("sSizeRaw", sSizeRaw);
+  Debug.console("sSize", sSize);
+  
+  if bUseOptionalKickerAdjustment then
+    if sSize == "tiny" or string.find(sSizeRaw,"T") then
+      nKicker = 5;
+    elseif sSize == "small" or string.find(sSizeRaw,"S") then
+      nKicker = 10;
+    elseif sSize == "medium" or string.find(sSizeRaw,"M") then
+      nKicker = 20;
+    elseif sSize == "large" or string.find(sSizeRaw,"L") then
+      nKicker = 40;
+    elseif sSize == "huge" or string.find(sSizeRaw,"H") then
+      nKicker = 80;
+    elseif sSize == "gargantuan" or string.find(sSizeRaw,"G") then
+      nKicker = 160;
+    end
+  elseif sSize == "tiny" or string.find(sSizeRaw,"T") then
+	nKicker = 10;
   end
-  --if sSize == "tiny" or string.find(sSizeRaw,"T") then
-  --  nKicker = 0;
-  --elseif sSize == "small" or string.find(sSizeRaw,"S") then
-  --  nKicker = 10;
-  --elseif sSize == "medium" or string.find(sSizeRaw,"M") then
-  --  nKicker = 20;
-  --elseif sSize == "large" or string.find(sSizeRaw,"L") then
-  --  nKicker = 30;
-  --elseif sSize == "huge" or string.find(sSizeRaw,"H") then
-  --  nKicker = 40;
-  --elseif sSize == "gargantuan" or string.find(sSizeRaw,"G") then
-  --  nKicker = 50;
-  --end
   
   return nKicker;
   
