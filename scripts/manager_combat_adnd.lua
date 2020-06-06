@@ -1039,9 +1039,35 @@ function rollNPCHitPoints(nodeNPC)
               nHP = n80;
           end
     end
-	nHP = nHP + 20; -- HM4 mod: add kicker
+	nHP = nHP + getKickerFromSize(nodeNPC); -- HM4 mod: add kicker
   end
   return nHP;
+end
+
+function getKickerFromSize(nodeNpc)
+  local sSizeRaw = StringManager.trim(DB.getValue(nodeNPC, "size", "M"));
+  local sSize = sSizeRaw:lower();
+  
+  local nKicker = 20;
+  if sSize == "tiny" or string.find(sSizeRaw,"T") then
+    nKicker = 10;
+  end
+  --if sSize == "tiny" or string.find(sSizeRaw,"T") then
+  --  nKicker = 0;
+  --elseif sSize == "small" or string.find(sSizeRaw,"S") then
+  --  nKicker = 10;
+  --elseif sSize == "medium" or string.find(sSizeRaw,"M") then
+  --  nKicker = 20;
+  --elseif sSize == "large" or string.find(sSizeRaw,"L") then
+  --  nKicker = 30;
+  --elseif sSize == "huge" or string.find(sSizeRaw,"H") then
+  --  nKicker = 40;
+  --elseif sSize == "gargantuan" or string.find(sSizeRaw,"G") then
+  --  nKicker = 50;
+  --end
+  
+  return nKicker;
+  
 end
 
 
