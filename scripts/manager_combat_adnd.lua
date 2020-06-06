@@ -1055,9 +1055,6 @@ function getKickerFromSize(nodeNpc)
   local nKicker = 20;
   
   local bUseOptionalKickerAdjustment = OptionsManager.isOption("HouseRule_SizeBasedKickers", "on");
-  Debug.console("bUseOptionalKickerAdjustment", bUseOptionalKickerAdjustment);
-  Debug.console("sSizeRaw", sSizeRaw);
-  Debug.console("sSize", sSize);
   
   if bUseOptionalKickerAdjustment then
     if sSize == "tiny" or string.find(sSizeRaw,"T") then
