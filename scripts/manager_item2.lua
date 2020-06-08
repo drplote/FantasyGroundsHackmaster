@@ -204,6 +204,31 @@ function isWearingShield(nodeChar)
   return bShield;
 end
 
+function isMagicalArmor(nodeItem)
+	return ItemManager2.isArmor(nodeItem) and DB.getValue(nodeItem, "bonus", 0) ~= 0;
+end
+
+function getBulkOfWornArmor(nodeChar)
+	local nHighestBulk = 0;
+	for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
+		if DB.getValue(vNode, "carried", 0) == 2 and ItemManager2.isArmor(vNode) and not ItemManager2.isShield(vNode) then
+			local sProperties = DB.getValue(vNode, "properties", ""):lower();
+			local nThisArmorBulk = 0;
+			if string.find(sProperties, "bulky") then
+				nThisArmorBulk = 2;
+			elseif string.find(sProperties, "fairly") then
+				nThisArmorBulk = 1;
+			end
+			if isMagicalArmor(vNode) then
+				nThisArmorBulk = nThisArmorBulk - 1;
+			end
+			
+			nHighestBulk = math.max(nHighestBulk, nThisArmorBulk);
+		end
+	end
+	return nHighestBulk; -- 0 = non, 1 = fairly, 2 = bulky
+end
+
 -- get a list of all the armor worn by this node
 function getArmorWorn(nodeChar)
   local aArmorList = {};

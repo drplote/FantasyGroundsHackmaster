@@ -1058,17 +1058,17 @@ function getKickerFromSize(nodeNpc)
   
   if bUseOptionalKickerAdjustment then
     if sSize == "tiny" or string.find(sSizeRaw,"T") then
-      nKicker = 5;
+      nKicker = 0;
     elseif sSize == "small" or string.find(sSizeRaw,"S") then
       nKicker = 10;
     elseif sSize == "medium" or string.find(sSizeRaw,"M") then
       nKicker = 20;
     elseif sSize == "large" or string.find(sSizeRaw,"L") then
-      nKicker = 40;
+      nKicker = 30;
     elseif sSize == "huge" or string.find(sSizeRaw,"H") then
-      nKicker = 80;
+      nKicker = 40;
     elseif sSize == "gargantuan" or string.find(sSizeRaw,"G") then
-      nKicker = 160;
+      nKicker = 50;
     end
   elseif sSize == "tiny" or string.find(sSizeRaw,"T") then
 	nKicker = 10;

@@ -157,12 +157,17 @@ function updateEncumbrance(nodeChar)
 
   local nCount, nWeight;
   for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
-    if DB.getValue(vNode, "carried", 0) ~= 0 then
+	local nCarried = DB.getValue(vNode, "carried", 0);
+    if nCarried ~= 0 then
       nCount = DB.getValue(vNode, "count", 0);
       if nCount < 1 then
         nCount = 1;
       end
       nWeight = DB.getValue(vNode, "weight", 0);
+	  Debug.console("ismagicalarmor", vNode, ItemManager2.isMagicalArmor(vNode));
+	  if nCarried == 2 and ItemManager2.isMagicalArmor(vNode) then	
+		nWeight = math.floor(nWeight/2); -- magical armor only counts half for encumbrance when worn
+	  end
       
       nEncTotal = nEncTotal + (nCount * nWeight);
     end
@@ -305,9 +310,17 @@ function getEncumbranceRank2e(nodeChar)
     nBaseEnc = nBaseMove * nEncLight; -- greater than light
     sEncRank = "Light";
   end
-
+  
   nBaseEnc = math.floor(nBaseEnc);
   nBaseEnc = nBaseMove - nBaseEnc;
+  
+  local nHighestBulk = ItemManager2.getBulkOfWornArmor(nodeChar);
+  if nHighestBulk == 2 then
+	nBaseEnc = math.floor(nBaseEnc * .66);
+  elseif nHighestBulk == 1 then
+	nBaseEnc = math.floor(nBaseEnc * .75);
+  end
+  
   if (nBaseEnc < 1) then
       nBaseEnc = 1;
   end

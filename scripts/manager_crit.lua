@@ -142,9 +142,13 @@ end
 
 function handleCrit(nAttackerThaco, nTargetAc, nAttackBonus, rTarget, sDamageTypes)
 	local nBaseSeverity = calculateBaseSeverity(nAttackerThaco, nTargetAc, nAttackBonus);
+	Debug.console("manager_crit.lua", "handleCrit", "nBaseSeverity", nBaseSeverity);
 	local nSeverity = math.min(nBaseSeverity + DiceMechanicsManager.rollPenetrateInBothDirection(8), 24);
+	Debug.console("manager_crit.lua", "handleCrit", "nSeverity", nSeverity);
 	local nHitLocationRoll = math.random(1, 10000);
+	Debug.console("manager_crit.lua", "handleCrit", "nHitLocationRoll", nHitLocationRoll);
 	local sLocation, sSide = getHitLocation(nHitLocationRoll);
+	Debug.console("manager_crit.lua", "handleCrit", "sLocation", sLocation);
 	
 	local sResult = "[Critical Hit]\r[Severity: " .. nSeverity .. "(Base " .. nBaseSeverity .. ")]"
 	sResult = sResult .. "\r[Location (d10000=" .. nHitLocationRoll .. "): " .. sLocation .. "(" .. sSide .. ")]";
