@@ -160,19 +160,29 @@ function rollEntryInit(nodeEntry)
     -- and set nInit.
     local nTotal = DB.getValue(nodeEntry,"initiative.total",0);
     -- flip through weaponlist, get the largest speedfactor as default
-    local nSpeedFactor = 0;
+	local nMeleeSpeedFactor = nil;
+	local nRangedSpeedFactor = nil;
     for _,nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
       local nSpeed = DB.getValue(nodeWeapon,"speedfactor",0);
-      if nSpeed > nSpeedFactor then
-        nSpeedFactor = nSpeed;
+	  local nAttackType = DB.getValue(nodeWeapon, "type", -1);
+	  if nAttackType == 0 and (nMeleeSpeedFactor == nil or nMeleeSpeedFactor < nSpeed) then
+		Debug.console("nMeleeSpeedFactor", nMeleeSpeedFactor);
+        nMeleeSpeedFactor = nSpeed;
+	  elseif nAttackType > 0 and (nRangedSpeedFactor == nil or nRangedSpeedFactor < nSpeed) then
+		Debug.console("nRangedSpeedFactor", nRangedSpeedFactor);
+		nRangedSpeedFactor = nSpeed;
       end
     end
 	
-    if nSpeedFactor ~= 0 then
-      nInit = nSpeedFactor + nInitMOD ;
-    elseif (nTotal ~= 0) then 
-      nInit = nTotal + nInitMOD ;
-    end
+	local bFixedInit = false;
+	if nMeleeSpeedFactor ~= nil then
+		nInit = nMeleeSpeedFactor + nInitMOD;
+	elseif nRangedSpeedFactor ~= nil then
+		nInit = nRangedSpeedFactor + nInitMOD;
+		bFixedInit = true;
+	elseif nTotal ~= 0 then
+		nInit = nTotal + nInitMod;
+	end
 
 
     -- For NPCs, if NPC init option is not group, then roll unique initiative
@@ -183,8 +193,12 @@ function rollEntryInit(nodeEntry)
 	  if nPreviousInit > 10 then -- If > 10, they didn't go last round and subtract 10 this round to get a new init
 		DB.setValue(nodeEntry, "initresult", "number", nPreviousInit - 10);
 	  else
-		local nInitResult = rollRandomInit(nInit, bADV);
-		DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+		if bFixedInit then
+			DB.setValue(nodeEntry, "initresult", "number", nInit);
+		else
+			local nInitResult = rollRandomInit(nInit, bADV);
+			DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+		end
 	  end
       return;
     end

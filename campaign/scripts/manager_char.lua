@@ -316,9 +316,9 @@ function getEncumbranceRank2e(nodeChar)
   
   local nHighestBulk = ItemManager2.getBulkOfWornArmor(nodeChar);
   if nHighestBulk == 2 then
-	nBaseEnc = math.floor(nBaseEnc * .66);
+	nBaseEnc = math.floor(nBaseEnc / 6 * 4);
   elseif nHighestBulk == 1 then
-	nBaseEnc = math.floor(nBaseEnc * .75);
+	nBaseEnc = math.floor(nBaseEnc / 4 * 3);
   end
   
   if (nBaseEnc < 1) then
