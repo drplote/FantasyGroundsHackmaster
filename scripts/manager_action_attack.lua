@@ -388,11 +388,11 @@ function modAttack(rSource, rTarget, rRoll)
     end
     
     -- Get ability modifiers
-    local nBonusStat, nBonusEffects = ActorManager2.getAbilityEffectsBonus(rSource, sActionStat,"hitadj");
-    if nBonusEffects > 0 then
-      bEffects = true;
-      nAddMod = nAddMod + nBonusStat;
-    end
+    --local nBonusStat, nBonusEffects = ActorManager2.getAbilityEffectsBonus(rSource, sActionStat,"hitadj");
+    --if nBonusEffects > 0 then
+    --  bEffects = true;
+    --  nAddMod = nAddMod + nBonusStat;
+    --end
 
     -- see if target has some effects that incur modifiers.
     if rTarget then
