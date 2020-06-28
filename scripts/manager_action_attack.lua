@@ -181,6 +181,11 @@ function getRoll(rActor, rAction)
   else
     rRoll.sDesc = "[ATTACK][BASIC]";
   end
+
+  rRoll.aDamageTypes = rAction.aDamageTypes;
+  if rRoll.sDamageType == nil or rRoll.sDamageType == "" then
+    rRoll.sDamageType = UtilityManagerADND.toCSV(rRoll.aDamageTypes);
+  end
   return rRoll;
 end
 

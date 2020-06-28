@@ -241,9 +241,15 @@ function onAttackAction(draginfo)
     rAction.nCritRange = nCritThreshold;
   end
   
+  addDamageTypesToAction(nodeWeapon, rAction); 
+
   ActionAttack.performRoll(draginfo, rActor, rAction);
   
   return true;
+end
+
+function addDamageTypesToAction(nodeWeapon, rAction)
+    rAction.aDamageTypes = WeaponManager.getDamageTypes(nodeWeapon);
 end
 
 function onDamageActionSingle(nodeDamage, draginfo)

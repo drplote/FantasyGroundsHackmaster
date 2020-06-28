@@ -207,6 +207,8 @@
   <script name="ActionHealPSP" file="scripts/manager_action_healpsp.lua" />
   <script name="UtilityManagerADND" file="scripts/manager_utilities_adnd.lua" />
   <script name="ArmorManager" file="scripts/manager_armor.lua" />
+  <script name="WeaponManager" file="scripts/manager_weapon.lua" />
+  <script name="DataManager" file="scripts/manager_data.lua" />
   
   <script name="JSON" file="scripts/manager_json.lua" />
   

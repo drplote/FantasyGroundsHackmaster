@@ -415,3 +415,24 @@ function sanitizeTraitText(s)
   return sSanitized
 end
 
+function toCSV (tt)
+    if not (tt) then return ""; end
+    local s = ""
+    for _,p in ipairs(tt) do  
+    s = s .. "," .. escapeCSV(p)
+    end
+    return string.sub(s, 2)      -- remove first comma
+end
+
+function addIfUnique(set, item)
+    if not containsExact(set, item) then
+        table.insert(set, item);
+    end
+end
+
+function escapeCSV (s)
+  if string.find(s, '[,"]') then
+    s = '"' .. string.gsub(s, '"', '""') .. '"'
+  end
+  return s
+end

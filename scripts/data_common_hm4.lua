@@ -1,6 +1,7 @@
 aHonorDice = {};
 aHonorThresholdsByLevel = {};
 aDefaultArmorVsDamageTypeModifiers = {};
+aDefaultWeaponSizes = {};
 
 function onInit()
 	-- index is honor index,values are levels 1-20
@@ -146,6 +147,64 @@ function onInit()
     aDefaultArmorVsDamageTypeModifiers["scale mail"]       = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["splint mail"]      = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = -2};
     aDefaultArmorVsDamageTypeModifiers["studded leather"]  = {["slashing"] = -2, ["piercing"] = -1, ["bludgeoning"] = 0};
+
+    aDefaultWeaponSizes["arquebus"] = "M";
+	aDefaultWeaponSizes["battle axe"] = "M";
+	aDefaultWeaponSizes["blowgun"] = "S";
+	aDefaultWeaponSizes["bow"] = "M";
+	aDefaultWeaponSizes["club"] = "M";
+	aDefaultWeaponSizes["dagger"] = "S";
+	aDefaultWeaponSizes["dirk"] = "S";
+	aDefaultWeaponSizes["dart"] = "S";
+	aDefaultWeaponSizes["flail"] = "M";
+	aDefaultWeaponSizes["mace"] = "M";
+	aDefaultWeaponSizes["pick"] = "M";
+	aDefaultWeaponSizes["hand axe"] = "M";
+	aDefaultWeaponSizes["throwing axe"] = "M";
+	aDefaultWeaponSizes["harpoon"] = "L";
+	aDefaultWeaponSizes["javelin"] = "M";
+	aDefaultWeaponSizes["knife"] = "S";
+	aDefaultWeaponSizes["lance"] = "L";
+	aDefaultWeaponSizes["mancatcher"] = "L";
+	aDefaultWeaponSizes["morning star"] = "M";
+	aDefaultWeaponSizes["morningstar"] = "M";
+	aDefaultWeaponSizes["awl pike"] = "L";
+	aDefaultWeaponSizes["bardiche"] = "L";
+	aDefaultWeaponSizes["bec de corbin"] = "L";
+	aDefaultWeaponSizes["bill-guisarme"] = "L";
+	aDefaultWeaponSizes["fauchard"] = "L";
+	aDefaultWeaponSizes["glaive"] = "L";
+	aDefaultWeaponSizes["guisarme"] = "L";
+	aDefaultWeaponSizes["voulge"] = "L";
+	aDefaultWeaponSizes["lucern hammer"] = "L";
+	aDefaultWeaponSizes["military fork"] = "L";
+	aDefaultWeaponSizes["partisan"] = "L";
+	aDefaultWeaponSizes["ranseur"] = "L";
+	aDefaultWeaponSizes["spetum"] = "L";
+	aDefaultWeaponSizes["scourge"] = "S";
+	aDefaultWeaponSizes["sickle"] = "S";
+	aDefaultWeaponSizes["sling"] = "S";
+	aDefaultWeaponSizes["staff"] = "L"; -- we want this to come after "sling" so "staff sling" doesn't flag as large
+	aDefaultWeaponSizes["bullet"] = "S";
+	aDefaultWeaponSizes["stone"] = "S";
+	aDefaultWeaponSizes["spear"] = "M";
+	aDefaultWeaponSizes["bastard sword"] = "M";
+	aDefaultWeaponSizes["broad sword"] = "M";
+	aDefaultWeaponSizes["khopesh"] = "M";
+	aDefaultWeaponSizes["long sword"] = "M";
+	aDefaultWeaponSizes["longsword"] = "M";
+	aDefaultWeaponSizes["short sword"] = "M";
+	aDefaultWeaponSizes["shortsword"] = "S";
+	aDefaultWeaponSizes["scimitar"] = "M";
+	aDefaultWeaponSizes["two handed sword"] = "L";
+	aDefaultWeaponSizes["two-handed sword"] = "L";
+	aDefaultWeaponSizes["2 handed sword"] = "L";
+	aDefaultWeaponSizes["2-handed sword"] = "L";
+	aDefaultWeaponSizes["2-h sword"] = "L";
+	aDefaultWeaponSizes["2h sword"] = "L";
+	aDefaultWeaponSizes["trident"] = "L";
+	aDefaultWeaponSizes["warhammer"] = "M";
+	aDefaultWeaponSizes["whip"] = "M";	
 		
 end
 
