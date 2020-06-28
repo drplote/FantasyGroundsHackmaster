@@ -122,7 +122,7 @@ function getRoll(rActor, rAction)
     -----
     rRoll.nMod = rAction.modifier or 0;
     rRoll.bWeapon = rAction.bWeapon;
-	rRoll.sDamageType = rAction.sDamageType
+	  rRoll.sDamageType = rAction.sDamageType
     if (rActor.itemPath and rActor.itemPath ~= "") then
       rRoll.itemPath = rActor.itemPath;
     end
@@ -515,6 +515,27 @@ function modAttack(rSource, rTarget, rRoll)
   bDIS = false;
   --
   ActionsManager2.encodeAdvantage(rRoll, bADV, bDIS);
+  addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
+
+end
+
+function addWeaponTypeVsArmorMods(rSource, rTarget, rRoll)  
+    local sArmorType, sDamageType, nMod = ArmorManager.getHitModifierForDamageTypesVsCharacter(rTarget, rRoll.sDamageType);
+    addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmorType, nMod);
+end
+
+function addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmor, nMod)
+    if nMod == 0 or nMod == nil then 
+        return;
+    end
+    
+    local sMod = tostring(nMod);
+    if nMod > 0 then
+        sMod = "+" .. sMod;
+    end
+    
+    rRoll.sDesc = rRoll.sDesc .. string.format(" [WvA: %s v %s (%s)]", sDamageType, sArmor, sMod);
+    rRoll.nMod = nMod;
 end
 
 function onAttack(rSource, rTarget, rRoll)

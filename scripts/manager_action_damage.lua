@@ -143,19 +143,19 @@ function modDamage(rSource, rTarget, rRoll)
     local nEffectMod = 0;
 
     -- Apply ability modifiers
-    for _,vClause in ipairs(rRoll.clauses) do
-      local nBonusStat, nBonusEffects = ActorManager2.getAbilityEffectsBonus(rSource, vClause.stat);
-      if nBonusEffects > 0 then
-        bEffects = true;
-        local nMult = vClause.statmult or 1;
-        if nBonusStat > 0 and nMult ~= 1 then
-          nBonusStat = math.floor(nMult * nBonusStat);
-        end
-        nEffectMod = nEffectMod + nBonusStat;
-        vClause.modifier = vClause.modifier + nBonusStat;
-        rRoll.nMod = rRoll.nMod + nBonusStat;
-      end
-    end
+    -- for _,vClause in ipairs(rRoll.clauses) do
+      -- local nBonusStat, nBonusEffects = ActorManager2.getAbilityEffectsBonus(rSource, vClause.stat);
+      -- if nBonusEffects > 0 then
+        -- bEffects = true;
+        -- local nMult = vClause.statmult or 1;
+        -- if nBonusStat > 0 and nMult ~= 1 then
+          -- nBonusStat = math.floor(nMult * nBonusStat);
+        -- end
+        -- nEffectMod = nEffectMod + nBonusStat;
+        -- vClause.modifier = vClause.modifier + nBonusStat;
+        -- rRoll.nMod = rRoll.nMod + nBonusStat;
+      -- end
+    -- end
     
     -- Apply multiplier damage modifiers from DMGX effect
     local aAddDice_Multiplier, nAddMod_Multiplier, nEffectCount_Multiplier = EffectManager5E.getEffectsBonus(rSource, {"DMGX"}, false, aAttackFilter, rTarget);

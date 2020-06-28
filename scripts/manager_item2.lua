@@ -231,13 +231,15 @@ end
 
 -- get a list of all the armor worn by this node
 function getArmorWorn(nodeChar)
-  local aArmorList = {};
+  local aArmorListNames = {};
+  local aArmorNodesList = {};
   for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
     if DB.getValue(vNode, "carried", 0) == 2 then
       local bIsArmor, _, sSubtypeLower = ItemManager2.isArmor(vNode);
       if bIsArmor then
         local sName = DB.getValue(vNode,"name",""):lower();
-        table.insert(aArmorList, sName);    
+        table.insert(aArmorListNames, sName);    
+        table.insert(aArmorNodesList, vNode);    
       end
     end
   end
@@ -251,12 +253,13 @@ function getArmorWorn(nodeChar)
       local bIsArmor, _, sSubtypeLower = ItemManager2.isArmor(nodeCheck);
       if bIsArmor then
         local sName = DB.getValue(nodeCheck,"name",""):lower();
-        table.insert(aArmorList, sName);    
+        table.insert(aArmorListNames, sName);    
+        table.insert(aArmorNodesList, nodeCheck);    
       end
     end
   end
   --
-  return aArmorList;
+  return aArmorListNames, aArmorNodesList;
 end
 
 -- get a list of all the items equipped worn by this node
