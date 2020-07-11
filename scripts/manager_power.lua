@@ -718,9 +718,7 @@ function getLevelBasedDiceValues(nodeCaster, isPC, node, nodeAction)
     end
     if nDiceCount > 0 then
       -- if using customvalue multiply it by CL value and add that to +mod total
-      if (nCustomValue > 0) then
-        nMod = nMod + (nCustomValue * nDiceCount); -- nDiceCount is CL value
-      end
+      nMod = nMod + (nCustomValue * nDiceCount); -- nDiceCount is CL value
       local aNewDmgDice = {}
       local nDiceIndex = 0;
       -- roll count number of "dice" LEVEL D {DICE}
