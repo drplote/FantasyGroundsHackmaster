@@ -60,7 +60,7 @@ I'm probably forgetting some things, but:
 - Added an "armor damage tracker" to the character's main tab that shows them their armor & shield status in terms of how much AC they've lost and how much damage they've taken, along with buttons to increment/decrement the damage. This is to make it easier to handle corner cases where the automatic armor damage code didn't work how you wanted it to. Maybe you didn't want the flaming arrow spell to be affected by armor, or alternately maybe they just got hit with and acid arrow and you decided you want that to do extra armor damage beyond the norma. It's just meant as a convenient control for the players to see the current status without clicking through inventory to their armor and opening it up, and to help the players and GM tweak what's happening for special situations. Plus, I wrote that first before I got the automation working and it's easier to leave it in then strip it out!
 - House Rule: When magic armor is hit a by a weapon, it only takes damage if the weapon has an atypical damage type (such as fire or acid) or if the magic bonus of the weapon is at least equal to the magic bonus of the armor. Spells still affect armor normally. I didn't want to deal with the complicated official magic armor damage rules from the errata, and I never liked them much anyway.
 - Turn undead now works like HM4 instead of 2e: # of hit dice affected when turning undead matches HM rules (1d4, +1d4 if T or D, +another 2d4 if D*), turn table is harder
-
+- Automated the 'weapon type vs armor type' to-hit modifiers, so long as the weapon name and armor name somewhat matches items from the PHB.
  
 
 #### Things you need to do on the data side of things to fully use this (not a complete list):
