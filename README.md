@@ -7,6 +7,17 @@ A backlog of desired/completed/in-progress changes can be viewed here: https://t
 
 Unfortunately, I don't think it's legal for me to share my work with regards to Player's Handbook, Gamemaster's Guide, and Hacklopedia of Beasts data, so if you use this you're going to have to enter the data for weapons, armor, races, classes, spells, etc yourself. Using the 2E PHB, DMG, and MM on Fantasy Grounds as a basis and copying and modifying records is probably the easiest way to do that. 
 
+## Installation
+
+1. Download the code. On the GitHub page (https://github.com/drplote/FantasyGroundsHackmaster), there's a green "Code" button near the top right. Click it and select "Download .zip"
+2. After it's downloaded, use your .zip tool of choice to unzip it.
+3. Click into the folder you just unzipped. The first folder inside should be FantasyGroundsHackmaster-master. Click into that, and now you'll see a number of files and folders. You'll know your in the right directory if there is a file called "base.xml"
+4. Select all those files and folders and create a .zip file out of them using your favorite zip tool. 
+ 4a. Alternately, if you're on Windows, instead of steps 4-6 you could edit the "pak-it.bat" file in notepad and change the path(s) in the "xcopy" lines to point at your rulesets folder(s). Then when you double-click pak-it.bat to run it, it should automatically zip up the folder contents, rename them, and copy them to the location(s) you specified. You only need one xcopy line if you're only running one version of Fantasy Grounds... I have both so that it copies to both my FGC directory and my FGU directory.
+5. Rename the .zip you just created to Hackmaster4e.pak
+6. Copy Hackmaster4e.pak to your rulesets folder. For instance, for mine in FGC, it's located at "%APPDATA%\Fantasy Grounds\rulesets"
+7. That's it. Now when you start up Fantasy Grounds, you should be able to select the "HM4" ruleset when creating a campaign.
+
 ## What It Does So Far 
 I'm probably forgetting some things, but:
 
